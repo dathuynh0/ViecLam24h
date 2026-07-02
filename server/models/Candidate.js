@@ -41,5 +41,6 @@ const Candidate = sequelize.define('Candidate', {
 })
 
 Candidate.belongsTo(User, { foreignKey: 'userId', as: 'user' })
+User.hasOne(Candidate, { foreignKey: 'userId', as: 'candidate' })
 
 export default Candidate;

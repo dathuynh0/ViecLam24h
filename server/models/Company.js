@@ -20,7 +20,7 @@ const Company = sequelize.define('Company', {
         }
     },
     companyName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
     },
     description: {
         type: DataTypes.JSONB,
@@ -30,7 +30,7 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING
     },
     status: {
-        type: DataTypes.ENUM('pending', 'active', 'inactive'),
+        type: DataTypes.ENUM('pending', 'active', 'rejected'),
         defaultValue: 'pending'
     },
     follow: {
@@ -51,5 +51,6 @@ const Company = sequelize.define('Company', {
 
 
 Company.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+User.hasOne(Company, { foreignKey: 'userId', as: 'company' });
 
 export default Company;
