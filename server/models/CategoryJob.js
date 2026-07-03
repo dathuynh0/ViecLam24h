@@ -16,7 +16,7 @@ const CategoryJob = sequelize.define("CategoryJob", {
     },
     iconUrl: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        //allowNull: false
     }
 },
 {
