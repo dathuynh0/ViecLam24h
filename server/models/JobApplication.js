@@ -11,7 +11,7 @@ const JobApplication = sequelize.define('JobApplication', {
     id: {
         type: DataTypes.STRING(16),
         primaryKey: true,
-        defaultValue: () => generateId
+        defaultValue: () => generateId()
     },
     candidateId: {
         type: DataTypes.STRING(16),
@@ -52,7 +52,8 @@ const JobApplication = sequelize.define('JobApplication', {
 Candidate.hasMany(JobApplication, { foreignKey: 'candidateId', as: 'application' })
 JobApplication.belongsTo(Candidate, { foreignKey: 'candidateId', as: 'candidate' })
 
-// jobApplication 1 - 1 job
+// job 1 - n JobApplication
+Job.hasMany(JobApplication, { foreignKey: 'jobId', as: 'applications' })
 JobApplication.belongsTo(Job, { foreignKey: 'jobId', as: 'job' })
 
 export default JobApplication;
