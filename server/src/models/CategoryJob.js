@@ -11,12 +11,16 @@ const CategoryJob = sequelize.define("CategoryJob", {
         defaultValue: () => generateId()
     },
     title: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false
     },
     iconUrl: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
         defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB1ElSkMVoXspMf9k9r_rBjF2Bnd-JOcc9MTtGUx5Dhg&s=10"
+    },
+    slug: {
+        type: DataTypes.STRING,
+        unique: true
     }
 },
 {

@@ -6,7 +6,6 @@ import authRoutes from "./routes/authRoute.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 
-import { authMiddleware } from "./middlewares/authMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -16,8 +15,6 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 
-// private route
-app.use(authMiddleware);
 // API quản lý tuyển dụng: Đăng bài, Sửa/Xóa bài, Xem danh sách bài đăng
 app.use("/api/jobs", jobRoutes);
 // API ứng tuyển: nộp CV, danh sách CV đã nộp, trạng thái CV

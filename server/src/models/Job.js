@@ -68,6 +68,10 @@ const Job = sequelize.define("Job", {
     workTime: {
         type: DataTypes.JSONB,
         allowNull: false
+    },
+    slug: {
+        type: DataTypes.STRING,
+        unique: true
     }
 },
 {
@@ -78,7 +82,7 @@ const Job = sequelize.define("Job", {
 })
 
 // job n - 1 company
-Job.belongsTo(Company, { foreignKey: 'companyId', as: 'createBy', onDelete: 'CASCADE' })
+Job.belongsTo(Company, { foreignKey: 'companyId', as: 'createdBy', onDelete: 'CASCADE' })
 Company.hasMany(Job, { foreignKey: 'companyId', as: 'job' })
 
 // job 1 - N categoryJob

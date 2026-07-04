@@ -3,18 +3,8 @@ import Job from "../models/Job.js";
 import Company from "../models/Company.js";
 import CategoryJob from "../models/CategoryJob.js";
 
-const normalizeArray = (value) => {
-  if (Array.isArray(value)) return value;
-  if (value === undefined || value === null || value === "") return [];
-  return [value];
-};
+import toSlug from "../utils/slug.js";
 
-const normalizeWorkTime = (value) => {
-  if (Array.isArray(value)) return value;
-  if (typeof value === "object" && value !== null) return value;
-  if (value === undefined || value === null || value === "") return [];
-  return [value];
-};
 
 // GET /api/jobs
 // Xem danh sách bài đăng tuyển dụng
@@ -50,7 +40,7 @@ export const getAllJobs = async (req, res) => {
       include: [
         {
           model: Company,
-          as: "createBy",
+          as: "createdBy",
           attributes: ["id", "companyName", "address", "status", "companySize"]
         },
         {
@@ -84,7 +74,7 @@ export const getJobById = async (req, res) => {
       include: [
         {
           model: Company,
-          as: "createBy",
+          as: "createdBy",
           attributes: ["id", "companyName", "description", "address", "status", "follow", "taxCode", "companySize"]
         },
         {
@@ -149,14 +139,15 @@ export const createJob = async (req, res) => {
       companyId,
       categoryId,
       title,
-      jobRequirement: normalizeArray(jobRequirement),
-      description: normalizeArray(description),
-      candidateRequirement: normalizeArray(candidateRequirement),
-      benefit: normalizeArray(benefit),
+      jobRequirement,
+      description,
+      candidateRequirement,
+      benefit,
       salaryMin: Number(salaryMin),
       salaryMax: Number(salaryMax),
       location,
-      workTime: normalizeWorkTime(workTime)
+      workTime,
+      slug: toSlug(title)
     });
 
     return res.status(201).json({
@@ -200,11 +191,11 @@ export const updateJob = async (req, res) => {
       if (req.body[field] !== undefined) updateData[field] = req.body[field];
     }
 
-    if (req.body.jobRequirement !== undefined) updateData.jobRequirement = normalizeArray(req.body.jobRequirement);
-    if (req.body.description !== undefined) updateData.description = normalizeArray(req.body.description);
-    if (req.body.candidateRequirement !== undefined) updateData.candidateRequirement = normalizeArray(req.body.candidateRequirement);
-    if (req.body.benefit !== undefined) updateData.benefit = normalizeArray(req.body.benefit);
-    if (req.body.workTime !== undefined) updateData.workTime = normalizeWorkTime(req.body.workTime);
+    if (req.body.jobRequirement !== undefined) updateData.jobRequirement = req.body.jobRequirement;
+    if (req.body.description !== undefined) updateData.description = req.body.description;
+    if (req.body.candidateRequirement !== undefined) updateData.candidateRequirement = req.body.candidateRequirement;
+    if (req.body.benefit !== undefined) updateData.benefit = req.body.benefit;
+    if (req.body.workTime !== undefined) updateData.workTime = req.body.workTime;
     if (req.body.salaryMin !== undefined) updateData.salaryMin = Number(req.body.salaryMin);
     if (req.body.salaryMax !== undefined) updateData.salaryMax = Number(req.body.salaryMax);
 
