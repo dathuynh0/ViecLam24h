@@ -7,12 +7,14 @@ import {
   deleteJob
 } from "../controllers/jobController.js";
 
+import { isCompany } from "../middlewares/authMiddleware.js";
+
 const router = express.Router();
 
 router.get("/", getAllJobs);
 router.get("/:id", getJobById);
-router.post("/", createJob);
-router.put("/:id", updateJob);
-router.delete("/:id", deleteJob);
+router.post("/", isCompany, createJob);
+router.put("/:id", isCompany, updateJob);
+router.delete("/:id", isCompany, deleteJob);
 
 export default router;

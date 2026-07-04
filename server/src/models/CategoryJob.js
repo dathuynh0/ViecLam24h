@@ -16,7 +16,7 @@ const CategoryJob = sequelize.define("CategoryJob", {
     },
     iconUrl: {
         type: DataTypes.STRING(100),
-        //allowNull: false
+        defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB1ElSkMVoXspMf9k9r_rBjF2Bnd-JOcc9MTtGUx5Dhg&s=10"
     }
 },
 {
