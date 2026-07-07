@@ -26,6 +26,9 @@ const Company = sequelize.define('Company', {
         type: DataTypes.JSONB,
         defaultValue: []
     },
+    logoUrl: {
+        type: DataTypes.STRING
+    },
     address: {
         type: DataTypes.STRING
     },
