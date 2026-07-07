@@ -7,6 +7,11 @@ import {
   deleteJob
 } from "../controllers/jobController.js";
 
+import {
+  authMiddleware,
+  isCompany
+} from '../middlewares/authMiddleware.js'
+
 const router = express.Router();
 
 /**
@@ -115,7 +120,7 @@ router.get("/:id", getJobById);
  *       500:
  *         description: Lỗi server
  */
-router.post("/", createJob);
+router.post("/", authMiddleware, isCompany, createJob);
 
 /**
  * @swagger
@@ -147,7 +152,7 @@ router.post("/", createJob);
  *       500:
  *         description: Lỗi server
  */
-router.put("/:id", updateJob);
+router.put("/:id", authMiddleware, isCompany, updateJob);
 
 /**
  * @swagger
@@ -170,6 +175,6 @@ router.put("/:id", updateJob);
  *       500:
  *         description: Lỗi server
  */
-router.delete("/:id", deleteJob);
+router.delete("/:id", authMiddleware, isCompany, deleteJob);
 
 export default router;

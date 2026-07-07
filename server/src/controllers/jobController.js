@@ -105,8 +105,8 @@ export const getJobById = async (req, res) => {
 // Đăng bài tuyển dụng
 export const createJob = async (req, res) => {
   try {
+    const company = req.user.company;
     const {
-      companyId,
       categoryId,
       title,
       jobRequirement,
@@ -119,15 +119,10 @@ export const createJob = async (req, res) => {
       workTime
     } = req.body;
 
-    if (!companyId || !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location) {
+    if ( !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location) {
       return res.status(400).json({
-        message: "Vui lòng nhập đầy đủ thông tin bắt buộc: companyId, categoryId, title, salaryMin, salaryMax, location"
+        message: "Vui lòng nhập đầy đủ thông tin bắt buộc: categoryId, title, salaryMin, salaryMax, location"
       });
-    }
-
-    const company = await Company.findByPk(companyId);
-    if (!company) {
-      return res.status(404).json({ message: "Không tìm thấy công ty" });
     }
 
     const category = await CategoryJob.findByPk(categoryId);
@@ -136,7 +131,7 @@ export const createJob = async (req, res) => {
     }
 
     const job = await Job.create({
-      companyId,
+      companyId: company.id,
       categoryId,
       title,
       jobRequirement,
