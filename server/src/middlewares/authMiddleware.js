@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
+import Candidate from '../models/Candidate.js'
 import Company from '../models/Company.js';
 
 
@@ -18,7 +19,13 @@ const authMiddleware = async (req, res, next) => {
             return res.status(403).json({ message: "Token không hợp lệ hoặc hết hạn" });
         }
 
-        const user = await User.findByPk(decoded.userId);
+        const user = await User.findByPk(decoded.userId, {
+            attributes: { exclude: ['password'] },
+            include: [
+                { model: Candidate, as: 'candidate'},
+                { model: Company, as: 'company'}
+            ]
+        });
         if(!user) {
             return res.status(404).json({ message: "Người dùng không tồn tại" });
         }

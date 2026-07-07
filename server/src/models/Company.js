@@ -43,6 +43,10 @@ const Company = sequelize.define('Company', {
     companySize: {
         type: DataTypes.STRING(10),
         defaultValue: 0
+    },
+    slug: {
+        type: DataTypes.STRING,
+        unique: true
     }
 },
 {

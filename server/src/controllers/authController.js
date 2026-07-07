@@ -7,6 +7,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
+import toSlug from '../utils/slug.js';
+
 
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngày
 
@@ -57,7 +59,8 @@ const signUp = async (req, res) => {
         {
             await Company.create({
                 userId: newUser.id,
-                companyName: fullName
+                companyName: fullName,
+                slug: toSlug(fullName)
             })
         }
 
