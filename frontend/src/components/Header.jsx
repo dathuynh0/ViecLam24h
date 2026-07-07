@@ -9,7 +9,8 @@ export default function Header({ active = 'jobs' }) {
         <nav className="site-nav">
           <a className={active === 'home' ? 'active' : ''} href="#/">Trang chủ</a>
           <a className={active === 'jobs' ? 'active' : ''} href="#/jobs">Việc làm</a>
-          <a className={active === 'company' ? 'active' : ''} href="#/company-profile">Công ty</a>
+          <a className={active === 'company' ? 'active' : ''} href="#/company-profile">Nhà tuyển dụng</a>
+          <a className={active === 'candidate' ? 'active' : ''} href="#/candidate-profile">Ứng viên</a>
           <a className={active === 'reports' ? 'active' : ''} href="#/reports">Báo cáo</a>
           <a href="#footer">Liên hệ</a>
         </nav>

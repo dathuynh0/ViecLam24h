@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { pages } from './pages';
 import JobsPage from './pages/JobsPage.jsx';
+import CandidateProfilePage from './pages/CandidateProfilePage.jsx';
+import EmployerProfilePage from './pages/EmployerProfilePage.jsx';
 import './styles.css';
 
 const routeMap = new Map(pages.map((page) => [page.path, page]));
@@ -75,6 +77,14 @@ export default function App() {
 
   if (basePath === '/jobs') {
     return <JobsPage />;
+  }
+
+  if (basePath === '/candidate-profile') {
+    return <CandidateProfilePage />;
+  }
+
+  if (basePath === '/company-profile' || basePath === '/employer-profile') {
+    return <EmployerProfilePage />;
   }
 
   return (
