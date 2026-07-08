@@ -3,6 +3,7 @@ import { pages } from './pages';
 import JobsPage from './pages/JobsPage.jsx';
 import CandidateProfilePage from './pages/CandidateProfilePage.jsx';
 import EmployerProfilePage from './pages/EmployerProfilePage.jsx';
+import ManageJobPostsPage from './pages/ManageJobPostsPage.jsx';
 import './styles.css';
 
 const routeMap = new Map(pages.map((page) => [page.path, page]));
@@ -77,6 +78,10 @@ export default function App() {
 
   if (basePath === '/jobs') {
     return <JobsPage />;
+  }
+
+  if (basePath === '/manage-jobs' || basePath === '/employer/jobs') {
+    return <ManageJobPostsPage />;
   }
 
   if (basePath === '/candidate-profile') {
