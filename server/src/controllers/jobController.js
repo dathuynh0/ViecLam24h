@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import Job from "../models/Job.js";
 import Company from "../models/Company.js";
 import CategoryJob from "../models/CategoryJob.js";
@@ -10,33 +10,16 @@ import toSlug from "../utils/slug.js";
 // Xem danh sách bài đăng tuyển dụng
 export const getAllJobs = async (req, res) => {
   try {
-    const { keyword, location, categoryId, companyId, minSalary, maxSalary } = req.query;
-    const where = {};
+    const page = req.query.page || 1;
+    const limit = 12;
+    const offset = (page - 1) * limit;
 
-    if (keyword) {
-      where.title = { [Op.iLike]: `%${keyword}%` };
-    }
-
-    if (location) {
-      where.location = { [Op.iLike]: `%${location}%` };
-    }
-
-    if (categoryId) {
-      where.categoryId = categoryId;
-    }
-
-    if (companyId) {
-      where.companyId = companyId;
-    }
-
-    if (minSalary || maxSalary) {
-      where.salaryMax = {};
-      if (minSalary) where.salaryMax[Op.gte] = Number(minSalary);
-      if (maxSalary) where.salaryMin = { [Op.lte]: Number(maxSalary) };
-    }
-
-    const jobs = await Job.findAll({
-      where,
+    const { count, rows: jobs } = await Job.findAndCountAll({ where: { 
+      expiredAt: {
+        [Op.gt]: new Date()
+      },
+      status: 'active'
+    },
       include: [
         {
           model: Company,
@@ -46,7 +29,7 @@ export const getAllJobs = async (req, res) => {
         {
           model: CategoryJob,
           as: "category",
-          attributes: ["id", "title", "iconUrl"]
+          attributes: ['id', 'title', 'slug']
         }
       ],
       order: [["createdAt", "DESC"]]
@@ -68,9 +51,14 @@ export const getAllJobs = async (req, res) => {
 // Xem chi tiết bài đăng
 export const getJobById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { jobId } = req.params;
 
-    const job = await Job.findByPk(id, {
+    const job = await Job.findByPk(jobId, { where: { 
+      expiredAt: {
+        [Op.gt]: new Date()
+      },
+      status: 'active'
+    },
       include: [
         {
           model: Company,
@@ -116,10 +104,11 @@ export const createJob = async (req, res) => {
       salaryMin,
       salaryMax,
       location,
-      workTime
+      workTime,
+      expiredAt
     } = req.body;
 
-    if ( !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location) {
+    if ( !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location || !expiredAt) {
       return res.status(400).json({
         message: "Vui lòng nhập đầy đủ thông tin bắt buộc: categoryId, title, salaryMin, salaryMax, location"
       });
@@ -142,7 +131,8 @@ export const createJob = async (req, res) => {
       salaryMax: Number(salaryMax),
       location,
       workTime,
-      slug: toSlug(title)
+      slug: toSlug(title),
+      expiredAt
     });
 
     return res.status(201).json({
@@ -165,9 +155,9 @@ export const createJob = async (req, res) => {
 // Sửa bài tuyển dụng
 export const updateJob = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { jobId } = req.params;
 
-    const job = await Job.findByPk(id);
+    const job = await Job.findByPk(jobId);
     if (!job) {
       return res.status(404).json({ message: "Không tìm thấy bài đăng cần sửa" });
     }
@@ -178,7 +168,8 @@ export const updateJob = async (req, res) => {
       "title",
       "salaryMin",
       "salaryMax",
-      "location"
+      "location",
+      "expiredAt"
     ];
 
     const updateData = {};
@@ -193,6 +184,7 @@ export const updateJob = async (req, res) => {
     if (req.body.workTime !== undefined) updateData.workTime = req.body.workTime;
     if (req.body.salaryMin !== undefined) updateData.salaryMin = Number(req.body.salaryMin);
     if (req.body.salaryMax !== undefined) updateData.salaryMax = Number(req.body.salaryMax);
+    if (req.body.expiredAt !== undefined) updateData.expiredAt = req.body.expiredAt;
 
     await job.update(updateData);
 
@@ -216,9 +208,9 @@ export const updateJob = async (req, res) => {
 // Xóa bài tuyển dụng
 export const deleteJob = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { jobId } = req.params;
 
-    const job = await Job.findByPk(id);
+    const job = await Job.findByPk(jobId);
     if (!job) {
       return res.status(404).json({ message: "Không tìm thấy bài đăng cần xóa" });
     }
@@ -226,7 +218,7 @@ export const deleteJob = async (req, res) => {
     await job.destroy();
 
     return res.status(200).json({
-      message: "Xóa bài đăng thành công"
+      message: "Xóa bài đăng thành công", job
     });
   } catch (error) {
     return res.status(500).json({
@@ -235,3 +227,115 @@ export const deleteJob = async (req, res) => {
     });
   }
 };
+
+// Admin
+export const createJobAdmin = async (req, res) => {
+  try {
+    const {
+      companyId,
+      categoryId,
+      title,
+      jobRequirement,
+      description,
+      candidateRequirement,
+      benefit,
+      salaryMin,
+      salaryMax,
+      location,
+      workTime,
+      expiredAt
+    } = req.body;
+
+    if (!companyId || !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location || !expiredAt) {
+      return res.status(400).json({
+        message: "Vui lòng nhập đầy đủ thông tin"
+      });
+    }
+
+    const company = await Company.findByPk(companyId);
+    if(!company) {
+      return res.status(404).json({ message: 'Không tìm thấy công ty' });
+    }
+
+    const category = await CategoryJob.findByPk(categoryId);
+    if (!category) {
+      return res.status(404).json({ message: "Không tìm thấy danh mục việc làm" });
+    }
+
+    const job = await Job.create({
+      companyId,
+      categoryId,
+      title,
+      jobRequirement,
+      description,
+      candidateRequirement,
+      benefit,
+      salaryMin: Number(salaryMin),
+      salaryMax: Number(salaryMax),
+      location,
+      workTime,
+      slug: toSlug(title),
+      expiredAt
+    });
+
+    return res.status(201).json({
+      message: "Đăng bài tuyển dụng thành công",
+      data: job
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res.status(409).json({ message: "Tiêu đề bài đăng đã tồn tại" });
+    }
+
+    return res.status(500).json({
+      message: "Lỗi khi đăng bài tuyển dụng",
+      error: error.message
+    });
+  }
+};
+
+export const activeJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const job = await Job.findByPk(jobId);
+    if(!job) {
+      return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
+    }
+
+    if(job.status !== 'pending') {
+      return res.status(400).json({ message: 'Bài đăng đã được duyệt hoặc đã bị từ chối '});
+    }
+
+    job.status = 'active';
+    await job.save();
+
+    return res.status(200).json({ message: 'Duyệt bài đăng thành công', job });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm activeJob ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}
+
+export const rejectJob = async (req, res) => {
+  try {
+     const { jobId } = req.params;
+
+    const job = await Job.findByPk(jobId);
+    if(!job) {
+      return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
+    }
+
+    if(job.status !== 'reject') {
+      return res.status(400).json({ message: 'Bài đăng đã được duyệt'});
+    }
+
+    job.status = 'rejected';
+    await job.save();
+
+    return res.status(200).json({ message: 'Từ chối bài đăng thành công ', job });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm rejectJob ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}

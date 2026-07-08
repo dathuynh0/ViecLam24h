@@ -72,6 +72,14 @@ const Job = sequelize.define("Job", {
     slug: {
         type: DataTypes.STRING,
         unique: true
+    },
+    status: {
+        type: DataTypes.ENUM('pending', 'rejected', 'active'),
+        defaultValue: 'pending'
+    },
+    expiredAt: {
+        type: DataTypes.DATE,
+        allowNull: false
     }
 },
 {
@@ -86,8 +94,8 @@ Job.belongsTo(Company, { foreignKey: 'companyId', as: 'createdBy', onDelete: 'CA
 Company.hasMany(Job, { foreignKey: 'companyId', as: 'job' })
 
 // job 1 - N categoryJob
-Job.hasMany(CategoryJob, { foreignKey: 'categoryId', as: 'category'})
-CategoryJob.belongsTo(Job, { foreignKey: 'categoryId', as: 'job'})
+Job.belongsTo(CategoryJob, { foreignKey: 'categoryId', as: 'category'})
+CategoryJob.hasMany(Job, { foreignKey: 'categoryId', as: 'job'})
 
 
 export default Job;

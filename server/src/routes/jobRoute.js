@@ -93,7 +93,7 @@ router.get("/", getAllJobs);
  *       500:
  *         description: Lỗi server
  */
-router.get("/:id", getJobById);
+router.get("/:jobId", getJobById);
 
 /**
  * @swagger
@@ -152,7 +152,7 @@ router.post("/", authMiddleware, isCompany, createJob);
  *       500:
  *         description: Lỗi server
  */
-router.put("/:id", authMiddleware, isCompany, updateJob);
+router.put("/:jobId", authMiddleware, isCompany, updateJob);
 
 /**
  * @swagger
@@ -175,6 +175,6 @@ router.put("/:id", authMiddleware, isCompany, updateJob);
  *       500:
  *         description: Lỗi server
  */
-router.delete("/:id", authMiddleware, isCompany, deleteJob);
+router.delete("/:jobId", authMiddleware, isCompany, deleteJob);
 
 export default router;

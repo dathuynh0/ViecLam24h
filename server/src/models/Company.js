@@ -57,7 +57,7 @@ const Company = sequelize.define('Company', {
 });
 
 
-Company.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-User.hasOne(Company, { foreignKey: 'userId', as: 'company' });
+Company.belongsTo(User, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' });
+User.hasOne(Company, { foreignKey: 'userId', as: 'company', onDelete: 'CASCADE' });
 
 export default Company;

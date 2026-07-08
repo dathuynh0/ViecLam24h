@@ -48,7 +48,7 @@ Candidate.hasMany(JobSave, { foreignKey: 'candidateId', as: 'jobSaves'})
 JobSave.belongsTo(Candidate, { foreignKey: 'candidateId', as: 'candidate'})
 
 // job 1 - n jobsave
-Job.hasMany(JobSave, { foreignKey: 'jobId', as: 'jobSaves' })
-JobSave.belongsTo(Job, { foreignKey: 'jobId', as: 'job' })
+Job.hasMany(JobSave, { foreignKey: 'jobId', as: 'jobSaves',  onDelete: 'CASCADE', hooks: true })
+JobSave.belongsTo(Job, { foreignKey: 'jobId', as: 'job', onDelete: "CASCADE" })
 
 export default JobSave;

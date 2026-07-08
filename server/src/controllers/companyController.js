@@ -68,8 +68,92 @@ const updateMyCompany = async (req, res) => {
     }
 }
 
+const updateLogoCompany = async (req, res) => {
+    try {
+        const company = req.user.company;
+
+        company.logoUrl = req.file.path;
+        await company.save();
+
+        return res.status(200).json({ message: 'Cập nhật logo thành công ', company});
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm updateLogoCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+// Admin
+const updateActiveStatusCompany = async (req, res) => {
+    try {
+        const { companyId } = req.body;
+
+        const company = await Company.findByPk(companyId);
+        if(!company) {
+            return res.status(404).json({ message: 'Không tìm thấy công ty '});
+        }
+
+        if(company.status !== 'pending') {
+            return res.status(400).json({ message: 'Công ty đã được kích hoạt hoặc từ chối '});
+        }
+
+        company.status = 'active';
+        await company.save();
+
+        return res.status(200).json({ message: 'Cập nhật trạng thái thành công', company })
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm updateActiveStatusCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const rejectCompany = async (req, res) => {
+    try {
+        const { companyId } = req.body;
+
+        const company = await Company.findByPk(companyId);
+        if(!company) {
+            return res.status(404).json({ message: 'Không tìm thấy công ty '});
+        }
+
+        if(company.status !== 'pending') {
+            return res.status(400).json({ message: 'Công ty đang hoạt động hoặc bị từ chối '});
+        }
+
+        company.status = 'rejected';
+        await company.save();
+
+        return res.status(200).json({ message: 'Từ chối duyệt công ty thành công ', company });
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm rejectCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+
+const deleteCompany = async (req, res) => {
+    try {
+        const { companyId } = req.body;
+
+        const company = await Company.findByPk(companyId);
+        if(!company) {
+            return res.status(404).json({ message: 'Không tìm thấy công ty '});
+        }
+
+        await company.destroy();
+
+        return res.status(200).json({ message: 'Xóa công ty thành công ', company });
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm deleteCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
 export {
     getAllCompany,
     getCompanyById,
-    updateMyCompany
+    updateMyCompany,
+    updateLogoCompany,
+    deleteCompany,
+    updateActiveStatusCompany,
+    rejectCompany
 }

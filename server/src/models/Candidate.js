@@ -40,7 +40,7 @@ const Candidate = sequelize.define('Candidate', {
     timestamps: true
 })
 
-Candidate.belongsTo(User, { foreignKey: 'userId', as: 'user' })
-User.hasOne(Candidate, { foreignKey: 'userId', as: 'candidate' })
+Candidate.belongsTo(User, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
+User.hasOne(Candidate, { foreignKey: 'userId', as: 'candidate', onDelete: 'CASCADE' })
 
 export default Candidate;

@@ -1,5 +1,7 @@
+import Candidate from '../models/Candidate.js';
 import Job from '../models/Job.js';
 import JobSave from '../models/JobSave.js';
+import User from '../models/User.js';
 
 const updateAvatar = async (req, res) => {
     try {
@@ -58,6 +60,10 @@ const saveJob = async (req, res) => {
             return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng' });
         }
 
+        if(job.status !== 'active') {
+            return res.status(400).json({ message: 'Bài đăng không trong trạng thái sẵn sàng '});
+        }
+
         const jobSave = await JobSave.create({
             candidateId: candidate.id,
             jobId
@@ -105,11 +111,77 @@ const deleteSaveJob = async (req, res) => {
     }
 }
 
+//ADMIN
+const getAllCandidate = async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const limit = 12;
+
+        const offset = (page - 1) * limit;
+
+        const { count, rows } = await Candidate.findAndCountAll({
+            limit: limit,
+            offset: offset
+        });
+        const totalPage = Math.ceil(count / limit)
+
+        return res.status(200).json({ message: 'Lấy danh sách ứng viên thành công ',
+            page,
+            totalPage,
+            candidates: rows
+        })
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm getAllCandidate: ', error);
+        return res.status(500).json({ message: 'Lỗi server '})
+    }
+}
+
+const blockLoginCandidate = async (req, res) => {
+    try {
+        const { candidateId } = req.body;
+
+        const candidate = await Candidate.findByPk(candidateId);
+        if(!candidate) {
+            return res.status(404).json({ message: 'Không tìm thấy ứng viên' });
+        }
+
+        const user = await User.findByPk(candidate.userId);
+        user.status = 'inactive';
+        await user.save();
+
+        return res.status(200).json({ message: 'Khóa tài khoản thành công ', user})
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm blockLoginCandidate: ', error);
+        return res.status(500).json({ message: 'Lỗi server '})
+    }
+}
+
+const deleteCandidate = async (req, res) => {
+    try {
+        const { candidateId } = req.params;
+
+        const candidate = await Candidate.findByPk(candidateId);
+        if(!candidate) {
+            return res.status(404).json({ message: 'Không tìm thấy ứng viên'});
+        }
+
+        await candidate.destroy();
+
+        return res.status(200).json({ message: 'Xóa ứng viên thành công ', candidate });
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm deleteCandidate: ', error);
+        return res.status(500).json({ message: 'Lỗi server '})
+    }
+}
+
 export {
     updateAvatar,
     updateCV,
     updateMyProfile,
     saveJob,
     getAllMySaveJob,
-    deleteSaveJob
+    deleteSaveJob,
+    getAllCandidate,
+    deleteCandidate,
+    blockLoginCandidate
 }
