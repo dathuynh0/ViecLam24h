@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from 'cors';
 import sequelize from "./config/db.js";
 import adminRoutes from "./routes/adminRoute.js"
 import authRoutes from "./routes/authRoute.js";
@@ -15,7 +16,11 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/public/uploads" ,express.static('public/uploads'))
+app.use("/public/uploads" ,express.static('public/uploads'));
+app.use(cors({ 
+  origin: process.env.CLIENT_URL, 
+  credentials: true 
+}));
 
 // admin route
 app.use("/api/admin", adminRoutes);

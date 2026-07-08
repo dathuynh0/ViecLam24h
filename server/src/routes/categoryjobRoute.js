@@ -14,7 +14,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', authMiddleware, isAdmin, getAllCategory)
+router.get('/', getAllCategory)
 router.post('/', icon.single('icon'), authMiddleware, isAdmin, createCategory)
 router.put('/:categoryId', icon.single('icon'), authMiddleware, isAdmin, updateCategory)
 router.delete('/:categoryId', authMiddleware, isAdmin, deleteCategory)
