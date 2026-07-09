@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Input } from '../ui/input'
 import { ChevronDown, MapPin, Search } from 'lucide-react'
 import { Button } from '../ui/button'
+import { useCategoryStore } from '@/stores/useCategoryStore';
+import { Badge } from '../ui/badge';
+import { Link } from 'react-router';
 
 
 const area = [
@@ -24,6 +27,7 @@ const area = [
 ];
 
 const HeroSection = () => {
+    const { categories } = useCategoryStore();
     const [location, setLocation] = useState('Toàn quốc');
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
@@ -33,9 +37,10 @@ const HeroSection = () => {
         a.toLowerCase().includes(query.toLowerCase())
     );
     
-
+    let filterCategory = categories?.slice(0, 4);
+    
   return (
-    <div className='py-18'>
+    <div className='py-12'>
       <h1 className='text-5xl font-bold md:w-2xl leading-tight'>Tìm kiếm <span className='text-green-900'>việc làm</span> mơ ước phù hợp với bản thân</h1>
       <p className='md:w-2xl text-lg font-light py-4'>Kết nối với các nhà tuyển dụng uy tín và khám phá hàng ngàn cơ hội nghề nghiệp mỗi ngày.</p>
       <form className='w-full max-w-5xl flex flex-col sm:flex-row items-center gap-2 sm:gap-0 bg-white rounded-2xl shadow-lg border border-slate-200 p-2'>
@@ -97,8 +102,19 @@ const HeroSection = () => {
             </div>
             )}
         </div>
-        <Button type="submit" size='lg' variant='ghost' className={`text-white bg-green-700`}>Tìm kiếm</Button>
+        <Button type="submit" size='xl' variant='ghost' className={`text-white bg-green-700 cursor-pointer`}>Tìm kiếm</Button>
       </form>
+        <div className='py-6 hidden md:flex items-center gap-4'>
+            <p className='text-gray-500'>Công việc phổ biến:</p>
+            <ul className='flex items-center gap-2'>
+                {filterCategory.map((c) => 
+                <li>
+                    <Link to={c.slug}>
+                        <Badge variant='ghost' key={c.title} className={`bg-slate-200 text-slate-900`}>{c.title}</Badge>
+                    </Link>
+                </li>)}
+            </ul>
+        </div>
     </div>
   )
 }

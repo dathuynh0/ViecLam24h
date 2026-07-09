@@ -1,3 +1,5 @@
+import FeaturedJob from '@/components/HomePage/FeaturedJob'
+import Footer from '@/components/HomePage/Footer'
 import HeroSection from '@/components/HomePage/HeroSection'
 import NavBar from '@/components/HomePage/NavBar'
 import { Button } from '@/components/ui/button'
@@ -6,7 +8,7 @@ import { Link } from 'react-router'
 
 const HomePage = () => {
   return (
-    <div className='h-[10000px]'>
+    <div>
       <header className='sticky top-0 bg-white border-b border-green-500 p-4 flex items-center justify-between'>
         <div className='flex items-center gap-12'>
             <a href="/" className='text-green-900 font-semibold'>ViệcLàm24h</a>
@@ -21,9 +23,13 @@ const HomePage = () => {
             </Button>
         </div>
       </header>
-      <main className='px-12'>
+      <main className='container mx-auto px-12 py-12'>
         <HeroSection />
+        <FeaturedJob />
       </main>
+
+      
+      <Footer />
     </div>
   )
 }
