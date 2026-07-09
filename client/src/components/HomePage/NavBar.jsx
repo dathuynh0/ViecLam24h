@@ -81,22 +81,10 @@ function NavBar() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="hidden md:flex">
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link to={`nha-tuyen-dung`}>Nhà tuyển dụng</Link>}/>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link href="/docs">Docs</Link>} />
+          <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link to="/tin-tuc">Tin tức</Link>} />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
