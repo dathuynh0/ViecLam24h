@@ -21,13 +21,19 @@ const Company = sequelize.define('Company', {
     },
     companyName: {
         type: DataTypes.STRING,
+        set(value) {
+            if (value) {
+                this.setDataValue('companyName', value.toUpperCase());
+            }
+        }
     },
     description: {
         type: DataTypes.JSONB,
         defaultValue: []
     },
     logoUrl: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: 'public/uploads/avatars/default-company.jpg'
     },
     address: {
         type: DataTypes.STRING

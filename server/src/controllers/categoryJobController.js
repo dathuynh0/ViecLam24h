@@ -19,13 +19,13 @@ const createCategory = async (req, res) => {
             return res.status(400).json({messsage: 'Tiêu đề không được bỏ trống'})  
         }
 
-        if(!req.file) {
-            return res.status(400).json({ message: 'Không tìm thấy file hình ảnh'})
+        const exitingCategory = await CategoryJob.findOne({ where: {title} });
+        if(exitingCategory) {
+            return res.status(400).json({ message: 'Tiêu đề danh mục đã tồn tại'});
         }
 
         const category = await CategoryJob.create({ 
             title,
-            iconUrl: req.file.path,
             slug: toSlug(title)
         })
 
@@ -47,7 +47,6 @@ const updateCategory = async (req, res) => {
         }
 
         category.title = title;
-        category.iconUrl = req.file.path;
         category.slug = toSlug(title)
         await category.save()
 

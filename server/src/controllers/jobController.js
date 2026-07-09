@@ -89,6 +89,32 @@ export const getJobById = async (req, res) => {
   }
 };
 
+export const getFeaturedJob = async (req, res) => {
+  try {
+    const featuredJob = await Job.findAll({
+      where: {
+        status: 'active',
+        expiredAt: {
+          [Op.gt]: new Date()
+        }
+      },
+      include: [
+        { model: Company, as: 'createdBy' }
+      ],
+      attributes: {
+        exclude: ['benefit', 'candidateRequirement', 'description', 'jobRequirement']
+      },
+      order: [["createdAt", "DESC"]],
+      limit: 9
+    });
+
+    return res.status(200).json({ featuredJob })
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm getFeaturedJob: ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}
+
 // POST /api/jobs
 // Đăng bài tuyển dụng
 export const createJob = async (req, res) => {

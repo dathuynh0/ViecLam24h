@@ -5,6 +5,7 @@ import cors from 'cors';
 import sequelize from "./config/db.js";
 import adminRoutes from "./routes/adminRoute.js"
 import authRoutes from "./routes/authRoute.js";
+import categoryjobRoutes from "./routes/categoryjobRoute.js"
 import userRoutes from "./routes/userRoute.js"
 import candidateRoutes from "./routes/candidateRoute.js"
 import companyRoutes from "./routes/companyRoute.js"
@@ -26,12 +27,11 @@ app.use(cors({
 app.use("/api/admin", adminRoutes);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/categories", categoryjobRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/candidates", candidateRoutes);
 app.use("/api/companies", companyRoutes);
-// API quản lý tuyển dụng: Đăng bài, Sửa/Xóa bài, Xem danh sách bài đăng
 app.use("/api/jobs", jobRoutes);
-// API ứng tuyển: nộp CV, danh sách CV đã nộp, trạng thái CV
 app.use("/api/applications", applicationRoutes);
 
 

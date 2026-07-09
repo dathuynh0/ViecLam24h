@@ -24,7 +24,7 @@ const Candidate = sequelize.define('Candidate', {
     },
     avatarUrl: {
         type: DataTypes.STRING(100),
-        defaultValue: "https://cdn2.fptshop.com.vn/small/avatar_trang_1_cd729c335b.jpg"
+        defaultValue: "public/uploads/avatars/default-candidate.jpg"
     },
     cvUrl: {
         type: DataTypes.STRING(100)
