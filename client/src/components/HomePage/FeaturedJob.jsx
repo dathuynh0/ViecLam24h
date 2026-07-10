@@ -20,7 +20,7 @@ const FeaturedJob = () => {
         </div>
         <Link to={`/viec-lam`} className='flex items-center text-sm hover:text-green-700 hover:underline'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
       </div>
-      <ul className='py-6 grid grid-cols-1 md:grid-cols-3 gap-4'>
+      <ul className='py-6 grid grid-cols-1 md:grid-cols-3 space-y-4 lg:gap-4'>
         {featuredJob?.map((job) => (
             <li key={job.id}>
                 <FeaturedJobCard featuredJob={job}/>

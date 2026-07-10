@@ -3,8 +3,11 @@ import { Button } from '../ui/button'
 import { CircleDollarSign, Heart, MapPin } from 'lucide-react'
 import { Badge } from '../ui/badge'
 import { Link } from 'react-router'
+import { toLocation } from '@/lib/location'
 
 const FeaturedJobCard = ({ featuredJob }) => {
+  const location = toLocation(featuredJob.location);
+
   return (
     <div className='border px-4 py-4 rounded-xl shadow-md'>
       <div className='flex justify-between'>
@@ -23,7 +26,7 @@ const FeaturedJobCard = ({ featuredJob }) => {
         <div className='py-5'>
             <div className='flex items-center gap-2'>
                 <Badge variant='ghost' className={`bg-slate-200 text-slate-900`}><CircleDollarSign />{featuredJob.salaryMin} - {featuredJob.salaryMax}đ</Badge>
-                <Badge variant='ghost' className={`bg-slate-200 text-slate-900`}><MapPin />{featuredJob.location}</Badge>
+                <Badge variant='ghost' className={`bg-slate-200 text-slate-900`}><MapPin />{location}</Badge>
             </div>
         </div>
       </div>

@@ -19,10 +19,37 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select"
 import IconGoogle from "./IconGoogle"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router"
 
 export function SignupForm({
   ...props
 }) {
+  const { signUp } = useAuthStore();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      fullName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      role: 'candidate'
+    }
+  });
+
+  const handleSignUp = async (data) => {
+    const { fullName, username, email, password, confirmPassword, role } = data;
+
+    if(password !== confirmPassword) {
+      return alert('Mật khẩu nhập lại không đúng');
+    }
+    
+    await signUp(fullName, username, email, password, role);
+    navigate('/signin')
+  }
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -32,40 +59,40 @@ export function SignupForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit(handleSignUp)}>
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="fullName">Họ và tên</FieldLabel>
-              <Input id="name" type="text" placeholder="Nguyễn Văn A" required />
+              <Input {...register('fullName')} id="fullName" type="text" placeholder="Nguyễn Văn A" required />
             </Field>
             <Field>
               <FieldLabel htmlFor="username">Tên đăng nhập</FieldLabel>
-              <Input id="username" type="text" placeholder="nguyenvana123" required />
+              <Input {...register('username')} id="username" type="text" placeholder="nguyenvana123" required />
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" placeholder="nguyenvana123@gmail.com" required />
+              <Input {...register('email')} id="email" type="email" placeholder="nguyenvana123@gmail.com" required />
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
-              <Input id="password" type="password" required />
+              <Input {...register('password')} id="password" type="password" required />
               <FieldDescription>
                 Mật khẩu có độ dài tối thiểu 6 ký tự
               </FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="confirm-password">
+              <FieldLabel htmlFor="confirmPassword">
                 Nhập lại mật khẩu
               </FieldLabel>
-              <Input id="confirm-password" type="password" required />
+              <Input {...register('confirmPassword')} id="confirmPassword" type="password" required />
             </Field>
             <Field>
               <FieldLabel>
                 Loại tài khoản
               </FieldLabel>
-              <NativeSelect>
-                <NativeSelectOption value="uv">Ứng viên</NativeSelectOption>
-                <NativeSelectOption value="ntd">Nhà tuyển dụng</NativeSelectOption>
+              <NativeSelect {...register('role')}>
+                <NativeSelectOption value="candidate">Ứng viên</NativeSelectOption>
+                <NativeSelectOption value="company">Nhà tuyển dụng</NativeSelectOption>
             </NativeSelect>
             </Field>
             <FieldGroup>

@@ -40,16 +40,16 @@ const HeroSection = () => {
     let filterCategory = categories?.slice(0, 4);
     
   return (
-    <div className='py-12'>
+    <div className='py-6 lg:py-12'>
       <h1 className='text-5xl font-bold md:w-2xl leading-tight'>Tìm kiếm <span className='text-green-900'>việc làm</span> mơ ước phù hợp với bản thân</h1>
-      <p className='md:w-2xl text-lg font-light py-4'>Kết nối với các nhà tuyển dụng uy tín và khám phá hàng ngàn cơ hội nghề nghiệp mỗi ngày.</p>
-      <form className='w-full max-w-5xl flex flex-col sm:flex-row items-center gap-2 sm:gap-0 bg-white rounded-2xl shadow-lg border border-slate-200 p-2'>
+      <p className='md:w-2xl text-lg font-light py-2 lg:py-4'>Kết nối với các nhà tuyển dụng uy tín và khám phá hàng ngàn cơ hội nghề nghiệp mỗi ngày.</p>
+      <form className='w-full max-w-5xl flex flex-row items-center gap-2 sm:gap-0 bg-white rounded-2xl shadow-lg border border-slate-200 p-2'>
         <div className='flex items-center flex-1 px-4 py-2 gap-3'>
             <Search className="w-5 h-5 text-gray-400 shrink-0"/>
             <Input type={`text`} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full inline-block border-none px-4 py-4" placeholder='Vị trí tuyển dụng, công ty'/>
         </div>
 
-        <div className='relative border-l border-gray-300 flex-1 max-w-xs'>
+        <div className='hidden lg:block relative border-l border-gray-300 flex-1 max-w-xs'>
             <Button onClick={() => setOpen((open) => !open)} variant='ghost' className="w-full flex items-center gap-3 px-4 py-2 text-left">
                 <MapPin className="w-5 h-5 text-slate-400 shrink-0" />
                 <span className="flex-1 text-sm text-slate-800 truncate">

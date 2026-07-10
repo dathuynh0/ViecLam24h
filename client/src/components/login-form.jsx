@@ -15,11 +15,30 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import IconGoogle from "./IconGoogle"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router"
 
 export function LoginForm({
   className,
   ...props
 }) {
+  const { signIn } = useAuthStore();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  })
+
+  const handleSignIn = async (data) => {
+    const { username, password } = data;
+
+    await signIn(username, password);
+    navigate('/')
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -30,11 +49,11 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(handleSignIn)}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="emaEmail">Tên đăng nhập hoặc email</FieldLabel>
-                <Input id="email" type="email" placeholder="nguyenvana123" required />
+                <FieldLabel htmlFor="username">Tên đăng nhập</FieldLabel>
+                <Input {...register('username')} id="username" type="text" placeholder="nguyenvana123" required />
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -45,7 +64,7 @@ export function LoginForm({
                     Quên mật khẩu
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input {...register('password')} id="password" type="password" required />
               </Field>
               <Field>
                 <Button variant="ghost" className='text-white bg-green-800' type="submit">Đăng nhập</Button>

@@ -65,7 +65,7 @@ function NavBar() {
     }, [])
     
   return (
-    <NavigationMenu>
+    <NavigationMenu className={`hidden lg:block`}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Việc làm</NavigationMenuTrigger>
