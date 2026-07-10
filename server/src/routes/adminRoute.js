@@ -15,7 +15,9 @@ import {
     deleteCompany,
     updateActiveStatusCompany,
     rejectCompany,
-    getCompanyById
+    getCompanyById,
+    updateCompany,
+    updateLogoCompany
 } from '../controllers/companyController.js';
 import { 
     activeJob,
@@ -29,6 +31,10 @@ import {
     authMiddleware,
     isAdmin
 } from '../middlewares/authMiddleware.js';
+
+import {
+    avatar
+} from '../config/multer.js'
 
 const router = express.Router();
 
@@ -46,6 +52,8 @@ router.delete('/candidates/:candidateId', authMiddleware, isAdmin, deleteCandida
 //company
 router.get('/companies', authMiddleware, isAdmin, getAllCompany);
 router.get('/companies/:companyId', authMiddleware, isAdmin, getCompanyById);
+router.put('/companies/:companyId', authMiddleware, isAdmin, updateCompany);
+router.patch('/companies/logo', avatar.single('logo'), authMiddleware, isAdmin, updateLogoCompany);
 router.patch('/companies/active', authMiddleware, isAdmin, updateActiveStatusCompany);
 router.patch('/companies/reject', authMiddleware, isAdmin, rejectCompany);
 router.delete('/companies/:companyId', authMiddleware, isAdmin, deleteCompany);

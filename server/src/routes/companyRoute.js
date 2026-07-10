@@ -3,7 +3,8 @@ import {
     getAllCompany, 
     getCompanyById,
     updateMyCompany,
-    updateLogoCompany
+    getFeaturedCompany,
+    updateLogoMyCompany
 } from '../controllers/companyController.js';
 import { avatar } from '../config/multer.js';
 
@@ -15,8 +16,9 @@ import {
 const router = express.Router();
 
 router.get('/', getAllCompany);
+router.get('/featured', getFeaturedCompany);
 router.get('/:companyId', getCompanyById);
-router.put('/logo', avatar.single('logo'), authMiddleware, isCompany, updateLogoCompany);
+router.put('/logo', avatar.single('logo'), authMiddleware, isCompany, updateLogoMyCompany);
 router.put('/me', authMiddleware, isCompany, updateMyCompany);
 
 export default router;

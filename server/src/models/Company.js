@@ -53,6 +53,11 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING(10),
         defaultValue: 0
     },
+    field: {
+        type: DataTypes.STRING,
+        // allowNull: false,
+        defaultValue: 'Sản xuất'
+    },
     slug: {
         type: DataTypes.STRING,
         unique: true
