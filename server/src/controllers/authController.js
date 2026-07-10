@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
 import toSlug from '../utils/slug.js';
+import validateEmail from '../utils/email.js'
 
 
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngày
@@ -18,6 +19,14 @@ const signUp = async (req, res) => {
 
         if(!username || !password || !email || !fullName || !role) {
             return res.status(400).json({ message: "Username, password, email, fullName và role không được trống" });
+        }
+
+        if(password.length  < 6) {
+            return res.status(400).json({ message: 'Độ dài mật khẩu tối thiều 6 kí tự' })
+        }
+
+        if(!validateEmail(email)) {
+            return res.status(400).json({ message: 'Email không hợp lệ '});
         }
 
         // check username va email
