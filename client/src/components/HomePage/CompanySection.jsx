@@ -11,7 +11,6 @@ const CompanySection = () => {
         getFeaturedCompany();
     }, [])
 
-    console.log(featuredCompany);
     
   return (
     <div className='py-18'>

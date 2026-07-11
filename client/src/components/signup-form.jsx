@@ -22,6 +22,7 @@ import IconGoogle from "./IconGoogle"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
+import { toast } from "sonner"
 
 export function SignupForm({
   ...props
@@ -43,7 +44,8 @@ export function SignupForm({
     const { fullName, username, email, password, confirmPassword, role } = data;
 
     if(password !== confirmPassword) {
-      return alert('Mật khẩu nhập lại không đúng');
+      toast.error('Mật khẩu nhập lại không đúng');
+      return
     }
     
     await signUp(fullName, username, email, password, role);

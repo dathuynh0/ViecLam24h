@@ -3,8 +3,8 @@ import { Toaster } from "sonner"
 import HomePage from "./pages/HomePage/HomePage"
 import Signup from "./pages/Signup/Signup"
 import Signin from "./pages/Signin/Signin"
-import Job from "./pages/Job/Job"
 import MainLayOut from "./pages/Layout/MainLayout"
+import JobDetail from "./pages/JobDetail/JobDetail"
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayOut/>} >
           <Route index element={<HomePage />} />
-          <Route path='/viec-lam/:slug' element={<Job />} />
+          <Route path='/viec-lam/:slug' element={<JobDetail />} />
         </Route>
 
         <Route path="/signup" element={<Signup/>} />

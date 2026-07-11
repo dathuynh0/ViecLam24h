@@ -1,8 +1,11 @@
 import { jobService } from "@/services/jobService";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 export const useJobStore = create((set, get) => ({
     featuredJob: [],
+    jobDetail: null,
+    jobLoading: false,
 
     getFeaturedJob: async () => {
         try {
@@ -11,6 +14,19 @@ export const useJobStore = create((set, get) => ({
             set({ featuredJob });
         } catch (error) {
             console.error('Lỗi khi gọi API getFeaturedJob ', error)
+        }
+    },
+
+    getJobBySlug: async (slug) => {
+        try {
+            set({ jobLoading: true });
+
+            const { job } = await jobService.getJobBySlug(slug);
+            set({ jobDetail: job });
+        } catch (error) {
+            console.error('Lỗi khi gọi API getJobBySlug ', error);
+        } finally {
+            set({ jobLoading: false });
         }
     }
 }))

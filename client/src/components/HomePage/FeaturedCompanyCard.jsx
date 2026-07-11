@@ -4,15 +4,17 @@ import { Badge } from '../ui/badge'
 import { BriefcaseBusiness } from 'lucide-react'
 
 const FeaturedCompanyCard = ({ featuredCompany }) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   return (
     <div className='border px-4 py-4 rounded-xl shadow-md'>
       <div className='py-2 flex gap-4'>
-        <img src={`http://localhost:8080/${featuredCompany.logoUrl}`} alt={'Logo công ty'}
+        <img src={`${backendUrl}/${featuredCompany.logoUrl}`} alt={'Logo công ty'}
         className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-cover border border-gray-400'
         />
         <div className='space-y-2'>
             <h2 className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer'>
-                <Link className='w-full' to={`/viec-lam/${featuredCompany.slug}`}>
+                <Link className='w-full' to={`/nha-tuyen-dung/${featuredCompany.slug}`}>
                     {featuredCompany.companyName}
                 </Link>
             </h2>
