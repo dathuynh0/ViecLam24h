@@ -5,7 +5,8 @@ import {
   createJob,
   updateJob,
   deleteJob,
-  getFeaturedJob
+  getFeaturedJob,
+  getJobBySlug
 } from "../controllers/jobController.js";
 
 import {
@@ -69,7 +70,9 @@ const router = express.Router();
  */
 router.get("/", getAllJobs);
 
-router.get('/featured', getFeaturedJob)
+router.get('/featured', getFeaturedJob);
+
+router.get('/:slug/slug', getJobBySlug);
 
 /**
  * @swagger
@@ -97,7 +100,6 @@ router.get('/featured', getFeaturedJob)
  *         description: Lỗi server
  */
 router.get("/:jobId", getJobById);
-
 
 
 /**

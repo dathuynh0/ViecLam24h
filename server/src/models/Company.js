@@ -53,6 +53,9 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING(10),
         defaultValue: 0
     },
+    website: {
+        type: DataTypes.STRING
+    },
     field: {
         type: DataTypes.STRING,
         // allowNull: false,

@@ -69,6 +69,18 @@ const Job = sequelize.define("Job", {
         type: DataTypes.JSONB,
         allowNull: false
     },
+    workArrangement: {
+        type: DataTypes.ENUM('remote', 'hybrid', 'on_site'),
+        defaultValue: 'on_site'
+    },
+    contractType: {
+        type: DataTypes.ENUM('full_time', 'part_time', 'internship'),
+        defaultValue: 'full_time'
+    },
+    quantity: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
     slug: {
         type: DataTypes.STRING,
         unique: true

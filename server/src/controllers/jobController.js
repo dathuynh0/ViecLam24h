@@ -89,6 +89,26 @@ export const getJobById = async (req, res) => {
   }
 };
 
+export const getJobBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const job = await Job.findOne({ where: { slug }, include: [ 
+      { 
+        model: Company, as: 'createdBy'
+      } 
+    ] });
+    if(!job) {
+      return res.status(404).json({ message: 'Không tìm thấy công việc tuyển dụng' });
+    }
+
+    return res.status(200).json({ job });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm getJobBySlug ', error);
+    return res.status(404).json({ message: 'Lỗi server' });
+  }
+}
+
 export const getFeaturedJob = async (req, res) => {
   try {
     const featuredJob = await Job.findAll({
@@ -131,6 +151,9 @@ export const createJob = async (req, res) => {
       salaryMax,
       location,
       workTime,
+      contractType,
+      workArrangement,
+      quantity,
       expiredAt
     } = req.body;
 
@@ -157,6 +180,9 @@ export const createJob = async (req, res) => {
       salaryMax: Number(salaryMax),
       location,
       workTime,
+      contractType,
+      workArrangement,
+      quantity,
       slug: toSlug(title),
       expiredAt
     });
@@ -195,6 +221,9 @@ export const updateJob = async (req, res) => {
       "salaryMin",
       "salaryMax",
       "location",
+      "contractType",
+      "workArrangement",
+      "quantity",
       "expiredAt"
     ];
 
@@ -210,6 +239,9 @@ export const updateJob = async (req, res) => {
     if (req.body.workTime !== undefined) updateData.workTime = req.body.workTime;
     if (req.body.salaryMin !== undefined) updateData.salaryMin = Number(req.body.salaryMin);
     if (req.body.salaryMax !== undefined) updateData.salaryMax = Number(req.body.salaryMax);
+    if (req.body.contractType !== undefined) updateData.contractType = req.body.contractType;
+    if (req.body.workArrangement !== undefined) updateData.workArrangement = req.body.workArrangement;
+    if (req.body.quantity !== undefined) updateData.quantity = req.body.quantity;
     if (req.body.expiredAt !== undefined) updateData.expiredAt = req.body.expiredAt;
 
     await job.update(updateData);
@@ -269,6 +301,9 @@ export const createJobAdmin = async (req, res) => {
       salaryMax,
       location,
       workTime,
+      contractType,
+      workArrangement,
+      quantity,
       expiredAt
     } = req.body;
 
@@ -300,6 +335,9 @@ export const createJobAdmin = async (req, res) => {
       salaryMax: Number(salaryMax),
       location,
       workTime,
+      contractType,
+      workArrangement,
+      quantity,
       slug: toSlug(title),
       expiredAt
     });

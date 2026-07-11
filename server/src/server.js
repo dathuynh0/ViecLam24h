@@ -35,7 +35,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 
 
-sequelize.sync({ alter: false })
+sequelize.sync({ alter: true })
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server đang chạy trên port http://localhost:${PORT}`);

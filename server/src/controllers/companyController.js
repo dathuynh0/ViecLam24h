@@ -77,13 +77,14 @@ const getCompanyById = async (req, res) => {
 const updateMyCompany = async (req, res) => {
     try {
         const company = req.user.company;
-        const { companyName, description, address, taxCode, companySize } = req.body;
+        const { companyName, description, address, taxCode, companySize, website } = req.body;
         
         company.companyName = companyName;
         company.description = description;
         company.address = address;
         company.taxCode = taxCode;
         company.companySize = companySize;
+        company.website = website;
         await company.save();
 
         return res.status(200).json({ message: 'Cập nhật thông tin công ty thành công ', company})
@@ -111,14 +112,15 @@ const updateLogoMyCompany = async (req, res) => {
 const updateCompany = async (req, res) => {
     try {
         const { companyId } = req.params;
-        const { companyName, description, taxCode, companySize, field } = req.body;
+        const { companyName, description, taxCode, companySize, field, website } = req.body;
 
         const [updatedRowsCount] = await Company.update({
                 companyName,
                 description,
                 taxCode,
                 companySize,
-                field
+                field,
+                website
             },
             {
                 where: { id: companyId }
