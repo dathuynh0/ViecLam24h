@@ -5,7 +5,7 @@ import FeaturedJob from '@/components/HomePage/FeaturedJob'
 
 const HomePage = () => {
   return (
-    <div className='lg:container mx-auto px-4 lg:px-12 lg:py-12'>
+    <div className='max-w-[1200px] mx-auto px-4 lg:px-12 lg:py-12'>
       <HeroSection />
       <FeaturedJob />
       <CompanySection />
