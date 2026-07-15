@@ -1,11 +1,8 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import Company from '@/components/JobDetail/Company';
-import JobBenefit from '@/components/JobDetail/JobBenefit';
-import JobDescription from '@/components/JobDetail/JobDescription';
+import Content from '@/components/JobDetail/Content';
 import JobHeader from '@/components/JobDetail/JobHeader';
 import JobInformation from '@/components/JobDetail/JobInformation';
-import JobMore from '@/components/JobDetail/JobMore';
-import JobRequirement from '@/components/JobDetail/JobRequirement';
 import Loading from '@/components/Loading';
 import SearchJob from '@/components/SearchJob';
 import { useJobStore } from '@/stores/useJobStore';
@@ -27,26 +24,21 @@ const JobDetail = () => {
     if(jobLoading) {
         return <Loading /> 
     }
-
-    console.log(slug, jobDetail);
     
   return (
     <div className=''>
-      <div className='w-full py-6 px-4 flex items-center justify-center bg-green-700'>
+      <div className='w-full py-3 flex items-center justify-center bg-green-700'>
         <SearchJob />
       </div>
 
-      <div className='space-y-4 max-w-[1200px] mx-auto px-4 lg:px-12 py-4'>
+      <div className='space-y-4 max-w-[1200px] mx-auto px-4 py-2'>
         
-        <BreadCrumb category={jobDetail?.category} jobName={jobDetail?.title}/>
+        <BreadCrumb parent={jobDetail?.category} currentPage={jobDetail?.title}/>
 
         <JobHeader job={jobDetail}/>
         <div className='md:grid md:grid-cols-10'>
           <div className='col-span-6 space-y-4'>
-              <JobDescription job={jobDetail}/>
-              <JobRequirement job={jobDetail}/>
-              <JobBenefit job={jobDetail}/>
-              <JobMore job={jobDetail}/>
+              <Content job={jobDetail}/>
           </div>
           <div className='hidden md:block py-4 md:py-0 md:col-span-4 md:ml-4 space-y-4'>
               <Company job={jobDetail}/>

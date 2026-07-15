@@ -5,6 +5,7 @@ import { create } from "zustand";
 export const useJobStore = create((set, get) => ({
     featuredJob: [],
     jobDetail: null,
+    jobOfCategory: [],
     jobLoading: false,
 
     getFeaturedJob: async () => {
@@ -23,6 +24,19 @@ export const useJobStore = create((set, get) => ({
 
             const { job } = await jobService.getJobBySlug(slug);
             set({ jobDetail: job });
+        } catch (error) {
+            console.error('Lỗi khi gọi API getJobBySlug ', error);
+        } finally {
+            set({ jobLoading: false });
+        }
+    },
+
+    getJobByCategory: async (slug, filter) => {
+        try {
+            set({ loading: true });
+
+            const { jobs } = await jobService.getJobByCategory(slug, filter);
+            set({ jobOfCategory: jobs });
         } catch (error) {
             console.error('Lỗi khi gọi API getJobBySlug ', error);
         } finally {

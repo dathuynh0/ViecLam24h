@@ -95,7 +95,7 @@ export function SignupForm({
               <NativeSelect {...register('role')}>
                 <NativeSelectOption value="candidate">Ứng viên</NativeSelectOption>
                 <NativeSelectOption value="company">Nhà tuyển dụng</NativeSelectOption>
-            </NativeSelect>
+              </NativeSelect>
             </Field>
             <FieldGroup>
               <Field>

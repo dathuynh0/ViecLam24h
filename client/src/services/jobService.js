@@ -11,5 +11,11 @@ export const jobService = {
         const response = await api.get(`/jobs/${slug}/slug`);
 
         return response.data;
+    },
+
+    getJobByCategory: async (slug, filter) => {
+        const response = await api.get(`/jobs/${slug}/category`, { params: filter});
+
+        return response.data;
     }
 }

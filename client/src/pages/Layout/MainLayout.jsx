@@ -5,14 +5,14 @@ import { Outlet } from 'react-router'
 
 const MainLayOut = () => {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col'>
       <header className='sticky top-0 z-20 bg-white border-b border-green-500 p-4 flex items-center justify-between'>
         <nav className='w-full'>
           <NavBar/>
         </nav>
         
       </header>
-      <main className='flex-1'>
+      <main className='flex-1 min-h-screen'>
         <Outlet />
       </main>
 

@@ -33,10 +33,10 @@ const SearchJob = () => {
     );
 
   return (
-    <form className='w-full max-w-5xl flex flex-row items-center gap-2 sm:gap-0 bg-white rounded-2xl shadow-lg border border-slate-200 p-2'>
-        <div className='flex items-center flex-1 px-4 py-2 gap-3'>
+    <form className='w-full max-w-5xl flex flex-row items-center gap-2 sm:gap-0 bg-white rounded-lg shadow-lg border border-slate-200 p-1'>
+        <div className='flex items-center flex-1 px-2'>
             <Search className="w-5 h-5 text-gray-400 shrink-0"/>
-            <Input type={`text`} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full inline-block border-none px-4 py-4" placeholder='Vị trí tuyển dụng, công ty'/>
+            <Input type={`text`} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full inline-block border-none" placeholder='Vị trí tuyển dụng, công ty'/>
         </div>
 
         <div className='hidden lg:block relative border-l border-gray-300 flex-1 max-w-xs'>
