@@ -1,4 +1,6 @@
 import CategoryJob from "../models/CategoryJob.js"
+import Company from "../models/Company.js";
+import Job from '../models/Job.js'
 import toSlug from '../utils/slug.js'
 
 const getAllCategory = async (req, res) => {
@@ -11,6 +13,7 @@ const getAllCategory = async (req, res) => {
         return res.status(500).json({ message: 'Lỗi sever'})
     } 
 }
+
 
 const createCategory = async (req, res) => {
     try {
@@ -68,10 +71,27 @@ const deleteCategory = async (req, res) => {
         await category.destroy();
         return res.status(200).json({ message: 'Xóa thành công', category })
     } catch (error) {
-       console.error('Lỗi khi gọi hàm deleteCategory ', error)
+        console.error('Lỗi khi gọi hàm deleteCategory ', error)
         return res.status(500).json({ message: 'Lỗi sever'}) 
     }
 
+}
+
+
+const getCategoryBySlug = async (req, res) => {
+    try {
+        const slug = req.params.slug;
+
+        const category = await CategoryJob.findOne({ where: { slug }, attributes: ['title', 'slug'] })
+        if(!category) {
+            return res.status(404).json({ message: 'Không tìm thấy danh mục'})
+        }
+
+        return res.status(200).json({ category });
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm getCategoryBySlug ', error)
+        return res.status(500).json({ message: 'Lỗi sever'}) 
+    }
 }
 
 
@@ -79,5 +99,6 @@ export {
     getAllCategory, 
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getCategoryBySlug
 }

@@ -4,6 +4,7 @@ import Company from "../models/Company.js";
 import CategoryJob from "../models/CategoryJob.js";
 
 import toSlug from "../utils/slug.js";
+import { salaryRange } from '../utils/filter.js';
 
 
 // GET /api/jobs
@@ -96,7 +97,10 @@ export const getJobBySlug = async (req, res) => {
     const job = await Job.findOne({ where: { slug }, include: [ 
       { 
         model: Company, as: 'createdBy'
-      } 
+      },
+      {
+        model: CategoryJob, as: 'category'
+      }
     ] });
     if(!job) {
       return res.status(404).json({ message: 'Không tìm thấy công việc tuyển dụng' });
@@ -107,6 +111,75 @@ export const getJobBySlug = async (req, res) => {
     console.error('Lỗi khi gọi hàm getJobBySlug ', error);
     return res.status(404).json({ message: 'Lỗi server' });
   }
+}
+
+export const getJobByCategory = async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const page  = req.query.page || 1;
+      const limit = 12;
+      const { salary, field, work_type, work_arrangement } = req.query;
+
+      const offset = (page - 1) * limit;
+
+      const where = {};
+      const companyWhere = {};
+      if(work_type && work_type !== 'all') {
+        where.workType = work_type;
+      }
+
+      // { value: "all", label: "Tất cả" },
+      // { value: "1", label: "Dưới 10 triệu" },
+      // { value: "2", label: "10 - 15 triệu" },
+      // { value: "3", label: "15 - 20 triệu" },
+      // { value: "4", label: "20 - 30 triệu" },
+      // { value: "5", label: "Trên 30 triệu" }
+      if(salary && salary !== 'all') {
+        const range = salaryRange[salary];
+        
+        if (range) {
+          where.salaryMin = { [Op.lte]: range.max };
+          where.salaryMax = { [Op.gte]: range.min };
+        }
+      }
+
+      if(work_arrangement && work_arrangement !== 'all') {
+        where.workArrangement = work_arrangement;
+      }
+
+      if(field && field !== 'all') {
+        companyWhere.field = field;
+      }
+
+      const { count, rows: jobs } = await Job.findAndCountAll({
+        where,
+        attributes: ['title', 'salaryMin', 'salaryMax', 'location', 'slug', 'createdAt'],
+        include: [
+          {
+            model: CategoryJob,
+            as: 'category',
+            where: { slug },
+          },
+          {
+            model: Company,
+            as: 'createdBy',
+            where: companyWhere,
+            attributes: ['companyName', 'logoUrl', 'field', 'slug']
+          }
+        ],
+        order: [['createdAt', 'DESC']],
+        limit,
+        offset,
+        distinct: true
+      });
+
+      const totalPage = Math.ceil(count / limit);
+
+      return res.status(200).json({ page, totalPage, jobs });
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm getJobByCategory ', error)
+        return res.status(500).json({ message: 'Lỗi sever'})
+    }
 }
 
 export const getFeaturedJob = async (req, res) => {

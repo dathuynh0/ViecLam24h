@@ -6,7 +6,8 @@ import {
   updateJob,
   deleteJob,
   getFeaturedJob,
-  getJobBySlug
+  getJobBySlug,
+  getJobByCategory
 } from "../controllers/jobController.js";
 
 import {
@@ -73,6 +74,8 @@ router.get("/", getAllJobs);
 router.get('/featured', getFeaturedJob);
 
 router.get('/:slug/slug', getJobBySlug);
+
+router.get('/:slug/category', getJobByCategory);
 
 /**
  * @swagger
