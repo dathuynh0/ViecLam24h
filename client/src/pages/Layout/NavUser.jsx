@@ -31,6 +31,7 @@ export default function NavUser() {
     await signOut();
     setOpen(false);
     navigate("/");
+    document.title = 'Việc làm 24h'
   };
 
   const classButton = 'flex w-full items-center justify-start gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer'

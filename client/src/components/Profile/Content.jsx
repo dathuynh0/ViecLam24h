@@ -5,14 +5,18 @@ import { useCandidateStore } from '@/stores/useCandidateStore'
 import { Link } from 'react-router'
 import { Badge } from '../ui/badge'
 import { calculateDate } from '@/lib/day'
+import Loading from '../Loading'
 
 const Content = ({ user }) => {
-    const { jobSaves, getAllJobSave } = useCandidateStore();
+    const { jobSaves, getAllJobSave, deleteJobSave, candidateLoading } = useCandidateStore();
 
     useEffect(() => {
         getAllJobSave();
     }, [])
-    
+
+    if(candidateLoading) {
+        return <Loading />
+    }
 
   return (
     <div className='border border-gray-300 rounded-lg bg-white shadow-lg px-4 py-6'>
@@ -61,7 +65,7 @@ const Content = ({ user }) => {
 
                                 <div className='flex flex-col items-end space-y-2'>
                                     <p className='text-sm text-muted-foreground'>Đã lưu: {day} ngày trước</p>
-                                    <Button variant='ghost' className={`bg-red-100 text-red-800`}>
+                                    <Button onClick={() => deleteJobSave(job?.id)} variant='ghost' className={`bg-red-100 text-red-800`}>
                                         <Trash /> Xóa
                                     </Button>
                                 </div>

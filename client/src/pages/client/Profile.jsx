@@ -4,10 +4,14 @@ import CV from '@/components/Profile/CV'
 import ProfileHeader from '@/components/Profile/ProfileHeader'
 import Skill from '@/components/Profile/Skill'
 import { useAuthStore } from '@/stores/useAuthStore'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Profile = () => {
     const user = useAuthStore(s => s.user)
+
+    useEffect(() => {
+        document.title = `Thông tin ứng viên - ${user?.fullName}`
+    }, [])
 
   return (
     <div className='max-w-[1200px] mx-auto py-4 space-y-4'>

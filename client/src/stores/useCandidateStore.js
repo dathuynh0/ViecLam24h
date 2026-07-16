@@ -33,5 +33,22 @@ export const useCandidateStore = create((set, get) => ({
         } finally {
             set({ candidateLoading: false });
         }
+    },
+
+    deleteJobSave: async (jobsaveId) => {
+        try {
+            set({ candidateLoading: true });
+
+            await candidateService.deleteJobSave(jobsaveId);
+            const { getAllJobSave } = useCandidateStore.getState();
+            await getAllJobSave();
+
+            toast.success('Xóa thành công')
+        } catch (error) {
+            console.error('Lôi khi gọi API deleteJobSave ', error);
+            toast.error('Xóa không thành công')
+        } finally {
+            set({ candidateLoading: false });
+        }
     }
 }))
