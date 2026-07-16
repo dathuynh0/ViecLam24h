@@ -35,10 +35,6 @@ const CategoryJob = () => {
     document.title = `Việc làm 24h - ${category?.title}`
   }, [category]);
 
-  if(jobLoading || categoryLoading) {
-    return <Loading />
-  }
-
 
   const handleFilterChange = async (newFilters) => {
     const { salary, companyField, workType, workArrangement } = newFilters;
@@ -53,6 +49,10 @@ const CategoryJob = () => {
       setSearchParams(queryParams);
       await getJobByCategory(slug, queryParams);
   };
+
+  if(jobLoading || categoryLoading) {
+    return <Loading />
+  }
 
   return (
     <div>

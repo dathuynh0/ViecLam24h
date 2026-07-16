@@ -3,14 +3,19 @@ import { ArrowRight } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router'
 import FeaturedCompanyCard from './FeaturedCompanyCard'
+import Loading from '../Loading'
 
 const CompanySection = () => {
-    const { featuredCompany, getFeaturedCompany } = useCompanyStore();
+    const { featuredCompany, getFeaturedCompany, companyLoading } = useCompanyStore();
 
     useEffect(() => {
         getFeaturedCompany();
     }, [])
 
+
+    if(companyLoading) {
+        return <Loading />
+    }
     
   return (
     <div className='py-18'>

@@ -14,7 +14,7 @@ const FeaturedCompanyCard = ({ featuredCompany }) => {
         />
         <div className='space-y-2'>
             <h2 className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer'>
-                <Link className='w-full' to={`/nha-tuyen-dung/${featuredCompany.slug}`}>
+                <Link className='w-full' to={`/cong-ty/${featuredCompany.slug}`}>
                     {featuredCompany.companyName}
                 </Link>
             </h2>

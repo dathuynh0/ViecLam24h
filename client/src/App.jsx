@@ -1,14 +1,35 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import { Toaster } from "sonner"
-import HomePage from "./pages/HomePage/HomePage"
+import HomePage from "./pages/client/HomePage"
 import Signup from "./pages/Signup/Signup"
 import Signin from "./pages/Signin/Signin"
 import MainLayOut from "./pages/Layout/MainLayout"
-import JobDetail from "./pages/JobDetail/JobDetail"
-import CategoryJob from "./pages/CategoryJob/CategoryJob"
+import JobDetail from "./pages/client/JobDetail"
+import CategoryJob from "./pages/client/CategoryJob"
+import { useEffect } from "react"
+import { useAuthStore } from "./stores/useAuthStore"
+import PrivateRoute from "./pages/client/PrivateRoute"
+import Profile from "./pages/client/Profile"
 
 
 function App() {
+  const { accessToken, user, fetchMe, refresh } = useAuthStore();
+
+  const init = async () => {
+    if(!accessToken) {
+      await refresh();
+    }
+
+    if(accessToken && !user) {
+      await fetchMe();
+    }
+  }
+
+  useEffect(() => {
+    init();
+  }, [])
+
+  
   return <>
     <Toaster richColors/>
     <BrowserRouter>
@@ -17,6 +38,9 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path='/viec-lam/:slug' element={<JobDetail />} />
           <Route path="/:slug" element={<CategoryJob />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />}/>
+          </Route>
         </Route>
 
         <Route path="/signup" element={<Signup/>} />

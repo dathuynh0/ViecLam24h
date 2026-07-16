@@ -1,14 +1,36 @@
 import { CircleDollarSignIcon, Heart } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router'
 import { toLocation } from '@/lib/location'
 import { calculateDate } from '@/lib/day'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { useCandidateStore } from '@/stores/useCandidateStore'
+import Loading from '../Loading'
+import Popup from '../Popup'
 
 const JobCard = ({ job }) => {
     const location = toLocation(job?.location)
     const day = calculateDate(job?.createdAt)
+
+    const { candidateLoading, saveJob } = useCandidateStore();
+    const accessToken = useAuthStore((s) => s.accessToken);
+    const [openLoginDialog, setOpenLoginDialog] = useState(false);
+
+    const handleSaveJob = async () => {
+        if(!accessToken) {
+            setOpenLoginDialog(true);
+            return;
+        }
+
+        await saveJob(job?.id);
+    }
+
+    if(candidateLoading) {
+        return <Loading />
+    }
+    
 
   return (
     <div className='w-full border border-gray-300 rounded-lg p-4'>
@@ -26,7 +48,8 @@ const JobCard = ({ job }) => {
 
             <div className='flex h-full items-center gap-2'>
                 <p className='text-muted-foreground text-sm font-medium'>Đăng {day} ngày trước</p>
-                <Button variant='ghost' className={`h-8 w-8 border-green-300 text-green-700 rounded-full cursor-pointer`}><Heart /></Button>
+                <Button onClick={handleSaveJob} variant='ghost' className={`h-8 w-8 border-green-300 text-green-700 rounded-full cursor-pointer`}><Heart /></Button>
+                <Popup openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
             </div>
         </div>
     </div>

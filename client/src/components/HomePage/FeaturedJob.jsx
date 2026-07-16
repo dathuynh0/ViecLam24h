@@ -3,13 +3,18 @@ import React, { useEffect } from 'react'
 import FeaturedJobCard from './FeaturedJobCard';
 import { Link } from 'react-router';
 import { ArrowRight } from 'lucide-react';
+import Loading from '../Loading';
 
 const FeaturedJob = () => {
-    const { featuredJob, getFeaturedJob } = useJobStore();
+    const { featuredJob, getFeaturedJob, jobLoading } = useJobStore();
 
     useEffect(() => {
         getFeaturedJob();
     }, [])
+
+    if(jobLoading) {
+      return <Loading />
+    }
     
   return (
     <div>

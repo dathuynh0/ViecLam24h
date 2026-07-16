@@ -10,11 +10,14 @@ export const useJobStore = create((set, get) => ({
 
     getFeaturedJob: async () => {
         try {
+            set({ jobLoading: true });
             const { featuredJob } = await jobService.getFeaturedJob();
 
             set({ featuredJob });
         } catch (error) {
             console.error('Lỗi khi gọi API getFeaturedJob ', error)
+        } finally {
+            set({ jobLoading: false });
         }
     },
 
