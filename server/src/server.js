@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use("/public/uploads" ,express.static('public/uploads'));
 app.use(cors({ 
   origin: process.env.CLIENT_URL, 
-  credentials: true 
+  credentials: true,
 }));
 
 // admin route

@@ -96,8 +96,8 @@ const signIn = async (req, res) => {
             return res.status(400).json({ message: 'Username hoặc password không đúng' });
         }
 
-        if(user.company && user.company.status === 'pending') {
-            return res.status(403).json({ message: 'Tài khoản của bạn đang chờ duyệt' });
+        if(user.company && (user.company.status === 'pending' || user.company.status === 'inactive')) {
+            return res.status(403).json({ message: 'Tài khoản của bạn đang chờ duyệt hoặc bị khóa' });
         }
 
         // check status của tài khoản

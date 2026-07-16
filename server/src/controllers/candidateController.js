@@ -35,11 +35,14 @@ const updateCV = async (req, res) => {
 const updateMyProfile = async (req, res) => {
     try {
         const candidate = req.user.candidate;
-        const { fullName, skill, phone } = req.body;
+        const { fullName, bio, skill, phone, location, major } = req.body;
         
         candidate.fullName = fullName;
+        candidate.bio = bio;
         candidate.skill = skill;
         candidate.phone = phone;
+        candidate.location = location;
+        candidate.major = major;
         await candidate.save();
 
         return res.status(200).json({ message: 'Cập nhật thông tin ứng viên thành công', candidate})
@@ -82,7 +85,7 @@ const getAllMySaveJob = async (req, res) => {
 
         const jobSaves = await JobSave.findAll({ where: { candidateId: candidate.id }, include: [
             {
-                model: Job, as: 'job'
+                model: Job, as: 'job', attributes: ['id', 'title', 'salaryMin', 'salaryMax', 'location', 'slug']
             }
         ]});    
 

@@ -22,6 +22,10 @@ const Candidate = sequelize.define('Candidate', {
     fullName: {
         type: DataTypes.STRING(100)
     },
+    bio: {
+        type: DataTypes.JSONB,
+        defaultValue: []
+    },
     avatarUrl: {
         type: DataTypes.STRING(100),
         defaultValue: "public/uploads/avatars/default-candidate.jpg"
@@ -29,11 +33,18 @@ const Candidate = sequelize.define('Candidate', {
     cvUrl: {
         type: DataTypes.STRING(100)
     },
-    skill: {
+    major: {
         type: DataTypes.STRING
+    },
+    skill: {
+        type: DataTypes.JSONB,
+        defaultValue: []
     },
     phone: {
         type: DataTypes.STRING(10)
+    },
+    location: {
+        type: DataTypes.STRING
     }
 },
 {

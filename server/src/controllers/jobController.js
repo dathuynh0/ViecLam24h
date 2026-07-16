@@ -153,7 +153,7 @@ export const getJobByCategory = async (req, res) => {
 
       const { count, rows: jobs } = await Job.findAndCountAll({
         where,
-        attributes: ['title', 'salaryMin', 'salaryMax', 'location', 'slug', 'createdAt'],
+        attributes: ['id', 'title', 'salaryMin', 'salaryMax', 'location', 'slug', 'createdAt'],
         include: [
           {
             model: CategoryJob,

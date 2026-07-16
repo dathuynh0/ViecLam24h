@@ -50,7 +50,7 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING(15)
     },
     companySize: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
         defaultValue: 0
     },
     website: {
