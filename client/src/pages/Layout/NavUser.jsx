@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { LogOut, User, Settings, ChevronDown, Briefcase } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 
 export default function NavUser() {
   const [open, setOpen] = useState(false);
@@ -72,7 +72,7 @@ export default function NavUser() {
             onClick={() => {
               setOpen(false);
               navigate(
-                "/profile"
+                "/ho-so"
               );
             }}
             className= {classButton}
@@ -86,7 +86,7 @@ export default function NavUser() {
               variant="ghost"
               onClick={() => {
                 setOpen(false);
-                navigate("/ung-vien/applications");
+                navigate("/lich-su-ung-tuyen");
               }}
               className={classButton}
             >
@@ -106,18 +106,6 @@ export default function NavUser() {
               Quản lý tin tuyển dụng
             </Button>
           )}
-
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setOpen(false);
-              navigate("/settings");
-            }}
-            className={classButton}
-          >
-            <Settings className="h-4 w-4" />
-            Cài đặt
-          </Button>
 
           <div className="border-t border-gray-100 mt-1 pt-1">
             <Button

@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import { useAuthStore } from "./stores/useAuthStore"
 import PrivateRoute from "./pages/client/PrivateRoute"
 import Profile from "./pages/client/Profile"
+import Application from "./pages/client/Application"
 
 
 function App() {
@@ -39,7 +40,8 @@ function App() {
           <Route path='/viec-lam/:slug' element={<JobDetail />} />
           <Route path="/:slug" element={<CategoryJob />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />}/>
+            <Route path="/ho-so" element={<Profile />} />
+            <Route path="/lich-su-ung-tuyen" element={<Application />} />
           </Route>
         </Route>
 

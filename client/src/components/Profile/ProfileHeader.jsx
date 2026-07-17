@@ -6,11 +6,11 @@ const ProfileHeader = ({ user }) => {
   return (
     <div className='md:flex items-center justify-between bg-white px-4 py-6 border border-gray-300 rounded-lg shadow-lg'>
       <div className='flex items-center gap-6'>
-            <img className='h-20 w-20 rounded-full object-cover' src={`${import.meta.env.VITE_BACKEND_URL}/${user?.avatarUrl || user?.logoUrl}`} 
-            alt={user?.fullName || user?.companyName} />
+            <img className='h-20 w-20 rounded-full object-cover' src={`${import.meta.env.VITE_BACKEND_URL}/${user?.avatarUrl}`} 
+            alt={user?.fullName} />
 
             <div>
-                <h1 className='text-lg font-bold'>{user?.fullName || user?.companyName}</h1>
+                <h1 className='text-lg font-bold'>{user?.fullName}</h1>
                 <span className='text-green-800 font-medium'>{user?.major}</span>
                 <p className='flex items-center gap-3 text-sm text-muted-foreground'><MapPin className='h-4 w-4'/>{user?.location}</p>
             </div>
