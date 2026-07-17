@@ -65,16 +65,18 @@ const Filter = ({ onFilterChange, applications }) => {
                                                 </div>
                                             </div>
 
-                                            <div className='space-y-2'>
-                                                <p className='tex-sm text-muted-foreground'>{day} ngày trước</p>
-                                                <span className='text-muted-foreground'>Trạng thái: </span>
-                                                {
-                                                    app?.status === 'pending' ? <Badge variant='ghost' className={`bg-amber-100 text-amber-800`}>Đã gửi</Badge> :
-                                                    app?.status === 'reviewing' ? <Badge variant='ghost' className="bg-blue-100 text-blue-800">Đã xem</Badge> : 
-                                                    app?.status === 'interviewing' ? <Badge variant='ghost' className="bg-purple-100 text-purple-800">Phỏng vấn</Badge> : 
-                                                    app?.status === 'accepted' ? <Badge variant='ghost' className="bg-green-100 text-green-800">Chấp nhận</Badge> : 
-                                                    app?.status === 'rejected' ? <Badge variant='ghost' className="bg-red-100 text-red-800">Từ chối</Badge> : ''
-                                                }
+                                            <div className='space-y-2 flex flex-col items-end'>
+                                                <p className='tex-sm text-muted-foreground'>{day === 0 ? "Mới đây" : `${day} ngày trước`}</p>
+                                                <div>
+                                                    <span className='text-muted-foreground'>Trạng thái: </span>
+                                                    {
+                                                        app?.status === 'pending' ? <Badge variant='ghost' className={`bg-amber-100 text-amber-800`}>Đã gửi</Badge> :
+                                                        app?.status === 'reviewing' ? <Badge variant='ghost' className="bg-blue-100 text-blue-800">Đã xem</Badge> : 
+                                                        app?.status === 'interviewing' ? <Badge variant='ghost' className="bg-purple-100 text-purple-800">Phỏng vấn</Badge> : 
+                                                        app?.status === 'accepted' ? <Badge variant='ghost' className="bg-green-100 text-green-800">Chấp nhận</Badge> : 
+                                                        app?.status === 'rejected' ? <Badge variant='ghost' className="bg-red-100 text-red-800">Từ chối</Badge> : ''
+                                                    }
+                                                </div>
                                             </div>
                                         </li>
                                     )

@@ -1,16 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Badge } from '../ui/badge'
 import { CircleDollarSign, Heart, MapPin } from 'lucide-react'
 import { Button } from '../ui/button'
 import transformLocationTime from '@/lib/day'
 import { toLocation } from '@/lib/location'
+import { useAuthStore } from '@/stores/useAuthStore'
+import Popup from '../Popup'
+import { useApplicationStore } from '@/stores/useApplicationStore'
+import Loading from '../Loading'
+import ApplyJob from './ApplyJob'
 
 const JobHeader = ({ job }) => {
-    const countDay = Math.ceil((new Date(job?.expiredAt) - new Date()) / (1000 * 60 * 60 * 24))
-    let location;
-    if(job) {
-      location = toLocation(job?.location)
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const [openApplyDialog, setOpenApplyDialog] = useState(false);
+  
+  const { applyJob, applicationLoading } = useApplicationStore();
+  const accessToken = useAuthStore(s => s.accessToken);
+
+  const countDay = Math.ceil((new Date(job?.expiredAt) - new Date()) / (1000 * 60 * 60 * 24))
+
+  let location;
+  if(job) {
+    location = toLocation(job?.location)
+  }
+
+  const openDialog = async () => {
+    if(!accessToken) {
+      setOpenLoginDialog(true);
+      return;
     }
+
+    setOpenApplyDialog(true)
+  }
+
+  if(applicationLoading) {
+    return <Loading />
+  }
     
   return (
     <div className='w-full flex flex-wrap justify-between bg-white border border-gray-300 rounded-lg shadow-lg p-6'>
@@ -24,12 +49,15 @@ const JobHeader = ({ job }) => {
       </div>
 
       <div className='flex pt-2 md:pt-0 md:flex-col gap-4'>
-        <Button variant='ghost' size='xl' className={`bg-green-700 text-white`}>
+        <Button onClick={openDialog} variant='ghost' size='xl' className={`bg-green-700 text-white`}>
             Ứng tuyển ngay
         </Button>
         <Button variant='ghost' size='xl' className={`border border-green-700`}>
             <Heart />Lưu tin
         </Button>
+
+        <Popup openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
+        <ApplyJob openApplyDialog={openApplyDialog} setOpenApplyDialog={setOpenApplyDialog} job={job}/>
       </div>
     </div>
   )
