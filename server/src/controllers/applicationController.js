@@ -16,25 +16,21 @@ const statusTextMap = {
 // Ứng viên nộp CV vào một bài tuyển dụng
 export const applyJob = async (req, res) => {
   try {
-    const { candidateId, jobId, applyCVUrl } = req.body;
+    const { jobId, introduction } = req.body;
+    const candidate = req.user.candidate;
 
-    if (!candidateId || !jobId) {
+    if (!jobId) {
       return res.status(400).json({
-        message: "Vui lòng nhập đầy đủ candidateId và jobId"
+        message: "Vui lòng nhập đầy đủ jobId"
       });
     }
-
-    const candidate = await Candidate.findByPk(candidateId);
-    if (!candidate) {
-      return res.status(404).json({ message: "Không tìm thấy ứng viên" });
-    }
-
+    
     const job = await Job.findByPk(jobId);
     if (!job) {
       return res.status(404).json({ message: "Không tìm thấy bài tuyển dụng" });
     }
 
-    const finalCVUrl = applyCVUrl || candidate.cvUrl;
+    const finalCVUrl = req.file.path || candidate.cvUrl;
     if (!finalCVUrl) {
       return res.status(400).json({
         message: "Vui lòng cung cấp applyCVUrl hoặc cập nhật CV trong hồ sơ ứng viên"
@@ -42,7 +38,7 @@ export const applyJob = async (req, res) => {
     }
 
     const existedApplication = await JobApplication.findOne({
-      where: { candidateId, jobId }
+      where: { candidateId: candidate.id, jobId }
     });
 
     if (existedApplication) {
@@ -53,15 +49,15 @@ export const applyJob = async (req, res) => {
     }
 
     const application = await JobApplication.create({
-      candidateId,
+      candidateId: candidate.id,
       jobId,
       applyCVUrl: finalCVUrl,
-      status: "pending"
+      introduction
     });
 
     return res.status(201).json({
       message: "Nộp CV ứng tuyển thành công",
-      data: application
+      application
     });
   } catch (error) {
     return res.status(500).json({
@@ -75,25 +71,26 @@ export const applyJob = async (req, res) => {
 // Xem danh sách CV mà một ứng viên đã nộp
 export const getApplicationsByCandidate = async (req, res) => {
   try {
-    const { candidateId } = req.params;
+    const candidate = req.user.candidate;
+    const status = req.query.status;
+    const where = { candidateId: candidate.id };
 
-    const candidate = await Candidate.findByPk(candidateId);
-    if (!candidate) {
-      return res.status(404).json({ message: "Không tìm thấy ứng viên" });
+    if(status && status !== 'all') {
+      where.status = status;
     }
 
     const applications = await JobApplication.findAll({
-      where: { candidateId },
+      where,
       include: [
         {
           model: Job,
           as: "job",
-          attributes: ["id", "title", "salaryMin", "salaryMax", "location", "workTime"],
+          attributes: ["id", "title", "salaryMin", "salaryMax", "location", 'slug'],
           include: [
             {
               model: Company,
-              as: "createBy",
-              attributes: ["id", "companyName", "address", "status", "companySize"]
+              as: "createdBy",
+              attributes: ["id", "companyName", 'logoUrl', "address", "status", "companySize"]
             }
           ]
         }
@@ -101,10 +98,7 @@ export const getApplicationsByCandidate = async (req, res) => {
       order: [["createdAt", "DESC"]]
     });
 
-    return res.status(200).json({
-      message: "Lấy danh sách CV đã nộp thành công",
-      data: applications
-    });
+    return res.status(200).json({ message: "Lấy danh sách CV đã nộp thành công", applications });
   } catch (error) {
     return res.status(500).json({
       message: "Lỗi khi lấy danh sách CV đã nộp",

@@ -182,6 +182,79 @@ export const getJobByCategory = async (req, res) => {
     }
 }
 
+export const searchJob = async (req, res) => {
+  try {
+    const page  = req.query.page || 1;
+    const limit = 12;
+    const { name, location, salary, field, work_type, work_arrangement } = req.query;
+
+    const offset = (page - 1) * limit;
+    const whereJob = { status: 'active' };
+
+    if (name) {
+      whereJob.title = { [Op.iLike]: `%${name}%` };
+    }
+
+    if (location && location !== 'Toàn quốc') {
+      whereJob.location = { [Op.iLike]: `%${location}%` };
+    }
+
+    if(work_type && work_type !== 'all') {
+      whereJob.workType = work_type;
+    }
+
+    if(work_arrangement && work_arrangement !== 'all') {
+      whereJob.workArrangement = work_arrangement;
+    }
+
+    if(salary && salary !== 'all') {
+      const range = salaryRange[salary];
+        
+      if (range) {
+        whereJob.salaryMin = { [Op.lte]: range.max };
+        whereJob.salaryMax = { [Op.gte]: range.min };
+      }
+    }
+
+    const companyWhere = {};
+    if(field && field !== 'all') {
+      companyWhere.field = field;
+    }
+
+    const { rows, count } = await Job.findAndCountAll({
+      where: whereJob,
+      include: [
+        {
+          model: Company,
+          as: 'createdBy',
+          attributes: ['id', 'companyName', 'logoUrl', 'slug'],
+          required: true,
+        },
+        {
+          model: Company,
+          as: 'createdBy',
+          where: companyWhere,
+          attributes: ['companyName', 'logoUrl', 'field', 'slug']
+        }
+      ],
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']],
+    });
+
+    return res.status(200).json({
+      message: 'Tìm kiếm việc làm thành công',
+      jobs: rows,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      limit,
+    });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm searchJob ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
 export const getFeaturedJob = async (req, res) => {
   try {
     const featuredJob = await Job.findAll({

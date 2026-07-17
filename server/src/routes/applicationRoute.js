@@ -7,6 +7,14 @@ import {
   updateApplicationStatus
 } from "../controllers/applicationController.js";
 
+import {
+  authMiddleware
+} from '../middlewares/authMiddleware.js'
+
+import {
+  cv
+} from '../config/multer.js'
+
 const router = express.Router();
 
 /**
@@ -34,7 +42,7 @@ const router = express.Router();
  *       500:
  *         description: Lỗi server
  */
-router.post("/", applyJob);
+router.post("/", authMiddleware, cv.single('cv'), applyJob);
 
 /**
  * @swagger
@@ -57,7 +65,7 @@ router.post("/", applyJob);
  *       500:
  *         description: Lỗi server
  */
-router.get("/candidate/:candidateId", getApplicationsByCandidate);
+router.get("/candidate/me", authMiddleware, getApplicationsByCandidate);
 
 /**
  * @swagger
