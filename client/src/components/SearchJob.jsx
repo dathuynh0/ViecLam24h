@@ -2,41 +2,72 @@ import React, { useState } from 'react'
 import { Input } from './ui/input';
 import { ChevronDown, MapPin, Search } from 'lucide-react';
 import { Button } from './ui/button';
+import { useNavigate } from 'react-router';
 
 const area = [
   "Toàn quốc",
-  "TP. Hồ Chí Minh",
   "Hà Nội",
-  "Đà Nẵng",
+  "TP. Hồ Chí Minh",
   "Hải Phòng",
+  "Huế",
+  "Đà Nẵng",
   "Cần Thơ",
-  "Bình Dương",
-  "Đồng Nai",
-  "Vĩnh Long",
-  "Trà Vinh",
-  "Long An",
   "An Giang",
-  "Khánh Hòa",
   "Bắc Ninh",
+  "Cà Mau",
+  "Cao Bằng",
+  "Đắk Lắk",
+  "Điện Biên",
+  "Đồng Nai",
+  "Đồng Tháp",
+  "Gia Lai",
+  "Hà Tĩnh",
+  "Hưng Yên",
+  "Khánh Hòa",
+  "Lai Châu",
+  "Lâm Đồng",
+  "Lạng Sơn",
+  "Lào Cai",
   "Nghệ An",
+  "Ninh Bình",
+  "Phú Thọ",
+  "Quảng Ngãi",
+  "Quảng Ninh",
+  "Quảng Trị",
+  "Sơn La",
+  "Tây Ninh",
+  "Thái Nguyên",
   "Thanh Hóa",
+  "Tuyên Quang",
+  "Vĩnh Long",
 ];
 
 const SearchJob = () => {
     const [location, setLocation] = useState('Toàn quốc');
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
-    const [search, setSearch] = useState("");
+    const [jobName, setJobName] = useState("");
+
+    const navigate = useNavigate();
  
     const filtered = area.filter((a) =>
         a.toLowerCase().includes(query.toLowerCase())
     );
 
+    const handleSearchJob = (e) => {
+        e.preventDefault();
+        if(!jobName || !location) {
+            return;
+        }
+
+        navigate(`/tim-kiem/?name=${jobName}&location=${location}`)
+    }
+
   return (
-    <form className='w-full max-w-5xl flex flex-row items-center gap-2 sm:gap-0 bg-white rounded-lg shadow-lg border border-slate-200 p-1'>
+    <form onSubmit={handleSearchJob} className='w-full max-w-5xl flex flex-row items-center gap-2 sm:gap-0 bg-white rounded-lg shadow-lg border border-slate-200 p-1'>
         <div className='flex items-center flex-1 px-2'>
             <Search className="w-5 h-5 text-gray-400 shrink-0"/>
-            <Input type={`text`} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full inline-block border-none" placeholder='Vị trí tuyển dụng, công ty'/>
+            <Input type={`text`} value={jobName} onChange={(e) => setJobName(e.target.value)} className="w-full inline-block border-none" placeholder='Vị trí tuyển dụng, công ty'/>
         </div>
 
         <div className='hidden lg:block relative border-l border-gray-300 flex-1 max-w-xs'>
@@ -58,7 +89,7 @@ const SearchJob = () => {
                     <Search className="w-4 h-4 text-slate-400" />
                     <Input
                         value={query}
-                        onChange={(e) => setLocation(e.target.value)}
+                        onChange={(e) => setQuery(e.target.value)}
                         placeholder="Tìm tỉnh / thành..."
                         className="w-full text-sm py-1"
                     />

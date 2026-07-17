@@ -46,14 +46,14 @@ const Filter = ({ onFilterChange, applications }) => {
                 {
                     applications?.length > 0 ?
                     (
-                        <ul>
+                        <ul className='space-y-2'>
                             {
                                 applications?.map((app) => {
                                     const day = calculateDate(app?.createdAt)
                                     return (
-                                        <li key={app?.id} className='flex items-center justify-between'>
+                                        <li key={app?.id} className='flex items-center justify-between p-2'>
                                             <div className='flex items-center gap-4'>
-                                                <img className='h-16 w-16p border rounded-lg bg-white shadow-lg' src={`${import.meta.env.VITE_BACKEND_URL}/${app?.job?.createdBy?.logoUrl}`} alt={app?.job?.createdBy?.companyName} />
+                                                <img className='flex h-20 w-20 shrink-0 rounded-lg p-2 shadow-sm object-cover' src={`${import.meta.env.VITE_BACKEND_URL}/${app?.job?.createdBy?.logoUrl}`} alt={app?.job?.createdBy?.companyName} />
                                                 <div>
                                                     <CardDescription className='text-lg text-black/80 hover:text-green-800 font-medium'>
                                                         <Link to={`/viec-lam/${app?.job?.slug}`}>

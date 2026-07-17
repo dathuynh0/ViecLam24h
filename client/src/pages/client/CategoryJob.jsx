@@ -35,7 +35,6 @@ const CategoryJob = () => {
     document.title = `Việc làm 24h - ${category?.title}`
   }, [category]);
 
-
   const handleFilterChange = async (newFilters) => {
     const { salary, companyField, workType, workArrangement } = newFilters;
     // set lại URL, ví dụ: /jobs?salary=10-15&workType=full-time
@@ -50,7 +49,7 @@ const CategoryJob = () => {
       await getJobByCategory(slug, queryParams);
   };
 
-  if(jobLoading || categoryLoading) {
+  if(categoryLoading) {
     return <Loading />
   }
 

@@ -80,7 +80,8 @@ function RadioFilterGroup({ title, name, options, value, onChange }) {
  * Gọi onFilterChange({ salary, workType }) mỗi khi người dùng đổi lựa chọn,
  * để component cha (trang danh sách job) dùng giá trị này gọi API.
  */
-export default function JobFilter({ onFilterChange }) {
+export default function JobFilter({ onFilterChange, name, location }) {
+  const { jobLoading } = useJobStore();
 
   const [salary, setSalary] = useState("all");
   const [workType, setWorkType] = useState("all");
@@ -89,22 +90,22 @@ export default function JobFilter({ onFilterChange }) {
 
   const handleSalaryChange = (newSalary) => {
     setSalary(newSalary);
-    onFilterChange?.({ salary: newSalary, companyField, workType, workArrangement });
+    onFilterChange?.({ name, location, salary: newSalary, companyField, workType, workArrangement });
   };
 
   const handleWorkTypeChange = (newWorkType) => {
     setWorkType(newWorkType);
-    onFilterChange?.({ salary, companyField, workType: newWorkType, workArrangement });
+    onFilterChange?.({ name, location, salary, companyField, workType: newWorkType, workArrangement });
   };
 
   const handleCompanyField = (newField) => {
     setCompanyField(newField);
-    onFilterChange?.({ salary, companyField: newField, workType, workArrangement });
+    onFilterChange?.({ name, location, salary, companyField: newField, workType, workArrangement });
   };
 
   const handleWorkArrangement = (newWorkArrangement) => {
     setWorkArrangement(newWorkArrangement);
-    onFilterChange?.({ salary, companyField, workType, workArrangement: newWorkArrangement });
+    onFilterChange?.({ name, location, salary, companyField, workType, workArrangement: newWorkArrangement });
   }
 
   const handleReset = () => {

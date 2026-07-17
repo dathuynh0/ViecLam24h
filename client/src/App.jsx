@@ -11,6 +11,7 @@ import { useAuthStore } from "./stores/useAuthStore"
 import PrivateRoute from "./pages/client/PrivateRoute"
 import Profile from "./pages/client/Profile"
 import Application from "./pages/client/Application"
+import SearchJobPage from "./pages/client/SearchJobPage"
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path='/viec-lam/:slug' element={<JobDetail />} />
           <Route path="/:slug" element={<CategoryJob />} />
+          <Route path="/tim-kiem" element={<SearchJobPage /> } />
           <Route element={<PrivateRoute />}>
             <Route path="/ho-so" element={<Profile />} />
             <Route path="/lich-su-ung-tuyen" element={<Application />} />
