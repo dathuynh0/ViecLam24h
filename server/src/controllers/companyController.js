@@ -1,6 +1,7 @@
-import { Op, where } from "sequelize";
+import { Op, where, Sequelize } from "sequelize";
 import Company from "../models/Company.js";
 import Job from "../models/Job.js";
+import Follow from "../models/Follow.js";
 
 const getAllCompany = async (req, res) => {
     try {
@@ -29,16 +30,31 @@ const getFeaturedCompany = async (req, res) => {
     try {
         const featuredCompany = await Company.findAll({
             where: { status: 'active' },
+            attributes: {
+                include: [
+                    [
+                        Sequelize.literal(`(
+                            SELECT COUNT(*)
+                            FROM "Follows" AS follow
+                            WHERE follow."companyId" = "Company"."id"
+                        )`),
+                        'followerCount'
+                    ]
+                ]
+            },
             include: [{
-                model: Job, as: 'job', where: {
-                    expiredAt: {
-                        [Op.gt]: new Date()
-                    }
+                model: Job,
+                as: 'job',
+                where: {
+                    expiredAt: { [Op.gt]: new Date() }
                 },
-                attributes: [ 'id', 'title' ],
-                required: false 
+                attributes: ['id', 'title'],
+                required: false
             }],
-            order: [['follow', 'DESC']],
+            order: [
+                [Sequelize.literal('"followerCount"'), 'DESC']
+            ],
+            subQuery: false, // bắt buộc khi có limit + include (tránh lỗi order theo cột không nằm trong subquery)
             limit: 9
         });
 
@@ -117,6 +133,7 @@ const updateLogoMyCompany = async (req, res) => {
 const followCompany = async (req, res) => {
     try {
         const { companyId } = req.params;
+        const candidate = req.user.candidate;
 
         const company = await Company.findByPk(companyId);
 
@@ -124,12 +141,55 @@ const followCompany = async (req, res) => {
             return res.status(404).json({ message: 'Không tìm thấy công ty' });
         }
 
-        company.follow += 1;
-        await company.save();
+        const follow = await Follow.create({
+            companyId: company.id,
+            candidateId: candidate.id
+        });
 
-        return res.status(200).json({ company });
+        return res.status(200).json({ follow });
     } catch (error) {
         console.log('Lỗi khi gọi hàm followCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const unFollow = async (req, res) => {
+    try {
+        const { companyId } = req.params;
+        const candidate = req.user.candidate;
+
+        const follow = await Follow.findOne({
+            where: { companyId, candidateId: candidate.id }
+        })
+
+        if (!follow) {
+            return res.status(404).json({ message: 'Ứng viên chưa theo dõi công ty' });
+        }
+
+        await follow.destroy();
+
+        return res.status(200).json({ message: 'Unfollow thành công'})
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm unFollow: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const countFollow = async (req, res) => {
+    try {
+        const { companyId } = req.params;
+
+        const follows = await Follow.findAll(
+            {
+                where: {
+                    companyId
+                }
+            }
+        );
+
+        return res.status(200).json({ follows });
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm countFollow: ', error);
         return res.status(500).json({ message: "Lỗi server" });
     }
 }
@@ -255,5 +315,7 @@ export {
     getFeaturedCompany,
     updateCompany,
     updateLogoMyCompany,
-    followCompany
+    followCompany,
+    countFollow,
+    unFollow
 }

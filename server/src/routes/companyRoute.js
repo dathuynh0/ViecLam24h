@@ -5,7 +5,9 @@ import {
     updateMyCompany,
     getFeaturedCompany,
     updateLogoMyCompany,
-    followCompany
+    followCompany,
+    countFollow,
+    unFollow
 } from '../controllers/companyController.js';
 import { avatar } from '../config/multer.js';
 
@@ -19,8 +21,10 @@ const router = express.Router();
 router.get('/', getAllCompany);
 router.get('/featured', getFeaturedCompany);
 router.get('/:slug', getCompanyBySlug);
-router.patch('/:companyId/follow', followCompany);
+router.get('/:companyId/count', countFollow);
+router.post('/:companyId/follow', authMiddleware, followCompany);
 router.put('/logo', avatar.single('logo'), authMiddleware, isCompany, updateLogoMyCompany);
 router.put('/me', authMiddleware, isCompany, updateMyCompany);
+router.delete('/:companyId/unfollow', authMiddleware, unFollow);
 
 export default router;
