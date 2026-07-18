@@ -12,6 +12,7 @@ import PrivateRoute from "./pages/client/PrivateRoute"
 import Profile from "./pages/client/Profile"
 import Application from "./pages/client/Application"
 import SearchJobPage from "./pages/client/SearchJobPage"
+import CompanyPage from "./pages/client/CompanyPage"
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path='/viec-lam/:slug' element={<JobDetail />} />
           <Route path="/:slug" element={<CategoryJob />} />
           <Route path="/tim-kiem" element={<SearchJobPage /> } />
+          <Route path="/cong-ty/:slug" element={<CompanyPage /> } />
           <Route element={<PrivateRoute />}>
             <Route path="/ho-so" element={<Profile />} />
             <Route path="/lich-su-ung-tuyen" element={<Application />} />

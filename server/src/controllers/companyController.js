@@ -50,16 +50,22 @@ const getFeaturedCompany = async (req, res) => {
 }
 
 
-const getCompanyById = async (req, res) => {
+const getCompanyBySlug = async (req, res) => {
     try {
-        const { companyId } = req.params;
+        const { slug } = req.params;
 
         const company = await Company.findOne({
-            where: { id: companyId },
+            where: { slug },
             include: [
                 {
                     model: Job,
-                    as: 'job'
+                    as: 'job',
+                    where: {
+                        status: 'active'
+                    },
+                    attributes: ['id', 'title', 'location', 'slug', 'salaryMin', 'salaryMax', 'createdAt'],
+                    limit: 10,
+                    order: [['createdAt', 'DESC']],
                 }
             ]
         });
@@ -104,6 +110,26 @@ const updateLogoMyCompany = async (req, res) => {
         return res.status(200).json({ message: 'Cập nhật logo thành công ', company});
     } catch (error) {
         console.log('Lỗi khi gọi hàm updateLogoCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const followCompany = async (req, res) => {
+    try {
+        const { companyId } = req.params;
+
+        const company = await Company.findByPk(companyId);
+
+        if (!company) {
+            return res.status(404).json({ message: 'Không tìm thấy công ty' });
+        }
+
+        company.follow += 1;
+        await company.save();
+
+        return res.status(200).json({ company });
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm followCompany: ', error);
         return res.status(500).json({ message: "Lỗi server" });
     }
 }
@@ -220,7 +246,7 @@ const deleteCompany = async (req, res) => {
 
 export {
     getAllCompany,
-    getCompanyById,
+    getCompanyBySlug,
     updateMyCompany,
     updateLogoCompany,
     deleteCompany,
@@ -228,5 +254,6 @@ export {
     rejectCompany,
     getFeaturedCompany,
     updateCompany,
-    updateLogoMyCompany
+    updateLogoMyCompany,
+    followCompany
 }

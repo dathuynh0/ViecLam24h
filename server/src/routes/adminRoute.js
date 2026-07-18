@@ -15,7 +15,7 @@ import {
     deleteCompany,
     updateActiveStatusCompany,
     rejectCompany,
-    getCompanyById,
+    getCompanyBySlug,
     updateCompany,
     updateLogoCompany
 } from '../controllers/companyController.js';
@@ -51,7 +51,7 @@ router.delete('/candidates/:candidateId', authMiddleware, isAdmin, deleteCandida
 
 //company
 router.get('/companies', authMiddleware, isAdmin, getAllCompany);
-router.get('/companies/:companyId', authMiddleware, isAdmin, getCompanyById);
+router.get('/companies/:slug', authMiddleware, isAdmin, getCompanyBySlug);
 router.put('/companies/:companyId', authMiddleware, isAdmin, updateCompany);
 router.patch('/companies/logo', avatar.single('logo'), authMiddleware, isAdmin, updateLogoCompany);
 router.patch('/companies/active', authMiddleware, isAdmin, updateActiveStatusCompany);

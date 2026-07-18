@@ -13,7 +13,7 @@ const FeaturedCompanyCard = ({ featuredCompany }) => {
         className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-cover border border-gray-400'
         />
         <div className='space-y-2'>
-            <h2 className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer'>
+            <h2 className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer line-clamp-1'>
                 <Link className='w-full' to={`/cong-ty/${featuredCompany.slug}`}>
                     {featuredCompany.companyName}
                 </Link>

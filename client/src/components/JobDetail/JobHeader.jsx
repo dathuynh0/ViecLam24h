@@ -9,12 +9,14 @@ import Popup from '../Popup'
 import { useApplicationStore } from '@/stores/useApplicationStore'
 import Loading from '../Loading'
 import ApplyJob from './ApplyJob'
+import { useCandidateStore } from '@/stores/useCandidateStore'
 
 const JobHeader = ({ job }) => {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [openApplyDialog, setOpenApplyDialog] = useState(false);
   
   const { applyJob, applicationLoading } = useApplicationStore();
+  const { saveJob, candidateLoading } = useCandidateStore();
   const accessToken = useAuthStore(s => s.accessToken);
 
   const countDay = Math.ceil((new Date(job?.expiredAt) - new Date()) / (1000 * 60 * 60 * 24))
@@ -33,7 +35,16 @@ const JobHeader = ({ job }) => {
     setOpenApplyDialog(true)
   }
 
-  if(applicationLoading) {
+  const handleSaveJob = () => {
+    if(!accessToken) {
+      setOpenLoginDialog(true)
+      return;
+    }
+
+    saveJob(job?.id);
+  }
+
+  if(applicationLoading || candidateLoading) {
     return <Loading />
   }
     
@@ -52,7 +63,7 @@ const JobHeader = ({ job }) => {
         <Button onClick={openDialog} variant='ghost' size='xl' className={`bg-green-700 text-white`}>
             Ứng tuyển ngay
         </Button>
-        <Button variant='ghost' size='xl' className={`border border-green-700`}>
+        <Button onClick={handleSaveJob} variant='ghost' size='xl' className={`border border-green-700`}>
             <Heart />Lưu tin
         </Button>
 

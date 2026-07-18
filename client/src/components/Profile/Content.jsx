@@ -64,7 +64,9 @@ const Content = ({ user }) => {
                                 </div>
 
                                 <div className='flex flex-col items-end space-y-2'>
-                                    <p className='text-sm text-muted-foreground'>Đã lưu: {day} ngày trước</p>
+                                    <p className='text-sm text-muted-foreground'>
+                                        {day === 0 ? 'Mới đây' : `Đã lưu: ${day} ngày trước`}
+                                    </p>
                                     <Button onClick={() => deleteJobSave(job?.id)} variant='ghost' className={`bg-red-100 text-red-800`}>
                                         <Trash /> Xóa
                                     </Button>

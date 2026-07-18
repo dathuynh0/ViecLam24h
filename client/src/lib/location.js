@@ -1,5 +1,6 @@
 export const toLocation = (location) => {
-    const lastIndex = location.lastIndexOf(',')
+    if(!location) return '';
 
-    return location.slice(lastIndex + 1);
+    const parts = location.split(',').map(part => part.trim()).filter(Boolean);
+    return parts[parts.length - 1] || '';
 }

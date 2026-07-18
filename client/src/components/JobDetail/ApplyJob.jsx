@@ -8,10 +8,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { Loader2 } from 'lucide-react'
 import CvUpload from './CVUpload'
 import { useApplicationStore } from '@/stores/useApplicationStore'
-import { toast } from 'sonner' // hoặc thư viện toast bạn đang dùng
+import { toast } from 'sonner'
 
 const ApplyJob = ({ openApplyDialog, setOpenApplyDialog, job }) => {
   const [file, setFile] = useState(null)
