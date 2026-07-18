@@ -14,7 +14,19 @@ export const companyService = {
     },
 
     followCompany: async (companyId) => {
-        const response = await api.patch(`/companies/${companyId}/follow`, {}, { withCredentials: true });
+        const response = await api.post(`/companies/${companyId}/follow`, {}, { withCredentials: true });
+
+        return response.data;
+    },
+
+    countFollow: async (companyId) => {
+        const response = await api.get(`/companies/${companyId}/count`, { withCredentials: true });
+
+        return response.data;
+    },
+
+    unFollow: async (companyId) => {
+        const response = await api.delete(`/companies/${companyId}/unfollow`, { withCredentials: true });
 
         return response.data;
     }

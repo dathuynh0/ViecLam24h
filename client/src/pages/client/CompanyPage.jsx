@@ -16,7 +16,6 @@ const CompanyPage = () => {
     useEffect(() => {
         getCompanyBySlug(slug)
     }, []);
-    console.log(slug, company);
 
     useEffect(() => {
         document.title = `${company?.companyName}`

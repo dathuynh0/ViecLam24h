@@ -5,6 +5,7 @@ import { create } from "zustand";
 export const useCompanyStore = create((set, get) => ({
     featuredCompany: [],
     company: null,
+    follows: [],
     companyLoading: false,
 
     getFeaturedCompany: async () => {
@@ -37,13 +38,40 @@ export const useCompanyStore = create((set, get) => ({
         try {
             set({ companyLoading: true });
 
-            const { company } = await companyService.followCompany(companyId);
-            set({ company });
+            await companyService.followCompany(companyId);
+            const { countFollow } = useCompanyStore.getState();
+            await countFollow(companyId);
 
             toast.success('Theo dõi công ty thành công')
         } catch (error) {
             console.error('Lỗi khi gọi API followCompany ', error);
             toast.error('Theo dõi công ty không thành công');
+        } finally {
+            set({ companyLoading: false });
+        }
+    },
+
+    countFollow: async (companyId) => {
+        try {
+            const { follows } = await companyService.countFollow(companyId);
+            set({ follows });
+        } catch (error) {
+            console.error('Lỗi khi gọi API followCompany ', error);
+        }
+    },
+
+    unFollow: async (companyId) => {
+        try {
+            set({ companyLoading: true });
+
+            await companyService.unFollow(companyId);
+            const { countFollow } = useCompanyStore.getState();
+            await countFollow(companyId);
+
+            toast.success('Bỏ theo dõi thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API unFollow ', error);
+            toast.error('Bỏ theo dõi không thành công')
         } finally {
             set({ companyLoading: false });
         }
