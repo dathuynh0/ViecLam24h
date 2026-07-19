@@ -102,6 +102,7 @@ export const getJobBySlug = async (req, res) => {
         model: CategoryJob, as: 'category'
       }
     ] });
+
     if(!job) {
       return res.status(404).json({ message: 'Không tìm thấy công việc tuyển dụng' });
     }
@@ -122,7 +123,7 @@ export const getJobByCategory = async (req, res) => {
 
       const offset = (page - 1) * limit;
 
-      const where = {};
+      const where = { status: 'active' };
       const companyWhere = {};
       if(work_type && work_type !== 'all') {
         where.workType = work_type;
@@ -297,7 +298,7 @@ export const createJob = async (req, res) => {
       salaryMax,
       location,
       workTime,
-      contractType,
+      workType,
       workArrangement,
       quantity,
       expiredAt
@@ -314,6 +315,11 @@ export const createJob = async (req, res) => {
       return res.status(404).json({ message: "Không tìm thấy danh mục việc làm" });
     }
 
+    const existingJob = await Job.findOne({ title });
+    if (existingJob) {
+      return res.status(400).json({ message: 'Tiêu đề bài đăng tuyển đã tồn tại '});
+    }
+
     const job = await Job.create({
       companyId: company.id,
       categoryId,
@@ -326,7 +332,7 @@ export const createJob = async (req, res) => {
       salaryMax: Number(salaryMax),
       location,
       workTime,
-      contractType,
+      workType,
       workArrangement,
       quantity,
       slug: toSlug(title),
