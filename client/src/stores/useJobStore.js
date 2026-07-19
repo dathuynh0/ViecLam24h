@@ -59,5 +59,50 @@ export const useJobStore = create((set, get) => ({
         } finally {
             set({ jobLoading: false });
         }
+    },
+
+    createJob: async (
+        categoryId,
+        title,
+        jobRequirement,
+        description,
+        candidateRequirement,
+        benefit,
+        salaryMin,
+        salaryMax,
+        location,
+        workTime,
+        workType,
+        workArrangement,
+        quantity,
+        expiredAt
+    ) => {
+        try {
+            set({ jobLoading: true });
+
+            await jobService.createJob(
+                categoryId,
+                title,
+                jobRequirement,
+                description,
+                candidateRequirement,
+                benefit,
+                salaryMin,
+                salaryMax,
+                location,
+                workTime,
+                workType,
+                workArrangement,
+                quantity,
+                expiredAt
+            );
+
+            toast.success('Tạo bài tuyển dụng thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API createJob ', error);
+            toast.error('Tạo bài đăng tuyển dụng thất bại')
+        } finally {
+            set({ jobLoading: false });
+        }
     }
 }))

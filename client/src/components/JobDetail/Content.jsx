@@ -1,9 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Badge } from '../ui/badge'
 import { Heart, MapPin } from 'lucide-react'
 import { Button } from '../ui/button'
+import { useApplicationStore } from '@/stores/useApplicationStore'
+import { useCandidateStore } from '@/stores/useCandidateStore'
+import { useAuthStore } from '@/stores/useAuthStore'
+import Popup from '../Popup'
+import ApplyJob from './ApplyJob'
 
 const Content = ({ job }) => {
+    const [openLoginDialog, setOpenLoginDialog] = useState(false);
+    const [openApplyDialog, setOpenApplyDialog] = useState(false);
+
+    const { applicationLoading } = useApplicationStore();
+    const { saveJob, candidateLoading } = useCandidateStore();
+    const accessToken = useAuthStore(s => s.accessToken);
+
+    const openDialog = async () => {
+    if(!accessToken) {
+      setOpenLoginDialog(true);
+      return;
+    }
+
+    setOpenApplyDialog(true)
+  }
+
+  const handleSaveJob = () => {
+    if(!accessToken) {
+      setOpenLoginDialog(true)
+      return;
+    }
+
+    saveJob(job?.id);
+  }
+
   return (
     <div className='bg-white border border-gray-300 shadow-lg p-4 rounded-lg space-y-3'>
         <h2 className='text-lg font-bold'>Chi tiết công việc</h2>
@@ -68,13 +98,16 @@ const Content = ({ job }) => {
 
             <h3 className='font-bold'>Cách thức ứng tuyển</h3>
             <p className='pt-2 pb-3'>Nộp hồ sơ trực tuyến bằng cách nhấn <span className='font-bold'>Ứng tuyển</span> bên dưới</p>
-            <div className='flex items-center gap-4'>
-                <Button variant='ghost' size='xl' className={`bg-green-700 text-white`}>
+            <div className='hidden md:flex items-center gap-4'>
+                <Button onClick={openDialog} variant='ghost' size='xl' className={`bg-green-700 text-white`}>
                     Ứng tuyển ngay
                 </Button>
-                <Button variant='ghost' size='xl' className={`border border-green-700`}>
+                <Button onClick={handleSaveJob} variant='ghost' size='xl' className={`border border-green-700`}>
                     <Heart />Lưu tin
                 </Button>
+
+                <Popup openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
+                <ApplyJob openApplyDialog={openApplyDialog} setOpenApplyDialog={setOpenApplyDialog} job={job}/>
             </div>
         </div>
     </div>

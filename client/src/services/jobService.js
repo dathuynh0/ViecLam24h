@@ -23,5 +23,41 @@ export const jobService = {
         const response = await api.get('/jobs/search', { params: params, withCredentials: true })
 
         return response.data;
+    },
+
+    createJob: async (
+        categoryId,
+        title,
+        jobRequirement,
+        description,
+        candidateRequirement,
+        benefit,
+        salaryMin,
+        salaryMax,
+        location,
+        workTime,
+        workType,
+        workArrangement,
+        quantity,
+        expiredAt
+    ) => {
+        const response = await api.post('/jobs/', {
+            categoryId,
+            title,
+            jobRequirement,
+            description,
+            candidateRequirement,
+            benefit,
+            salaryMin,
+            salaryMax,
+            location,
+            workTime,
+            workType,
+            workArrangement,
+            quantity,
+            expiredAt
+        }, { withCredentials: true });
+
+        return response.data;
     }
 }

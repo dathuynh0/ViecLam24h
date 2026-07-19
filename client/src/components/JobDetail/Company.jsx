@@ -10,7 +10,7 @@ const Company = ({ job }) => {
     <div className='w-full p-4 border border-gray-300 rounded-lg shadow-lg'>
       <h2 className='font-bold text-lg pb-3'>Thông tin công ty</h2>
       <div className='flex items-center gap-3'>
-        <img className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-cover border border-gray-400' src={`${backendUrl}/${job?.createdBy?.logoUrl}`} alt="Logo công ty" />
+        <img className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-contain border border-gray-400' src={`${backendUrl}/${job?.createdBy?.logoUrl}`} alt="Logo công ty" />
         <div>
             <h2 className='font-bold'>{job?.createdBy?.companyName}</h2>
             <p className='text-gray-500 text-sm'>Quy mô: <span className='text-black font-medium'>{job?.createdBy?.companySize} nhân viên</span></p>

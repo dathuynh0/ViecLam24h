@@ -10,7 +10,7 @@ const FeaturedCompanyCard = ({ featuredCompany }) => {
     <div className='border px-4 py-4 rounded-xl shadow-md'>
       <div className='py-2 flex gap-4'>
         <img src={`${backendUrl}/${featuredCompany.logoUrl}`} alt={'Logo công ty'}
-        className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-cover border border-gray-400'
+        className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-contain border border-gray-400'
         />
         <div className='space-y-2'>
             <h2 className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer line-clamp-1'>

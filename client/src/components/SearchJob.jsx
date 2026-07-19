@@ -56,7 +56,7 @@ const SearchJob = () => {
 
     const handleSearchJob = (e) => {
         e.preventDefault();
-        if(!jobName || !location) {
+        if(!jobName && !location) {
             return;
         }
 

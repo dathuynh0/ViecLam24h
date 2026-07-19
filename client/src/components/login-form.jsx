@@ -18,13 +18,13 @@ import IconGoogle from "./IconGoogle"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
+import Loading from "./Loading"
 
 export function LoginForm({
   className,
   ...props
 }) {
-  const { signIn } = useAuthStore();
-  const navigate = useNavigate();
+  const { signIn, authLoading } = useAuthStore();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       username: '',
@@ -32,12 +32,23 @@ export function LoginForm({
     }
   })
 
+  const navigate = useNavigate();
+
   const handleSignIn = async (data) => {
     const { username, password } = data;
+
+    if (!username || !password) {
+      return;
+    }
 
     await signIn(username, password);
     navigate('/')
   }
+
+  if (authLoading) {
+    return <Loading />
+  }
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

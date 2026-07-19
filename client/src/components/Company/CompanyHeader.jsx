@@ -15,7 +15,7 @@ const CompanyHeader = ({ company }) => {
     const { accessToken, user } = useAuthStore();
     const { followCompany, follows, unFollow, countFollow, companyLoading } = useCompanyStore();
 
-    const isFollow = follows.some(f => f.candidateId === user.profileId)
+    const isFollow = follows.some(f => f.candidateId === user?.profileId)
 
     useEffect(() => {
       countFollow(company?.id);
@@ -43,7 +43,7 @@ const CompanyHeader = ({ company }) => {
   return (
     <div className='border border-gray-300 p-4 rounded-lg md:flex justify-between items-center space-y-3'>
       <div className='flex items-center gap-4'>
-            <img src={`${import.meta.env.VITE_BACKEND_URL}/${company?.logoUrl}`} alt={company?.companyName} className='h-30 w-30 bg-white border border-gray-300 rounded-lg object-cover p-4'/>
+            <img src={`${import.meta.env.VITE_BACKEND_URL}/${company?.logoUrl}`} alt={company?.companyName} className='h-30 w-30 bg-white border border-gray-300 rounded-lg object-contain p-4'/>
         
             <div className='flex flex-col gap-3'>
                 <h1 className='text-xl font-bold text-slate-800'>{company?.companyName}</h1>

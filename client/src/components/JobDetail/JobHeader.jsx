@@ -15,7 +15,7 @@ const JobHeader = ({ job }) => {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [openApplyDialog, setOpenApplyDialog] = useState(false);
   
-  const { applyJob, applicationLoading } = useApplicationStore();
+  const { applicationLoading } = useApplicationStore();
   const { saveJob, candidateLoading } = useCandidateStore();
   const accessToken = useAuthStore(s => s.accessToken);
 

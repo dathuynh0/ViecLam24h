@@ -19,7 +19,7 @@ import {
 import { Link } from "react-router"
 import { useCategoryStore } from "@/stores/useCategoryStore"
 import { Button } from "../ui/button"
-import NavUser from "../../pages/Layout/NavUser"
+import NavUser from "../../Layout/NavUser"
 import { useAuthStore } from "@/stores/useAuthStore"
 
 function NavBar() {

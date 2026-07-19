@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import { LogOut, User, Settings, ChevronDown, Briefcase } from "lucide-react";
+import { useNavigate } from "react-router";
+import { LogOut, User, ChevronDown, Briefcase } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { Button } from "@/components/ui/button"
 
@@ -81,31 +81,17 @@ export default function NavUser() {
             Hồ sơ của tôi
           </Button>
 
-          {user.role === "candidate" ? (
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setOpen(false);
-                navigate("/lich-su-ung-tuyen");
-              }}
-              className={classButton}
-            >
-              <Briefcase className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setOpen(false);
+              navigate("/lich-su-ung-tuyen");
+            }}
+            className={classButton}
+          >
+            <Briefcase className="h-4 w-4" />
               Việc đã ứng tuyển
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setOpen(false);
-                navigate("/cong-ty/jobs");
-              }}
-              className={classButton}
-            >
-              <Briefcase className="h-4 w-4" />
-              Quản lý tin tuyển dụng
-            </Button>
-          )}
+          </Button>
 
           <div className="border-t border-gray-100 mt-1 pt-1">
             <Button

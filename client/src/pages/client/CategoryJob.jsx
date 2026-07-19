@@ -6,11 +6,11 @@ import SearchJob from '@/components/SearchJob'
 import { useCategoryStore } from '@/stores/useCategoryStore';
 import { useJobStore } from '@/stores/useJobStore'
 import React, { useEffect } from 'react'
-import { useParams, useSearchParams } from 'react-router';
+import { Navigate, useParams, useSearchParams } from 'react-router';
 
 const CategoryJob = () => {
   const { slug } = useParams();
-  const { jobOfCategory, getJobByCategory, jobLoading } = useJobStore();
+  const { jobOfCategory, getJobByCategory } = useJobStore();
   const { category, getCategoryBySlug, categoryLoading } = useCategoryStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +28,7 @@ const CategoryJob = () => {
   useEffect(() => {
     getJobByCategory(slug, salary, field, work_type, work_arrangement);
     getCategoryBySlug(slug);
+    
   }, [slug]);
 
 

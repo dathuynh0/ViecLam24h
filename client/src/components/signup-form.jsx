@@ -23,11 +23,12 @@ import { useAuthStore } from "@/stores/useAuthStore"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
+import Loading from "./Loading"
 
 export function SignupForm({
   ...props
 }) {
-  const { signUp } = useAuthStore();
+  const { signUp, authLoading } = useAuthStore();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -50,6 +51,10 @@ export function SignupForm({
     
     await signUp(fullName, username, email, password, role);
     navigate('/signin')
+  }
+
+  if (authLoading) {
+    return <Loading />
   }
 
   return (

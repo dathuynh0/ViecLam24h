@@ -36,7 +36,7 @@ const JobCard = ({ job }) => {
     <div className='w-full border border-gray-300 rounded-lg p-4'>
         <div className='flex justify-between gap-4'>
             <div className='flex items-center gap-4'>
-                <img src={`${import.meta.env.VITE_BACKEND_URL}/${job?.createdBy?.logoUrl}`} alt={`Logo nhà tuyển dụng`} className='flex h-22 w-22 shrink-0 rounded-xl p-2 shadow-sm object-cover border border-gray-400' />
+                <img src={`${import.meta.env.VITE_BACKEND_URL}/${job?.createdBy?.logoUrl}`} alt={`Logo nhà tuyển dụng`} className='flex h-22 w-22 shrink-0 rounded-xl p-2 shadow-sm object-contain border border-gray-400' />
 
                 <div className='flex flex-col space-y-1'>
                     <Link to={`/viec-lam/${job?.slug}`} className='text-green-700 text-lg font-medium hover:underline'>{job?.title}</Link>

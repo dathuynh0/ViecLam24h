@@ -34,7 +34,7 @@ const FeaturedJobCard = ({ featuredJob }) => {
     <div className='border px-4 py-4 rounded-xl shadow-md'>
       <div className='flex justify-between'>
         <img src={`${backendUrl}/${featuredJob.createdBy.logoUrl}`} alt={'Logo công ty'}
-        className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-cover'
+        className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-contain'
         />
         <Button onClick={handleSaveJob} variant='ghost' className={`h-8 w-8 border border-green-300 text-green-700 hover:bg-green-300 hover:text-white rounded-full cursor-pointer`}><Heart /></Button>
         

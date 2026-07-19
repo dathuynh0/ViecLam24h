@@ -13,12 +13,15 @@ export const useAuthStore = create((set, get) => ({
 
     signUp: async (fullName, username, email, password, role) => {
         try {
+            set({ authLoading: true })
             await authService.signUp(fullName, username, email, password, role);
 
             toast.success('Tạo tài khoản thành công');
         } catch (error) {
             toast.error('Tạo tài khoản thất bại')
             console.error('Lỗi khi gọi signUp ', error);
+        } finally {
+            set({ authLoading: false })
         }
     },
 

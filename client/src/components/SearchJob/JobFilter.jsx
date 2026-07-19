@@ -2,8 +2,6 @@ import { Filter } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { NativeSelect, NativeSelectOption } from "../ui/native-select";
-import { useJobStore } from "@/stores/useJobStore";
-import Loading from "../Loading";
 
 // Danh sách mức lương - chỉnh sửa theo nhu cầu thực tế của bạn
 const SALARY_OPTIONS = [
@@ -81,7 +79,6 @@ function RadioFilterGroup({ title, name, options, value, onChange }) {
  * để component cha (trang danh sách job) dùng giá trị này gọi API.
  */
 export default function JobFilter({ onFilterChange, name, location }) {
-  const { jobLoading } = useJobStore();
 
   const [salary, setSalary] = useState("all");
   const [workType, setWorkType] = useState("all");
