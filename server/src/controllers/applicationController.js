@@ -112,6 +112,7 @@ export const getApplicationsByCandidate = async (req, res) => {
 export const getApplicationsByJob = async (req, res) => {
   try {
     const { jobId } = req.params;
+    const company = req.user.company;
 
     const job = await Job.findByPk(jobId);
     if (!job) {
@@ -139,7 +140,7 @@ export const getApplicationsByJob = async (req, res) => {
 
     return res.status(200).json({
       message: "Lấy danh sách ứng viên đã nộp CV thành công",
-      data: applications
+      applications
     });
   } catch (error) {
     return res.status(500).json({
@@ -215,3 +216,43 @@ export const updateApplicationStatus = async (req, res) => {
     });
   }
 };
+
+
+export const acceptedApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+
+    const application = await JobApplication.findByPk(applicationId);
+    if(!application) {
+      return res.status(404).json({ message: 'Không tìm thấy bài ứng tuyển '});
+    }
+
+    application.status = 'accepted';
+    await application.save();
+
+
+    return res.status(200).json({ message: 'Chấp nhận ứng viên thành công '});
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm acceptedApplication ', error)
+    return res.status(500).json({ message: 'Lỗi server '});
+  }
+}
+
+export const rejectedApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+
+    const application = await JobApplication.findByPk(applicationId);
+    if(!application) {
+      return res.status(404).json({ message: 'Không tìm thấy bài ứng tuyển '});
+    }
+
+    application.status = 'rejected';
+    await application.save();
+
+    return res.status(200).json({ message: 'Từ chối ứng viên thành công '});
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm rejectedApplication ', error)
+    return res.status(500).json({ message: 'Lỗi server '});
+  }
+}

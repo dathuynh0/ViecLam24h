@@ -1,14 +1,17 @@
 import express from "express";
 import {
+  acceptedApplication,
   applyJob,
   getApplicationsByCandidate,
   getApplicationsByJob,
   getApplicationStatus,
-  updateApplicationStatus
+  updateApplicationStatus,
+  rejectedApplication
 } from "../controllers/applicationController.js";
 
 import {
-  authMiddleware
+  authMiddleware,
+  isCompany
 } from '../middlewares/authMiddleware.js'
 
 import {
@@ -88,7 +91,7 @@ router.get("/candidate/me", authMiddleware, getApplicationsByCandidate);
  *       500:
  *         description: Lỗi server
  */
-router.get("/job/:jobId", getApplicationsByJob);
+router.get("/job/:jobId", authMiddleware,  isCompany, getApplicationsByJob);
 
 /**
  * @swagger
@@ -144,5 +147,9 @@ router.get("/:id/status", getApplicationStatus);
  *         description: Lỗi server
  */
 router.put("/:id/status", updateApplicationStatus);
+
+router.patch('/:applicationId/accepted', authMiddleware, isCompany, acceptedApplication);
+
+router.patch('/:applicationId/rejected', authMiddleware, isCompany, rejectedApplication)
 
 export default router;

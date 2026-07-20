@@ -315,7 +315,7 @@ export const createJob = async (req, res) => {
       return res.status(404).json({ message: "Không tìm thấy danh mục việc làm" });
     }
 
-    const existingJob = await Job.findOne({ title });
+    const existingJob = await Job.findOne({ where: { title } });
     if (existingJob) {
       return res.status(400).json({ message: 'Tiêu đề bài đăng tuyển đã tồn tại '});
     }
@@ -367,13 +367,17 @@ export const updateJob = async (req, res) => {
     }
 
     const allowedFields = [
-      "companyId",
       "categoryId",
       "title",
+      "jobRequirement",
+      "description",
+      "candidateRequirement",
+      "benefit",
       "salaryMin",
       "salaryMax",
       "location",
-      "contractType",
+      "workType",
+      "workTime",
       "workArrangement",
       "quantity",
       "expiredAt"
@@ -384,17 +388,19 @@ export const updateJob = async (req, res) => {
       if (req.body[field] !== undefined) updateData[field] = req.body[field];
     }
 
-    if (req.body.jobRequirement !== undefined) updateData.jobRequirement = req.body.jobRequirement;
-    if (req.body.description !== undefined) updateData.description = req.body.description;
-    if (req.body.candidateRequirement !== undefined) updateData.candidateRequirement = req.body.candidateRequirement;
-    if (req.body.benefit !== undefined) updateData.benefit = req.body.benefit;
-    if (req.body.workTime !== undefined) updateData.workTime = req.body.workTime;
-    if (req.body.salaryMin !== undefined) updateData.salaryMin = Number(req.body.salaryMin);
-    if (req.body.salaryMax !== undefined) updateData.salaryMax = Number(req.body.salaryMax);
-    if (req.body.contractType !== undefined) updateData.contractType = req.body.contractType;
-    if (req.body.workArrangement !== undefined) updateData.workArrangement = req.body.workArrangement;
-    if (req.body.quantity !== undefined) updateData.quantity = req.body.quantity;
-    if (req.body.expiredAt !== undefined) updateData.expiredAt = req.body.expiredAt;
+    updateData.categoryId = req.body.categoryId;
+    updateData.jobRequirement = req.body.jobRequirement;
+    updateData.description = req.body.description;
+    updateData.candidateRequirement = req.body.candidateRequirement;
+    updateData.benefit = req.body.benefit;
+    updateData.salaryMin = Number(req.body.salaryMin);
+    updateData.salaryMax = Number(req.body.salaryMax);
+    updateData.location = req.body.location;
+    updateData.workType = req.body.workType;
+    updateData.workTime = req.body.workTime;
+    updateData.workArrangement = req.body.workArrangement;
+    updateData.quantity = req.body.quantity;
+    updateData.expiredAt = req.body.expiredAt;
 
     await job.update(updateData);
 
@@ -403,10 +409,6 @@ export const updateJob = async (req, res) => {
       data: job
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      return res.status(409).json({ message: "Tiêu đề bài đăng đã tồn tại" });
-    }
-
     return res.status(500).json({
       message: "Lỗi khi cập nhật bài đăng",
       error: error.message
@@ -552,6 +554,35 @@ export const rejectJob = async (req, res) => {
     return res.status(200).json({ message: 'Từ chối bài đăng thành công ', job });
   } catch (error) {
     console.error('Lỗi khi gọi hàm rejectJob ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}
+
+
+// company
+export const getJobCreated = async (req, res) => {
+  try {
+    const company = req.user.company;
+    const page  = req.params.page || 1;
+    const limit = 8;
+    const offset = (page - 1) * limit
+
+    const { rows: jobs, count } = await Job.findAndCountAll({
+      where: { companyId: company.id },
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']]
+    });
+
+    const totalPage = Math.ceil(count / limit);
+
+    return res.status(200).json({
+      jobs,
+      page,
+      totalPage
+    })
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm getJobCreated ', error);
     return res.status(500).json({ message: 'Lỗi server' });
   }
 }

@@ -8,7 +8,8 @@ import {
   getFeaturedJob,
   getJobBySlug,
   getJobByCategory,
-  searchJob
+  searchJob,
+  getJobCreated
 } from "../controllers/jobController.js";
 
 import {
@@ -78,7 +79,9 @@ router.get('/:slug/slug', getJobBySlug);
 
 router.get('/:slug/category', getJobByCategory);
 
-router.get('/search', searchJob)
+router.get('/search', searchJob);
+
+router.get('/created', authMiddleware, isCompany, getJobCreated);
 
 /**
  * @swagger
