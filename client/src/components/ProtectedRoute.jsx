@@ -26,14 +26,14 @@ const ProtectedRoute = () => {
     }, [])
 
     useEffect(() => {
-        if (user?.role === 'company') {
-            navigate(`/nha-tuyen-dung`, { replace: true })
+        if (user?.role === 'company' && !location.pathname.startsWith('/nha-tuyen-dung')) {
+            navigate('/nha-tuyen-dung', { replace: true });
         }
 
-        if (user?.role === 'admin') {
-            navigate('/quan-tri', { replace: true })
+        if (user?.role === 'admin' && !location.pathname.startsWith('/quan-tri')) {
+            navigate('/quan-tri', { replace: true });
         }
-    }, [user])
+    }, [user?.role])
 
 
     if (authLoading || initializing) {
@@ -46,6 +46,9 @@ const ProtectedRoute = () => {
     }
     if (pathname.startsWith('/admin') && user?.role !== 'admin') {
         return <Navigate to="/404" replace />;
+    }
+    if(!pathname.includes('/nha-tuyen-dung') && user?.role == 'company') {
+        return <Navigate to="/nha-tuyen-dung" replace />;
     }
 
   return (

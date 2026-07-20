@@ -29,5 +29,24 @@ export const companyService = {
         const response = await api.delete(`/companies/${companyId}/unfollow`, { withCredentials: true });
 
         return response.data;
+    },
+
+    updateMyCompany: async (
+        companyName, description, address, taxCode, companySize, website, field
+    ) => {
+        const response = await api.put('/companies/me', {
+            companyName, description, address, taxCode, companySize, website, field
+        }, { withCredentials: true });
+
+        return response.data;
+    },
+
+    updateLogo: async (logo) => {
+        const formData = new FormData();
+        formData.append('logo', logo);
+
+        const response = await api.patch('/companies/logo', formData, { withCredentials: true });
+
+        return response.data;
     }
 }

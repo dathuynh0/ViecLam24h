@@ -2,9 +2,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Outlet, useLocation } from 'react-router';
 import AppSidebar from '@/pages/Company/AppSidebar';
 import { Building2, FilePlus2, History, LayoutDashboard } from "lucide-react";
+import { useEffect } from "react";
 
-const CompanyLayout = () => {
-  const menuItems = [
+const menuItems = [
     {
       title: "Dashboard",
       url: "/nha-tuyen-dung",
@@ -27,9 +27,14 @@ const CompanyLayout = () => {
     },
   ]
 
+const CompanyLayout = () => {
   const { pathname } = useLocation();
 
   const currentPage = menuItems.find(m => m.url === pathname)
+
+  useEffect(() => {
+    document.title = `Việc làm 24h - ${currentPage.title}`
+  }, [pathname])
 
   return (
     <SidebarProvider>

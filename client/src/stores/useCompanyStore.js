@@ -1,6 +1,7 @@
 import { companyService } from "@/services/companyService";
 import { toast } from "sonner";
 import { create } from "zustand";
+import { useAuthStore } from "./useAuthStore";
 
 export const useCompanyStore = create((set, get) => ({
     featuredCompany: [],
@@ -72,6 +73,40 @@ export const useCompanyStore = create((set, get) => ({
         } catch (error) {
             console.error('Lỗi khi gọi API unFollow ', error);
             toast.error('Bỏ theo dõi không thành công')
+        } finally {
+            set({ companyLoading: false });
+        }
+    },
+
+    updateMyCompany: async (
+        companyName, description, address, taxCode, companySize, website, field
+    ) => {
+        try {
+            set({ companyLoading: true });
+
+            await companyService.updateMyCompany(companyName, description, address, taxCode, companySize, website, field);
+
+            toast.success('Cập nhập thông tin thành công')
+        } catch (error) {
+            console.error('Lỗi khi goi API updateMyCompany ', error);
+            toast.error('Cập nhập thông tin thất bại')
+        } finally {
+            set({ companyLoading: false });
+        }
+    },
+
+    updateLogo: async (logo) => {
+        try {
+            set({ companyLoading: true });
+
+            await companyService.updateLogo(logo);
+            const { fetchMe } = useAuthStore.getState();
+            await fetchMe();
+
+            toast.success('Cập nhập logo công ty thành công')
+        } catch (error) {
+            console.error('Lỗi khi goi API updateLogo ', error);
+            toast.error('Cập nhập logo công ty thất bại')
         } finally {
             set({ companyLoading: false });
         }
