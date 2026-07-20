@@ -1,7 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Outlet, useLocation } from 'react-router';
 import AppSidebar from '@/pages/Company/AppSidebar';
-import { Building2, FilePlus2, LayoutDashboard } from "lucide-react";
+import { Building2, FilePlus2, History, LayoutDashboard } from "lucide-react";
 
 const CompanyLayout = () => {
   const menuItems = [
@@ -14,6 +14,11 @@ const CompanyLayout = () => {
       title: "Đăng tin tuyển dụng",
       url: "/nha-tuyen-dung/dang-tin",
       icon: FilePlus2,
+    },
+    {
+      title: "Quản lý bài đăng",
+      url: "/nha-tuyen-dung/quan-ly-bai-dang",
+      icon: History,
     },
     {
       title: "Quản lý công ty",

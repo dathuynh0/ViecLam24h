@@ -1,7 +1,3 @@
-import React, { useState } from 'react'
-import { Input } from '../ui/input'
-import { ChevronDown, MapPin, Search } from 'lucide-react'
-import { Button } from '../ui/button'
 import { useCategoryStore } from '@/stores/useCategoryStore';
 import { Badge } from '../ui/badge';
 import { Link } from 'react-router';
@@ -21,7 +17,7 @@ const HeroSection = () => {
         <div className='py-6 hidden md:flex items-center gap-4'>
             <p className='text-gray-500'>Công việc phổ biến:</p>
             <ul className='flex items-center gap-2'>
-                {filterCategory.map((c) => 
+                {filterCategory?.map((c) => 
                 <li>
                     <Link to={c.slug}>
                         <Badge variant='ghost' key={c.title} className={`bg-slate-200 text-slate-900`}>{c.title}</Badge>

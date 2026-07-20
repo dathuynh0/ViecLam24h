@@ -47,7 +47,7 @@ const Job = ({ job, company }) => {
             </div>
 
             <div className='flex h-full items-center gap-2'>
-                <p className='text-muted-foreground text-sm font-medium'>Đăng {day} ngày trước</p>
+                <p className='text-muted-foreground text-sm font-medium'>{day === 0 ? `Mới đây` : `Đăng ${day} ngày trước`}</p>
                 <Button title='Thêm vào danh sách yêu thích' onClick={handleSaveJob} variant='ghost' className={`h-8 w-8 border-green-300 text-green-700 rounded-full cursor-pointer`}><Heart /></Button>
                 <Popup openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
             </div>

@@ -7,6 +7,7 @@ export const useJobStore = create((set, get) => ({
     jobDetail: null,
     jobOfCategory: [],
     searchJob: [],
+    jobCreated: [],
     jobLoading: false,
 
     getFeaturedJob: async () => {
@@ -101,6 +102,84 @@ export const useJobStore = create((set, get) => ({
         } catch (error) {
             console.error('Lỗi khi gọi API createJob ', error);
             toast.error('Tạo bài đăng tuyển dụng thất bại')
+        } finally {
+            set({ jobLoading: false });
+        }
+    },
+
+    getJobCreated: async (page) => {
+        try {
+            set({ jobLoading: false });
+
+            const { jobs } = await jobService.getJobCreated(page);
+
+            set({ jobCreated: jobs });
+        } catch (error) {
+            console.error('Lỗi khi gọi API getJobCreated ', error);
+        } finally {
+            set({ jobLoading: false });
+        }
+    },
+
+    updateJob: async (
+        jobId,
+        categoryId,
+        title,
+        jobRequirement,
+        description,
+        candidateRequirement,
+        benefit,
+        salaryMin,
+        salaryMax,
+        location,
+        workTime,
+        workType,
+        workArrangement,
+        quantity,
+        expiredAt
+    ) => {
+        try {
+            set({ jobLoading: true });
+
+            await jobService.updateJob(
+                jobId,
+                categoryId,
+                title,
+                jobRequirement,
+                description,
+                candidateRequirement,
+                benefit,
+                salaryMin,
+                salaryMax,
+                location,
+                workTime,
+                workType,
+                workArrangement,
+                quantity,
+                expiredAt
+            );
+
+            toast.success('Cập nhật bài đăng thành công');
+        } catch (error) {
+            console.error('Lỗi khi gọi API updateJob ', error);
+            toast.error('Cập nhập thất bại')
+        } finally {
+            set({ jobLoading: false });
+        }
+    },
+
+    deleteJob: async (jobId, page) => {
+        try {
+            set({ jobLoading: true });
+
+            await jobService.deleteJob(jobId);
+            const { getJobCreated } = useJobStore.getState();
+            await getJobCreated(page)
+
+            toast.success('Xóa bài đăng thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API deleteJob ', error);
+            toast.error('Xóa bài đăng thất bại')
         } finally {
             set({ jobLoading: false });
         }

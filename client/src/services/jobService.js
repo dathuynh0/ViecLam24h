@@ -59,5 +59,55 @@ export const jobService = {
         }, { withCredentials: true });
 
         return response.data;
+    },
+
+    getJobCreated: async (page) => {
+        const response = await api.get(`/jobs/created`, { params: page, withCredentials: true });
+
+        return response.data;
+    },
+
+    updateJob: async (
+        jobId,
+        categoryId,
+        title,
+        jobRequirement,
+        description,
+        candidateRequirement,
+        benefit,
+        salaryMin,
+        salaryMax,
+        location,
+        workTime,
+        workType,
+        workArrangement,
+        quantity,
+        expiredAt
+    ) => {
+        const response = await api.put(`/jobs/${jobId}`, {
+            categoryId,
+            title,
+            jobRequirement,
+            description,
+            candidateRequirement,
+            benefit,
+            salaryMin,
+            salaryMax,
+            location,
+            workTime,
+            workType,
+            workArrangement,
+            quantity,
+            expiredAt
+        }, { withCredentials: true });
+
+
+        return response.data;
+    },
+
+    deleteJob: async (jobId) => {
+        const response = await api.delete(`/jobs/${jobId}`, { withCredentials: true });
+
+        return response.data;
     }
 }

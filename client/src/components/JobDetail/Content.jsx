@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Badge } from '../ui/badge'
 import { Heart, MapPin } from 'lucide-react'
 import { Button } from '../ui/button'
-import { useApplicationStore } from '@/stores/useApplicationStore'
 import { useCandidateStore } from '@/stores/useCandidateStore'
 import { useAuthStore } from '@/stores/useAuthStore'
 import Popup from '../Popup'
@@ -12,7 +11,6 @@ const Content = ({ job }) => {
     const [openLoginDialog, setOpenLoginDialog] = useState(false);
     const [openApplyDialog, setOpenApplyDialog] = useState(false);
 
-    const { applicationLoading } = useApplicationStore();
     const { saveJob, candidateLoading } = useCandidateStore();
     const accessToken = useAuthStore(s => s.accessToken);
 
@@ -54,7 +52,7 @@ const Content = ({ job }) => {
                 <ul className='space-y-2'>
                     {job?.description.map((description) => (
                         <li>
-                            - {description}
+                            {description}
                         </li>
                     ))}
                 </ul>
@@ -66,7 +64,7 @@ const Content = ({ job }) => {
             <ul className='space-y-2'>
                 {job?.jobRequirement.map((requirement) => (
                     <li>
-                        - {requirement}
+                        {requirement}
                     </li>
                 ))}
             </ul>
@@ -77,7 +75,7 @@ const Content = ({ job }) => {
             <ul className='space-y-2'>
                 {job?.benefit.map((benefit) => (
                     <li>
-                        - {benefit}
+                        {benefit}
                     </li>
                 ))}
             </ul>
@@ -91,7 +89,7 @@ const Content = ({ job }) => {
             <ul className=''>
                 {job?.workTime.map((time) => (
                     <li>
-                        - {time}
+                        {time}
                     </li>
                 ))}
             </ul>

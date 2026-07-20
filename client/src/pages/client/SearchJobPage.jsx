@@ -66,7 +66,7 @@ const SearchJobPage = () => {
               {
                 searchJob.length > 0 ?
                 (
-                  <ul>
+                  <ul className='space-y-4'>
                     {searchJob?.map((job) => (
                       <li key={job?.id}>
                         <JobCard job={job}/>

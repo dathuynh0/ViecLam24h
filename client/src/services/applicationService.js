@@ -16,5 +16,23 @@ export const applicationService = {
         const response = await api.post('/applications', formData, { withCredentials: true });
 
         return response.data;
+    },
+
+    getApplicationOfJob: async (jobId) => {
+        const response = await api.get(`/applications/job/${jobId}`, { withCredentials: true });
+
+        return response.data;
+    },
+
+    acceptedApplication: async (applicationId) => {
+        const response = await api.patch(`/applications/${applicationId}/accepted`, {}, { withCredentials: true });
+
+        return response.data;
+    },
+
+    rejectedApplication: async (applicationId) => {
+        const response = await api.patch(`/applications/${applicationId}/rejected`, {}, { withCredentials: true });
+
+        return response.data;
     }
 }
