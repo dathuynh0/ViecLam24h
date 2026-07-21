@@ -1,11 +1,27 @@
+import { Op } from "sequelize";
 import CategoryJob from "../models/CategoryJob.js"
 import Company from "../models/Company.js";
 import Job from '../models/Job.js'
 import toSlug from '../utils/slug.js'
+import sequelize from "../config/db.js";
 
 const getAllCategory = async (req, res) => {
     try {
-        const categories = await CategoryJob.findAll();
+        const categories = await CategoryJob.findAll({
+            attributes: {
+                include: [
+                [
+                    sequelize.literal(`(
+                        SELECT COUNT(*)
+                        FROM "Jobs" AS job
+                        WHERE job."categoryId" = "CategoryJob"."id"
+                    )`),
+                    'jobCount'
+                ]
+                ]
+            },
+            order: [[sequelize.literal('"jobCount"'), 'DESC']]
+        });
 
         return res.status(200).json({ categories })
     } catch (error) {
@@ -22,7 +38,7 @@ const createCategory = async (req, res) => {
             return res.status(400).json({messsage: 'Tiêu đề không được bỏ trống'})  
         }
 
-        const exitingCategory = await CategoryJob.findOne({ where: {title} });
+        const exitingCategory = await CategoryJob.findOne({ where: { title } });
         if(exitingCategory) {
             return res.status(400).json({ message: 'Tiêu đề danh mục đã tồn tại'});
         }
@@ -95,8 +111,43 @@ const getCategoryBySlug = async (req, res) => {
 }
 
 
+const getAllCategoryAdmin = async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const limit = 8;
+        const offset = (page - 1) * limit;
+
+        const { count, rows: categories} = await CategoryJob.findAndCountAll({
+            attributes: {
+                include: [
+                [
+                    sequelize.literal(`(
+                        SELECT COUNT(*)
+                        FROM "Jobs" AS job
+                        WHERE job."categoryId" = "CategoryJob"."id"
+                    )`),
+                    'jobCount'
+                ]
+                ]
+            },
+            limit,
+            offset,
+            order: [[sequelize.literal('"jobCount"'), 'DESC']]
+        });
+
+        const totalPage = Math.ceil(count / limit);
+
+        return res.status(200).json({ categories, page, totalPage })
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm getAllCategory ', error)
+        return res.status(500).json({ message: 'Lỗi sever'})
+    } 
+}
+
+
 export {
     getAllCategory, 
+    getAllCategoryAdmin,
     createCategory,
     updateCategory,
     deleteCategory,

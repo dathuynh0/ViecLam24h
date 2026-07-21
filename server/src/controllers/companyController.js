@@ -99,15 +99,13 @@ const getCompanyBySlug = async (req, res) => {
 const updateMyCompany = async (req, res) => {
     try {
         const company = req.user.company;
-        const { companyName, description, address, taxCode, companySize, website } = req.body;
+        const { companyName, description, address, taxCode, companySize, website, field } = req.body;
         
-        company.companyName = companyName;
-        company.description = description;
-        company.address = address;
-        company.taxCode = taxCode;
-        company.companySize = companySize;
-        company.website = website;
-        await company.save();
+        const update = await Company.update({
+            companyName, description, address, taxCode, companySize, website, field
+        }, {
+            where: { id: company.id }
+        })
 
         return res.status(200).json({ message: 'Cập nhật thông tin công ty thành công ', company})
     } catch (error) {

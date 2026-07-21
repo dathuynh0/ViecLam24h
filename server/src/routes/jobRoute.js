@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  getAllJobs,
   getJobById,
   createJob,
   updateJob,
@@ -71,7 +70,7 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/", getAllJobs);
+// router.get("/", getAllJobs);
 
 router.get('/featured', getFeaturedJob);
 

@@ -2,7 +2,7 @@ import express from 'express';
 import { 
     createCategory, 
     deleteCategory, 
-    getAllCategory, 
+    getAllCategoryAdmin, 
     updateCategory 
 } from '../controllers/categoryJobController.js';
 import {
@@ -23,7 +23,7 @@ import {
     activeJob,
     createJobAdmin, 
     deleteJob, 
-    getAllJobs, 
+    getAllJobAdmin,
     rejectJob
 } from '../controllers/jobController.js';
 
@@ -39,7 +39,7 @@ import {
 const router = express.Router();
 
 // category job
-router.get('/categories', authMiddleware, isAdmin, getAllCategory);
+router.get('/categories', authMiddleware, isAdmin, getAllCategoryAdmin);
 router.post('/categories', authMiddleware, isAdmin, createCategory);
 router.put('/categories/:categoryId', authMiddleware, isAdmin, updateCategory);
 router.delete('/categories/:categoryId', authMiddleware, isAdmin, deleteCategory);
@@ -60,7 +60,7 @@ router.delete('/companies/:companyId', authMiddleware, isAdmin, deleteCompany);
 
 
 // jobs
-router.get('/jobs', authMiddleware, isAdmin, getAllJobs);
+router.get('/jobs', authMiddleware, isAdmin, getAllJobAdmin);
 router.post('/jobs', authMiddleware, isAdmin, createJobAdmin);
 router.patch('/jobs/:jobId/active', authMiddleware, isAdmin, activeJob);
 router.patch('/jobs/:jobId/reject', authMiddleware, isAdmin, rejectJob);

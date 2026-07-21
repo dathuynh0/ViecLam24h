@@ -9,23 +9,24 @@ import { salaryRange } from '../utils/filter.js';
 
 // GET /api/jobs
 // Xem danh sách bài đăng tuyển dụng
-export const getAllJobs = async (req, res) => {
+export const getAllJobAdmin = async (req, res) => {
   try {
     const page = req.query.page || 1;
-    const limit = 12;
+    const limit = 8;
     const offset = (page - 1) * limit;
 
-    const { count, rows: jobs } = await Job.findAndCountAll({ where: { 
-      expiredAt: {
-        [Op.gt]: new Date()
-      },
-      status: 'active'
-    },
+    const status = req.query.status;
+    const where = {};
+    if (status && status !== 'all') {
+      where.status = status;
+    }
+
+    const { count, rows: jobs } = await Job.findAndCountAll({ where,
       include: [
         {
           model: Company,
           as: "createdBy",
-          attributes: ["id", "companyName", "address", "status", "companySize"]
+          attributes: ["id", "companyName"]
         },
         {
           model: CategoryJob,
@@ -33,12 +34,17 @@ export const getAllJobs = async (req, res) => {
           attributes: ['id', 'title', 'slug']
         }
       ],
+      limit,
+      offset,
       order: [["createdAt", "DESC"]]
     });
 
+    const totalPage = Math.ceil(count / limit);
+
     return res.status(200).json({
       message: "Lấy danh sách bài đăng thành công",
-      data: jobs
+      jobs,
+      totalPage
     });
   } catch (error) {
     return res.status(500).json({
@@ -544,7 +550,7 @@ export const rejectJob = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
     }
 
-    if(job.status !== 'reject') {
+    if(job.status !== 'pending') {
       return res.status(400).json({ message: 'Bài đăng đã được duyệt'});
     }
 
