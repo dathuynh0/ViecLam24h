@@ -7,6 +7,11 @@ export const useAdminStore = create((set, get) => ({
     totalPageCategory: null,
     jobs: [],
     totalPageJob: null,
+    applications: [],
+    companies: [],
+    totalPageCompany: null,
+    candidates: [],
+    totalPageCandidate: null,
     adminLoading: false,
 
     getAllCategory: async (page) => {
@@ -93,6 +98,149 @@ export const useAdminStore = create((set, get) => ({
         } catch (error) {
             console.error('Lỗi khi gọi api deleteJob ', error)
             toast.error('Xóa bài đăng tuyển dụng thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    getApplicationByJob: async (jobId) => {
+        try {
+            set({ adminLoading: true });
+            
+            const { applications } = await adminService.getApplicationByJob(jobId);
+            set({ applications });
+        } catch (error) {
+            console.error('Lỗi khi gọi api getApplicationByJob ', error);
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    getAllCompany: async (query) => {
+        try {
+            set({ adminLoading: true });
+
+            const { company, totalPage } = await adminService.getAllCompany(query);
+
+            set({ companies: company, totalPageCompany: totalPage })
+        } catch (error) {
+            console.error('Lỗi khi gọi API getAllCompany ', error);
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    rejectCompany: async (companyId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.rejectCompany(companyId);
+            const { getAllCompany } = useAdminStore.getState();
+            await getAllCompany();
+
+            toast.success('Từ chối duyệt thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi api rejectCompany ', error)
+            toast.error('Từ chối duyệt thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    activeCompany: async (companyId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.activeCompany(companyId);
+            const { getAllCompany } = useAdminStore.getState();
+            await getAllCompany();
+
+            toast.success('Duyệt công ty thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi api activeCompany ', error)
+            toast.error('Duyệt công ty thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    deleteCompany: async (companyId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.deleteCompany(companyId);
+            const { getAllCompany } = useAdminStore.getState();
+            await getAllCompany();
+
+            toast.success('Xóa công ty thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi api deleteCompany ', error)
+            toast.error('Xóa công ty thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+
+    getAllCandidate: async (query) => {
+        try {
+            set({ adminLoading: true });
+
+            const { candidates, totalPage } = await adminService.getAllCandidate(query);
+            set({ candidates, totalPageCandidate: totalPage });
+        } catch (error) {
+            console.error('Lỗi khi gọi API getAllCandidate ', error);
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    activeCandidate: async (candidateId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.activeCandidate(candidateId);
+            const { getAllCandidate } = useAdminStore.getState();
+            await getAllCandidate();
+
+            toast.success('Mở khóa tài khoản thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API activeCandidate ', error);
+            toast.error('Mở khóa tài khoản thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    blockLoginCandidate: async (candidateId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.blockLoginCandidate(candidateId);
+            const { getAllCandidate } = useAdminStore.getState();
+            await getAllCandidate();
+
+            toast.success('Khóa tài khoản thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API blockLoginCandidate ', error);
+            toast.error('Khóa tài khoản thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    deleteCandidate: async (candidateId) => {
+        try {
+            set({ adminLoading: true });
+
+            await adminService.deleteCandidate(candidateId);
+            const { getAllCandidate } = useAdminStore.getState();
+            await getAllCandidate();
+
+            toast.success('Xóa tài khoản thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API deleteCandidate ', error);
+            toast.error('Xóa tài khoản thất bại')
         } finally {
             set({ adminLoading: false });
         }

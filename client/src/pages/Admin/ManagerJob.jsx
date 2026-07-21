@@ -1,6 +1,6 @@
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { useAdminStore } from '@/stores/useAdminStore'
-import { Check, Edit, Eye, Filter, Trash, X } from 'lucide-react';
+import { Check, Eye, Filter, Trash, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router';
 import { formatDateForInput } from '@/lib/formatJsonB'
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import ReviewJob from '@/components/ManagerJob/ReviewJob';
 import { AnimatePresence, motion } from 'framer-motion';
+import ViewApplicationByJob from '@/components/ManagerJob/ViewApplicationByJob';
 
 const FIELD_STATUS = [
   {
@@ -27,10 +28,11 @@ const FIELD_STATUS = [
 ]
 
 const ManagerJob = () => {
-  const { adminLoading, jobs, totalPageJob, getAllJob, rejectJob, activeJob } = useAdminStore();
+  const { jobs, totalPageJob, getAllJob, rejectJob, activeJob } = useAdminStore();
 
   const [openReview, setOpenReview] = useState(null);
   const [openDeleteJob, setOpenDeleteJob] = useState(null);
+  const [openViewApplication, setOpenViewApplication] = useState(null)
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
@@ -39,7 +41,7 @@ const ManagerJob = () => {
   useEffect(() => {
     getAllJob({ page, status });
   }, [page, status])
-
+  
 
   const handleChangePage = (newPage) => {
     if (newPage < 1 || newPage > totalPageJob) return;
@@ -59,9 +61,6 @@ const ManagerJob = () => {
     });
   };
 
-  if (adminLoading) {
-    return <Loading />
-  }
   
 
   return (
@@ -70,7 +69,7 @@ const ManagerJob = () => {
         <h1 className='text-lg font-bold'>Quản lý bài đăng</h1>
         <div className='flex items-center gap-3'>
           <p className='flex items-center gap-2 text-sm'><Filter className='h-5 w-5'/> Bộ lọc trạng thái: </p>
-          <NativeSelect value={status} onChange={(e) => handleChangeStatus(e.target.value)}>
+          <NativeSelect onChange={(e) => handleChangeStatus(e.target.value)}>
             {
               FIELD_STATUS.map(f => 
                 <NativeSelectOption key={f.value} value={f.value}>{f.field}</NativeSelectOption>
@@ -86,6 +85,7 @@ const ManagerJob = () => {
             <th className='p-3 border-b'>Tên công việc</th>
             <th className='p-3 border-b'>Được tạo bởi</th>
             <th className='p-3 border-b'>Ngày tạo</th>
+            <th className='p-3 border-b'>Xem ứng viên</th>
             <th className='p-3 border-b'>Trạng thái</th>
             <th className='p-3 border-b'>Hành động</th>
           </tr>
@@ -117,6 +117,12 @@ const ManagerJob = () => {
 
                 <td className='p-3'>
                   {formatDateForInput(j?.createdAt)}
+                </td>
+
+                <td className='p-3'>
+                  <Button className={`text-muted-foreground hover:underline`} variant='ghost' onClick={() => setOpenViewApplication(j)}>
+                    Xem ứng viên
+                  </Button>
                 </td>
 
                 <td>
@@ -190,6 +196,7 @@ const ManagerJob = () => {
 
       <ReviewJob isOpen={openReview} onClose={() => setOpenReview(null)}/>
       <PopupDeleteJob open={openDeleteJob} onClose={() => setOpenDeleteJob(null)}/>
+      <ViewApplicationByJob isOpen={openViewApplication} onClose={() => setOpenViewApplication(null)}/>
     </div>
   )
 }

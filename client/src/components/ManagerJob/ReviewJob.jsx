@@ -17,7 +17,7 @@ const ReviewJob = ({ isOpen, onClose }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        />
+                    />
                         <div className="fixed flex inset-0 z-20 items-center justify-center">
                             <motion.div className="bg-white shadow-lg max-w-3xl max-h-[85vh] p-8 rounded-lg overflow-y-auto space-y-4"
                                 initial={{ opacity: 0 }}
