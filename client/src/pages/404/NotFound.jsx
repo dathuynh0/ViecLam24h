@@ -3,12 +3,24 @@ import not_found from '@/assets/404.png'
 import { Button } from '@/components/ui/button'
 import { Home } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const NotFound = () => {
   const navigate = useNavigate();
+  const user = useAuthStore(s => s.user)
 
   const handleReturnHome = () => {
-    navigate('/')
+    if (user?.role === 'admin') {
+      navigate('/quan-tri')
+    }
+    
+    if (user?.role === 'company') {
+      navigate('/nha-tuyen-dung')
+    }
+
+    if (user?.role === 'candidate') {
+      navigate('/')
+    }
   }
 
   return (

@@ -44,7 +44,7 @@ const ProtectedRoute = () => {
     if (pathname.startsWith('/nha-tuyen-dung') && user?.role !== 'company') {
         return <Navigate to="/404" replace />;
     }
-    if (pathname.startsWith('/admin') && user?.role !== 'admin') {
+    if (pathname.startsWith('/quan-tri') && user?.role !== 'admin') {
         return <Navigate to="/404" replace />;
     }
     if(!pathname.includes('/nha-tuyen-dung') && user?.role == 'company') {

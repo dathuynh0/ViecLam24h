@@ -5,6 +5,7 @@ import CreateJob from './CreateJob'
 import CompanyLayout from '@/Layout/CompanyLayout'
 import MyCompany from './MyCompany'
 import ManagerJob from './ManagerJob'
+import NotFound from '../404/NotFound'
 
 const Main = () => {
   return (
@@ -15,6 +16,8 @@ const Main = () => {
             <Route path='quan-ly-bai-dang' element={<ManagerJob />}/>
             <Route path='cong-ty' element={<MyCompany />}/>
         </Route>
+
+        <Route path='*' element={<NotFound />}/>
     </Routes>
   )
 }

@@ -44,7 +44,7 @@ function NavBar() {
                     <ListItem 
                         key={category.title} 
                         title={category.title}
-                        href={category.slug}></ListItem>
+                        href={`danh-muc/${category.slug}`}></ListItem>
                   ))}
                 </ul>
               </NavigationMenuContent>

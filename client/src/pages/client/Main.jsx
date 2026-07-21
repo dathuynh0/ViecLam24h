@@ -9,14 +9,15 @@ import CompanyPage from './CompanyPage'
 import PrivateRoute from './PrivateRoute'
 import Profile from './Profile'
 import Application from './Application'
+import NotFound from '../404/NotFound'
 
 const Main = () => {
   return (
     <Routes>
-        <Route element={<MainLayOut />}>
+        <Route path='/' element={<MainLayOut />}>
             <Route index element={<HomePage />} />
             <Route path='viec-lam/:slug' element={<JobDetail />} />
-            <Route path=":slug" element={<CategoryJob />} />
+            <Route path="danh-muc/:slug" element={<CategoryJob />} />
             <Route path="tim-kiem" element={<SearchJobPage /> } />
             <Route path="cong-ty/:slug" element={<CompanyPage /> } />
             <Route element={<PrivateRoute /> }>
@@ -24,6 +25,8 @@ const Main = () => {
                 <Route path="lich-su-ung-tuyen" element={<Application />} />
             </Route>
         </Route>
+
+        <Route path='*' element={<NotFound />}/>
     </Routes>
   )
 }

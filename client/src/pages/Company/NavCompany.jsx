@@ -23,8 +23,8 @@ export default function NavCompany({ user }) {
   const signOut = useAuthStore((state) => state.signOut)
   const navigate = useNavigate();
 
-  const displayName = user?.companyName
-  const avatarUrl = `${import.meta.env.VITE_BACKEND_URL}/${user?.logoUrl}`;
+  const displayName = user?.companyName || user?.fullName;
+  const avatarUrl = `${import.meta.env.VITE_BACKEND_URL}/${user?.logoUrl || user?.avatarUrl}`;
 
   const handleLogout = async () => {
     await signOut();

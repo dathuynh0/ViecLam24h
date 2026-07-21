@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import NotFound from "./pages/404/NotFound"
 import Main from "./pages/Client/Main"
 import MainCompany from './pages/Company/Main'
+import MainAdmin from './pages/Admin/Main'
 
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
 
           {/* Company Route */}
           <Route path="/nha-tuyen-dung/*" element={<MainCompany />} />
+
+          {/* Admin */}
+          <Route path="/quan-tri/*" element={<MainAdmin />}/>
         </Route>
 
         <Route path="/signup" element={<Signup/>} />
