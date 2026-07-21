@@ -286,7 +286,7 @@ const rejectCompany = async (req, res) => {
 
 const deleteCompany = async (req, res) => {
     try {
-        const { companyId } = req.body;
+        const { companyId } = req.params;
 
         const company = await Company.findByPk(companyId);
         if(!company) {
@@ -298,6 +298,34 @@ const deleteCompany = async (req, res) => {
         return res.status(200).json({ message: 'Xóa công ty thành công ', company });
     } catch (error) {
         console.log('Lỗi khi gọi hàm deleteCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const getAllCompanyByAdmin = async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const limit = 8;
+        const offset = (page - 1) * limit;
+        const status = req.query.status;
+
+        const where = {};
+        if (status && status !== 'all') {
+            where.status = status
+        }
+
+        const { count, rows: company } = await Company.findAndCountAll({
+            where,
+            limit: limit,
+            offset: offset,
+            order: [['createdAt', 'DESC']]
+        });
+
+        const totalPage = Math.ceil(count / limit)
+
+        return res.status(200).json({message: "Lấy dữ liệu thành công ", page, totalPage, company})
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm getAllCompany: ', error);
         return res.status(500).json({ message: "Lỗi server" });
     }
 }
@@ -315,5 +343,6 @@ export {
     updateLogoMyCompany,
     followCompany,
     countFollow,
-    unFollow
+    unFollow,
+    getAllCompanyByAdmin
 }

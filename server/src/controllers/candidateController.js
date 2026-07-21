@@ -118,23 +118,51 @@ const deleteSaveJob = async (req, res) => {
 const getAllCandidate = async (req, res) => {
     try {
         const page = req.query.page || 1;
-        const limit = 12;
-
+        const limit = 8;
         const offset = (page - 1) * limit;
 
-        const { count, rows } = await Candidate.findAndCountAll({
+        const status = req.query.status;
+        const where = { role: 'candidate' };
+        if (status && status !== 'all') {
+            where.status = status;
+        }
+
+        const { count, rows: candidates } = await Candidate.findAndCountAll({
+            include: [
+                { model: User, as: 'user', where, attributes: { exclude: ['password'] } }
+            ],
+            attributes: { exclude: ['bio', 'skill'] },
             limit: limit,
             offset: offset
         });
         const totalPage = Math.ceil(count / limit)
 
         return res.status(200).json({ message: 'Lấy danh sách ứng viên thành công ',
-            page,
             totalPage,
-            candidates: rows
+            candidates
         })
     } catch (error) {
         console.error('Lỗi khi gọi hàm getAllCandidate: ', error);
+        return res.status(500).json({ message: 'Lỗi server '})
+    }
+}
+
+const activeCandidate = async (req, res) => {
+    try {
+        const { candidateId } = req.body;
+
+        const candidate = await Candidate.findByPk(candidateId);
+        if(!candidate) {
+            return res.status(404).json({ message: 'Không tìm thấy ứng viên' });
+        }
+
+        const user = await User.findByPk(candidate.userId);
+        user.status = 'active';
+        await user.save();
+
+        return res.status(200).json({ message: 'Active tài khoản thành công ', user})
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm activeCandidate: ', error);
         return res.status(500).json({ message: 'Lỗi server '})
     }
 }
@@ -178,6 +206,7 @@ const deleteCandidate = async (req, res) => {
 }
 
 export {
+    activeCandidate,
     updateAvatar,
     updateCV,
     updateMyProfile,

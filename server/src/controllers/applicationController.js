@@ -112,7 +112,6 @@ export const getApplicationsByCandidate = async (req, res) => {
 export const getApplicationsByJob = async (req, res) => {
   try {
     const { jobId } = req.params;
-    const company = req.user.company;
 
     const job = await Job.findByPk(jobId);
     if (!job) {

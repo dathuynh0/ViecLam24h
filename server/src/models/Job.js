@@ -103,7 +103,7 @@ const Job = sequelize.define("Job", {
 
 // job n - 1 company
 Job.belongsTo(Company, { foreignKey: 'companyId', as: 'createdBy', onDelete: 'CASCADE' })
-Company.hasMany(Job, { foreignKey: 'companyId', as: 'job' })
+Company.hasMany(Job, { foreignKey: 'companyId', as: 'job', onDelete: 'CASCADE' })
 
 // job 1 - N categoryJob
 Job.belongsTo(CategoryJob, { foreignKey: 'categoryId', as: 'category'})
