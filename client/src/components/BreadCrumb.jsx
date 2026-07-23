@@ -17,7 +17,7 @@ const BreadCrumb = ({ parent, currentPage }) => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href={`/${parent?.slug}`}>{parent?.title}</BreadcrumbLink>
+          <BreadcrumbLink href={`/danh-muc/${parent?.slug}`}>{parent?.title}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

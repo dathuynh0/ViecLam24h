@@ -3,6 +3,7 @@ import Company from '@/components/JobDetail/Company';
 import Content from '@/components/JobDetail/Content';
 import JobHeader from '@/components/JobDetail/JobHeader';
 import JobInformation from '@/components/JobDetail/JobInformation';
+import RelatedJob from '@/components/JobDetail/RelatedJob';
 import Loading from '@/components/Loading';
 import SearchJob from '@/components/SearchJob';
 import { useJobStore } from '@/stores/useJobStore';
@@ -21,9 +22,9 @@ const JobDetail = () => {
         document.title = `${jobDetail?.createdBy?.companyName} - ${jobDetail?.title}`
     }, [jobDetail])
 
-    if(jobLoading) {
-        return <Loading /> 
-    }
+    // if(jobLoading) {
+    //     return <Loading /> 
+    // }
     
   return (
     <div className=''>
@@ -43,6 +44,7 @@ const JobDetail = () => {
           <div className='hidden md:block py-4 md:py-0 md:col-span-4 md:ml-4 space-y-4'>
               <Company job={jobDetail}/>
               <JobInformation job={jobDetail}/>
+              <RelatedJob job={jobDetail}/>
           </div>
         </div>
       </div>

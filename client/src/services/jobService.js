@@ -109,5 +109,11 @@ export const jobService = {
         const response = await api.delete(`/jobs/${jobId}`, { withCredentials: true });
 
         return response.data;
+    },
+
+    getRelatedJob: async (jobId) => {
+        const response = await api.get(`/jobs/${jobId}/related`, { withCredentials: true });
+
+        return response.data;
     }
 }

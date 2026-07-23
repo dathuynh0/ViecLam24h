@@ -8,6 +8,7 @@ export const useJobStore = create((set, get) => ({
     jobOfCategory: [],
     searchJob: [],
     jobCreated: [],
+    relatedJob: [],
     jobLoading: false,
 
     getFeaturedJob: async () => {
@@ -180,6 +181,19 @@ export const useJobStore = create((set, get) => ({
         } catch (error) {
             console.error('Lỗi khi gọi API deleteJob ', error);
             toast.error('Xóa bài đăng thất bại')
+        } finally {
+            set({ jobLoading: false });
+        }
+    },
+
+    getRelatedJob: async (jobId) => {
+        try {
+            set({ jobLoading: true });
+
+            const { relatedJobs } = await jobService.getRelatedJob(jobId);
+            set({ relatedJob: relatedJobs })
+        } catch (error) {
+            console.error('Lỗi khi gọi API getRelatedJob ', error);
         } finally {
             set({ jobLoading: false });
         }
