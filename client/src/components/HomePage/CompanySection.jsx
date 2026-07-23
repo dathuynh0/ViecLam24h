@@ -18,7 +18,7 @@ const CompanySection = () => {
     }
     
   return (
-    <div className='py-18'>
+    <div className='max-w-[1200px] mx-auto py-16'>
         <div className='flex items-center justify-between'>
             <div className='space-y-2'>
                 <h2 className='font-bold text-3xl'>Đối tác <span className='text-green-700'>chiến lược</span></h2>

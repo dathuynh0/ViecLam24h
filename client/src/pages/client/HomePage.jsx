@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import HeroSection from '@/components/HomePage/HeroSection'
 import CompanySection from '@/components/HomePage/CompanySection'
 import FeaturedJob from '@/components/HomePage/FeaturedJob'
+import Category from '@/components/HomePage/Category'
+import Hotline from '@/components/HomePage/Hotline'
 
 const HomePage = () => {
   useEffect(() => {
@@ -9,10 +11,12 @@ const HomePage = () => {
   }, [])
 
   return (
-    <div className='max-w-[1200px] mx-auto px-4 lg:px-12 lg:py-12'>
+    <div className='lg:py-12'>
       <HeroSection />
       <FeaturedJob />
       <CompanySection />
+      <Category />
+      <Hotline />
     </div>
   )
 }
