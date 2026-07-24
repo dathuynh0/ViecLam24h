@@ -326,6 +326,10 @@ export const createJob = async (req, res) => {
       return res.status(400).json({ message: 'Tiêu đề bài đăng tuyển đã tồn tại '});
     }
 
+    if (salaryMax < salaryMin) {
+      return res.status(400).json({ message: 'Lương tối đa không được nhỏ hơn lương tối thiểu' })
+    }
+
     const job = await Job.create({
       companyId: company.id,
       categoryId,
@@ -392,6 +396,10 @@ export const updateJob = async (req, res) => {
     const updateData = {};
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) updateData[field] = req.body[field];
+    }
+
+    if (allowedFields.salaryMax < allowedFields.salaryMin) {
+      return res.status(400).json({ message: 'Lương tối đa không được nhỏ hơn lương tối thiểu' })
     }
 
     updateData.categoryId = req.body.categoryId;
@@ -589,6 +597,72 @@ export const getJobCreated = async (req, res) => {
     })
   } catch (error) {
     console.error('Lỗi khi gọi hàm getJobCreated ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}
+
+export const getRelatedJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const limit = 8;
+
+    // 1. Lấy job hiện tại để biết categoryId
+    const currentJob = await Job.findByPk(jobId, {
+      attributes: ["id", "categoryId"],
+    });
+
+    if (!currentJob) {
+      return res.status(404).json({ message: "Không tìm thấy việc làm" });
+    }
+
+    // 2. Ưu tiên: cùng danh mục 
+    let relatedJobs = await Job.findAll({
+      where: {
+        id: { [Op.ne]: currentJob.id },
+        categoryId: currentJob.categoryId,
+        status: "active",
+        expiredAt: {
+          [Op.gt]: new Date()
+        }
+      },
+      include: [
+        {
+          model: Company, as: 'createdBy',
+          attributes: ["id", "companyName", "logoUrl", "slug"],
+        }
+      ],
+      order: [
+        ["createdAt", "DESC"],
+      ],
+      limit,
+      subQuery: false,
+    });
+
+    // 3. Nếu không đủ số lượng
+    if (relatedJobs.length < limit) {
+      const excludeIds = [currentJob.id, ...relatedJobs.map((j) => j.id)];
+
+      const fallbackJobs = await Job.findAll({
+        where: {
+          id: { [Op.notIn]: excludeIds },
+          status: "active",
+          expiredAt: {
+            [Op.gt]: new Date()
+          }
+        },
+        include: [
+          { model: Company, as: 'createdBy', attributes: ["id", "companyName", "logoUrl", "slug"] }
+        ],
+        order: [["createdAt", "DESC"]],
+        limit: limit - relatedJobs.length,
+      });
+
+      relatedJobs = [...relatedJobs, ...fallbackJobs];
+    }
+
+    return res.status(200).json({ message: "Lấy việc làm liên quan thành công", relatedJobs });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm getRelatedJob ', error);
     return res.status(500).json({ message: 'Lỗi server' });
   }
 }

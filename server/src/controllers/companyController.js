@@ -6,20 +6,31 @@ import Follow from "../models/Follow.js";
 const getAllCompany = async (req, res) => {
     try {
         const page = req.query.page || 1;
-        const limit = 12;
+        const limit = 18;
         const offset = (page - 1) * limit;
+        const { name } = req.query;
+        const where = {
+            status: 'active'
+        }
+        if (name) {
+            where.companyName = { [Op.iLike]: `%${name}%` }
+        }
+
 
         const { count, rows } = await Company.findAndCountAll({
-            where: {
-                status: 'active'
-            },
+            where,
+            include: [
+                {
+                    model: Job, as: 'job', attributes: ['id']
+                }
+            ],
             limit: limit,
             offset: offset
         });
 
         const totalPage = Math.ceil(count / limit)
 
-        return res.status(200).json({message: "Lấy dữ liệu thành công ", page, totalPage, company: rows})
+        return res.status(200).json({message: "Lấy dữ liệu thành công ", totalPage, company: rows})
     } catch (error) {
         console.log('Lỗi khi gọi hàm getAllCompany: ', error);
         return res.status(500).json({ message: "Lỗi server" });
@@ -54,7 +65,7 @@ const getFeaturedCompany = async (req, res) => {
             order: [
                 [Sequelize.literal('"followerCount"'), 'DESC']
             ],
-            subQuery: false, // bắt buộc khi có limit + include (tránh lỗi order theo cột không nằm trong subquery)
+            //subQuery: false, // bắt buộc khi có limit + include (tránh lỗi order theo cột không nằm trong subquery)
             limit: 9
         });
 

@@ -8,7 +8,8 @@ import {
   getJobBySlug,
   getJobByCategory,
   searchJob,
-  getJobCreated
+  getJobCreated,
+  getRelatedJob
 } from "../controllers/jobController.js";
 
 import {
@@ -77,6 +78,8 @@ router.get('/featured', getFeaturedJob);
 router.get('/:slug/slug', getJobBySlug);
 
 router.get('/:slug/category', getJobByCategory);
+
+router.get('/:jobId/related', getRelatedJob)
 
 router.get('/search', searchJob);
 
