@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { format, transformText, formatDateForInput } from "@/lib/formatJsonB";
+import { format, transformText, formatDate } from "@/lib/formatJsonB";
 import { useJobStore } from "@/stores/useJobStore";
 import { toast } from "sonner";
 
@@ -93,7 +93,7 @@ const EditJob = ({ job, isOpen, onClose, categories}) => {
         workType: job?.workType || 'full_time',
         workArrangement: job?.workArrangement || 'on_site',
         quantity: job?.quantity || 1,
-        expiredAt: formatDateForInput(job?.expiredAt)
+        expiredAt: formatDate(job?.expiredAt)
       })
     }
   }, [job, reset])
@@ -276,8 +276,7 @@ const EditJob = ({ job, isOpen, onClose, categories}) => {
                               {...register('workTime')}
                               id="workTime"
                               name="workTime"
-                              placeholder="Thời gian làm việc. VD: Thứ 2 - Thứ 6 
-                                                                  08:30 - 17:30"
+                              placeholder="Thời gian làm việc. VD: Thứ 2 - Thứ 6 (7h - 17h)"
                           />
                       </div>
                   </div>

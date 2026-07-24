@@ -80,7 +80,7 @@ export function LoginForm({
               <Field>
                 <Button variant="ghost" className='text-white bg-green-800' type="submit">Đăng nhập</Button>
                 <Button variant="outline" type="button">
-                  <IconGoogle/>Đăng nhập với Google
+                  <IconGoogle/>Tiếp tục với Google
                 </Button>
                 <FieldDescription className="text-center">
                   Bạn chưa có mật khẩu? <a href="/signup">Đăng ký</a>

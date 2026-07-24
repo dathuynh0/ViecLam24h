@@ -7,6 +7,8 @@ export const useCompanyStore = create((set, get) => ({
     featuredCompany: [],
     company: null,
     follows: [],
+    companies: [],
+    totalPageCompany: null,
     companyLoading: false,
 
     getFeaturedCompany: async () => {
@@ -107,6 +109,19 @@ export const useCompanyStore = create((set, get) => ({
         } catch (error) {
             console.error('Lỗi khi goi API updateLogo ', error);
             toast.error('Cập nhập logo công ty thất bại')
+        } finally {
+            set({ companyLoading: false });
+        }
+    },
+
+    getAllCompany: async (query) => {
+        try {
+            set({ companyLoading: true });
+
+            const { totalPage, company } = await companyService.getAllCompany(query);
+            set({ totalPageCompany: totalPage, companies: company });
+        } catch (error) {
+            console.error('Lỗi khi gọi API getAllCompany ', error);
         } finally {
             set({ companyLoading: false });
         }

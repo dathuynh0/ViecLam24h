@@ -10,6 +10,7 @@ import PrivateRoute from './PrivateRoute'
 import Profile from './Profile'
 import Application from './Application'
 import NotFound from '../404/NotFound'
+import ListCompany from './ListCompany'
 
 const Main = () => {
   return (
@@ -19,6 +20,7 @@ const Main = () => {
             <Route path='viec-lam/:slug' element={<JobDetail />} />
             <Route path="danh-muc/:slug" element={<CategoryJob />} />
             <Route path="tim-kiem" element={<SearchJobPage /> } />
+            <Route path='cong-ty' element={<ListCompany />}/>
             <Route path="cong-ty/:slug" element={<CompanyPage /> } />
             <Route element={<PrivateRoute /> }>
                 <Route path="ho-so" element={<Profile />} />

@@ -106,7 +106,7 @@ export function SignupForm({
               <Field>
                 <Button variant="ghost" className='bg-green-800 text-white cursor-pointer' type="submit">Tạo tài khoản</Button>
                 <Button variant="outline" type="button">
-                  <IconGoogle />Đăng ký với Google
+                  <IconGoogle />Tiếp tục với Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
                   Bạn đã có tài khoản? <a href="/signin">Đăng nhập</a>

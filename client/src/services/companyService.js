@@ -48,5 +48,11 @@ export const companyService = {
         const response = await api.patch('/companies/logo', formData, { withCredentials: true });
 
         return response.data;
+    },
+
+    getAllCompany: async (query) => {
+        const response = await api.get(`/companies/`, { params: query, withCredentials: true });
+
+        return response.data;
     }
 }

@@ -50,10 +50,7 @@ function NavBar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem className="hidden md:flex">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link to={`/cong-ty`}>Nhà tuyển dụng</Link>}/>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link to="/tin-tuc">Tin tức</Link>} />
+              <NavigationMenuLink className={navigationMenuTriggerStyle()} render={<Link to={`/cong-ty`}>Danh sách công ty</Link>}/>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
