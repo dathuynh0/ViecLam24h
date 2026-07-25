@@ -2,6 +2,8 @@ import { Op, where, Sequelize } from "sequelize";
 import Company from "../models/Company.js";
 import Job from "../models/Job.js";
 import Follow from "../models/Follow.js";
+import fs from 'fs/promises'
+import path from 'path'
 
 const getAllCompany = async (req, res) => {
     try {
@@ -19,11 +21,20 @@ const getAllCompany = async (req, res) => {
 
         const { count, rows } = await Company.findAndCountAll({
             where,
-            include: [
-                {
-                    model: Job, as: 'job', attributes: ['id']
-                }
-            ],
+            attributes: {
+                include: [
+                    [
+                        Sequelize.literal(`(
+                            SELECT COUNT(*)
+                            FROM "Jobs" AS job
+                            WHERE job."companyId" = "Company"."id"
+                            AND job."status" = 'active' AND job."expiredAt" > NOW()
+                        )`),
+                        'jobCount'
+                    ]
+                ]
+            },
+            order: [['jobCount', 'DESC']],
             limit: limit,
             offset: offset
         });
@@ -129,8 +140,14 @@ const updateLogoMyCompany = async (req, res) => {
     try {
         const company = req.user.company;
 
+        const oldLogoPath = company.logoUrl;
+
         company.logoUrl = req.file.path;
         await company.save();
+
+        if (oldLogoPath) {
+            await fs.unlink(path.resolve(oldLogoPath))
+        }
 
         return res.status(200).json({ message: 'Cập nhật logo thành công ', company});
     } catch (error) {

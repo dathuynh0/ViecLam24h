@@ -185,10 +185,45 @@ const refreshToken = async (req, res) => {
     }
 }
 
+const googleCallback = async (req, res) => {
+    try {
+        const user = req.user; // Passport gắn user vào req.user
+
+        const accessToken = jwt.sign(
+            { userId: user.id },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '1d' }
+        );
+
+        // lưu refresh token
+        const refreshToken = crypto.randomBytes(64).toString('hex');
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: REFRESH_TOKEN_TTL
+        })
+
+        await Session.create({
+            userId: user.id,
+            refreshToken,
+            expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL)
+        })
+
+        res.redirect(
+            `${process.env.CLIENT_URL}/oauth?accessToken=${accessToken}`
+        );
+    } catch (error) {
+        console.error('Lỗi khi gọi hàm googleCallback: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
 
 export {
     signUp,
     signIn,
     signOut,
-    refreshToken
+    refreshToken,
+    googleCallback
 }

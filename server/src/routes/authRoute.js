@@ -3,8 +3,10 @@ import {
     signUp, 
     signIn, 
     signOut, 
-    refreshToken 
+    refreshToken,
+    googleCallback
 } from '../controllers/authController.js';
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -12,5 +14,15 @@ router.post('/signup', signUp);
 router.post('/signin', signIn);
 router.post('/signout', signOut);
 router.post('/refresh', refreshToken);
+
+// google auth
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email'], 
+    session: false
+}))
+
+router.get('/google/callback', passport.authenticate('google', {
+    session: false
+}), googleCallback)
 
 export default router;

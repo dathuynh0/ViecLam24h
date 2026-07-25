@@ -12,9 +12,12 @@ import companyRoutes from "./routes/companyRoute.js"
 import jobRoutes from "./routes/jobRoute.js";
 import applicationRoutes from "./routes/applicationRoute.js";
 
+import passport from './config/passport.js';
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.use(passport.initialize());
 app.use(express.json());
 app.use(cookieParser());
 app.use("/public/uploads" ,express.static('public/uploads'));

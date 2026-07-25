@@ -15,8 +15,8 @@ import {
 
 const router = express.Router();
 
-router.put('/avatar', avatar.single('avatar'), authMiddleware, updateAvatar);
-router.put('/cv', cv.single('cv'), authMiddleware, updateCV);
+router.patch('/avatar', avatar.single('avatar'), authMiddleware, updateAvatar);
+router.patch('/cv', cv.single('cv'), authMiddleware, updateCV);
 router.put('/me', authMiddleware, updateMyProfile);
 
 //saveJob

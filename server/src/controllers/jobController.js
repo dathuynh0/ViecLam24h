@@ -129,7 +129,7 @@ export const getJobByCategory = async (req, res) => {
 
       const offset = (page - 1) * limit;
 
-      const where = { status: 'active' };
+      const where = { status: 'active', expiredAt: { [Op.gt]: new Date() } };
       const companyWhere = {};
       if(work_type && work_type !== 'all') {
         where.workType = work_type;
@@ -196,7 +196,7 @@ export const searchJob = async (req, res) => {
     const { name, location, salary, field, work_type, work_arrangement } = req.query;
 
     const offset = (page - 1) * limit;
-    const whereJob = { status: 'active' };
+    const whereJob = { status: 'active', expiredAt: { [Op.gt]: new Date() } };
 
     if (name) {
       whereJob.title = { [Op.iLike]: `%${name}%` };

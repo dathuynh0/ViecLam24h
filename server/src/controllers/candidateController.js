@@ -2,14 +2,22 @@ import Candidate from '../models/Candidate.js';
 import Job from '../models/Job.js';
 import JobSave from '../models/JobSave.js';
 import User from '../models/User.js';
+import fs from 'fs/promises'
+import path from 'path'
 
 const updateAvatar = async (req, res) => {
     try {
         const candidate = req.user.candidate;
         const file = req.file;
 
+        const oldAvatarPath = candidate.avatarUrl;
+
         candidate.avatarUrl = file.path;
         await candidate.save();
+
+        if (oldAvatarPath) {
+            await fs.unlink(path.resolve(oldAvatarPath));
+        }
 
         return res.status(200).json({ message: 'Cập nhật avatar thành công', candidate})
     } catch (error) {
@@ -22,8 +30,14 @@ const updateCV = async (req, res) => {
     try {
         const candidate = req.user.candidate;
 
+        const oldCVPath = candidate.cvUrl;
+
         candidate.cvUrl = req.file.path;
         await candidate.save();
+
+        if (oldCVPath) {
+            await fs.unlink(path.resolve(oldCVPath))
+        }
 
         return res.status(200).json({ message: 'Tải CV lên thành công ', candidate })
     } catch (error) {
