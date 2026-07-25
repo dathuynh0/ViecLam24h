@@ -53,6 +53,10 @@ export function SignupForm({
     navigate('/signin')
   }
 
+  const loginGoogle = () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`
+  }
+
   if (authLoading) {
     return <Loading />
   }
@@ -105,7 +109,7 @@ export function SignupForm({
             <FieldGroup>
               <Field>
                 <Button variant="ghost" className='bg-green-800 text-white cursor-pointer' type="submit">Tạo tài khoản</Button>
-                <Button variant="outline" type="button">
+                <Button onClick={loginGoogle} variant="outline" type="button">
                   <IconGoogle />Tiếp tục với Google
                 </Button>
                 <FieldDescription className="px-6 text-center">

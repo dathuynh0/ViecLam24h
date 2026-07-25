@@ -45,6 +45,10 @@ export function LoginForm({
     navigate('/')
   }
 
+  const loginGoogle = () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`
+  }
+
   if (authLoading) {
     return <Loading />
   }
@@ -79,7 +83,7 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button variant="ghost" className='text-white bg-green-800' type="submit">Đăng nhập</Button>
-                <Button variant="outline" type="button">
+                <Button onClick={loginGoogle} variant="outline" type="button">
                   <IconGoogle/>Tiếp tục với Google
                 </Button>
                 <FieldDescription className="text-center">

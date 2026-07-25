@@ -30,7 +30,7 @@ const Content = ({ user }) => {
             <ul className='space-y-4'>
                 {user?.bio.map((bio) => (
                     <li key={bio}>
-                        - {bio}
+                        {bio}
                     </li>
                 ))}
             </ul> : 

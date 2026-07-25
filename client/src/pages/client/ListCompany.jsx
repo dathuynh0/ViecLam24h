@@ -17,6 +17,10 @@ const ListCompany = () => {
         getAllCompany({ page, name });
     }, [page])
 
+    useEffect(() => {
+        document.title = 'Danh sách công ty'
+    }, [])
+
 
     const handleSearchJob = (e) => {
         e.preventDefault();
@@ -74,7 +78,7 @@ const ListCompany = () => {
                                             <div className='flex flex-wrap gap-2 mt-1'>
                                                 <Badge variant='ghost' className='bg-green-100 text-green-700'>{c?.field}</Badge>
                                                 <Badge variant='ghost' className='bg-green-100 text-green-700'>
-                                                    {c?.job.length} công việc đang tuyển
+                                                    {c?.jobCount} công việc đang tuyển
                                                 </Badge>
                                             </div>
                                         </div>

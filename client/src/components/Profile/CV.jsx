@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { FileBarChart2Icon } from 'lucide-react'
-import { Input } from '../ui/input'
 
 const CV = ({ user }) => {
   return (

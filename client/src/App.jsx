@@ -7,6 +7,7 @@ import NotFound from "./pages/404/NotFound"
 import Main from "./pages/Client/Main"
 import MainCompany from './pages/Company/Main'
 import MainAdmin from './pages/Admin/Main'
+import OAuth from "./pages/Client/OAuth"
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           {/* Admin */}
           <Route path="/quan-tri/*" element={<MainAdmin />}/>
         </Route>
+        <Route path="/oauth" element={<OAuth />}/>
 
         <Route path="/signup" element={<Signup/>} />
         <Route path="/signin" element={<Signin/>} />

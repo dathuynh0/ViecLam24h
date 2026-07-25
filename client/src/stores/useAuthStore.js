@@ -11,6 +11,12 @@ export const useAuthStore = create((set, get) => ({
         set({ user: null, accessToken: null });
     },
 
+    setAccessToken: async (token) => {
+        set({ accessToken: token });
+        const { fetchMe } = useAuthStore.getState();
+        await fetchMe();
+    },
+
     signUp: async (fullName, username, email, password, role) => {
         try {
             set({ authLoading: true })
