@@ -38,6 +38,7 @@ import {
     avatar
 } from '../config/multer.js'
 import { getApplicationsByJob } from '../controllers/applicationController.js';
+import { getDashboardStats } from '../controllers/adminController.js';
 
 const router = express.Router();
 
@@ -72,5 +73,9 @@ router.delete('/jobs/:jobId', authMiddleware, isAdmin, deleteJob);
 
 // application
 router.get('/applications/:jobId', authMiddleware, isAdmin, getApplicationsByJob);
+
+
+// dashboard
+router.get('/dashboard/stats', authMiddleware, isAdmin, getDashboardStats);
 
 export default router;
