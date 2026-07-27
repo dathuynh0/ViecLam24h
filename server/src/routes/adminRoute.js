@@ -74,8 +74,4 @@ router.delete('/jobs/:jobId', authMiddleware, isAdmin, deleteJob);
 // application
 router.get('/applications/:jobId', authMiddleware, isAdmin, getApplicationsByJob);
 
-
-// dashboard
-router.get('/dashboard/stats', authMiddleware, isAdmin, getDashboardStats);
-
 export default router;
