@@ -11,11 +11,11 @@ const HomePage = () => {
   }, [])
 
   return (
-    <div className='lg:py-12'>
+    <div className='p-4 md:p-0 lg:py-12'>
       <HeroSection />
       <FeaturedJob />
-      <CompanySection />
       <Category />
+      <CompanySection />
       <Hotline />
     </div>
   )

@@ -31,7 +31,7 @@ const CompanyPage = () => {
     }
 
   return (
-    <div className='max-w-[1200px] mx-auto py-2 space-y-4'>
+    <div className='p-4 md:p-0 max-w-[1200px] mx-auto py-2 space-y-4'>
       <BreadCrumb parent={parent} currentPage={company?.companyName}/>
 
       <CompanyHeader company={company}/>

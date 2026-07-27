@@ -7,7 +7,7 @@ const FeaturedCompanyCard = ({ featuredCompany }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   return (
-    <div className='border px-4 py-4 rounded-xl shadow-md'>
+    <div className='bg-white border px-4 py-4 rounded-xl shadow-md'>
       <div className='py-2 flex gap-4'>
         <img src={`${backendUrl}/${featuredCompany.logoUrl}`} alt={'Logo công ty'}
         className='flex h-18 w-18 shrink-0 rounded-xl p-2 shadow-sm object-contain border border-gray-400'

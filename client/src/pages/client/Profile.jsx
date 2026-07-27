@@ -17,19 +17,20 @@ const Profile = () => {
     }, [])
 
   return (
-    <div className='max-w-[1200px] mx-auto py-4 space-y-4'>
-      <ProfileHeader setOpenEdit={() => setOpenEdit(true)} user={user}/>
-      <OpenEditProfile user={user} isOpen={openEdit} onClose={() => setOpenEdit(false)}/>
+    <div className="px-4 md:px-6 lg:px-0 max-w-[1200px] mx-auto py-4 space-y-4">
+      <ProfileHeader setOpenEdit={() => setOpenEdit(true)} user={user} />
+      <OpenEditProfile user={user} isOpen={openEdit} onClose={() => setOpenEdit(false)} />
 
-      <div className='grid grid-cols-10 space-x-4'>
-            <div className='col-span-6'>
-                <Content user={user}/>
-            </div>
-            <div className='col-span-4 space-y-4'>
-                <Contact user={user}/>
-                <Skill user={user} />
-                <CV user={user}/>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
+          <div className="lg:col-span-6 order-2 lg:order-1">
+            <Content user={user} />
+          </div>
+
+          <div className="lg:col-span-4 order-1 lg:order-2 space-y-4">
+            <Contact user={user} />
+            <Skill user={user} />
+            <CV user={user} />
+          </div>
       </div>
     </div>
   )

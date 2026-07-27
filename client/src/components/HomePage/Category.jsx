@@ -43,7 +43,7 @@ const Category = () => {
     console.log(categories);
     
   return (
-    <div className='bg-green-50'>
+    <div className='my-8'>
       <div className='max-w-[1200px] mx-auto lg:py-12 space-y-6'>
         <h2 className='text-2xl text-green-700 font-bold'>Top những ngành nghề nổi bậc</h2>
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4">

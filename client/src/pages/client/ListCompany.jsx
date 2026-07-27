@@ -41,7 +41,7 @@ const ListCompany = () => {
   return (
     <section className='space-y-8'>
         <div className='bg-green-100 py-18'>
-            <div className='max-w-[1200px] mx-auto space-y-2'>
+            <div className='p-4 md:p-0 max-w-[1200px] mx-auto space-y-2'>
                 <h1 className='text-2xl font-bold text-green-700'>Khám phá với hơn {companies?.length} doanh nghiệp đang tuyển dụng</h1>
                 <p className='pb-6 font-medium text-muted-foreground'>Tra cứu thông tin công ty và tìm kiếm nói làm việc tốt nhất giành cho bạn</p>
                     
@@ -49,7 +49,7 @@ const ListCompany = () => {
             </div>
         </div>
 
-        <div className='max-w-[1200px] mx-auto space-y-6'>
+        <div className='p-4 md:p-0 max-w-[1200px] mx-auto space-y-6'>
             <h2 className='text-2xl font-bold text-center'>Danh sách các công ty nổi bậc</h2>
 
             {

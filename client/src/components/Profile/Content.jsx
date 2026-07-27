@@ -46,29 +46,43 @@ const Content = ({ user }) => {
 
         {
             jobSaves ? (
-                <ul className='space-y-2'>
+                <ul className='space-y-4'>
                     {jobSaves?.map((job) => {
                         const day = calculateDate(job?.savedAt);
 
                         return (
-                            <li key={job?.id} className='flex items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                <div className=''>
-                                    <Link className='text-lg hover:underline text-green-700' to={`/viec-lam/${job?.job.slug}`}>
-                                        {job?.job?.title}
+                            <li
+                                key={job?.id}
+                                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-gray-300 p-4 rounded-lg"
+                            >
+                                <div className="min-w-0">
+                                    <Link
+                                    className="text-lg hover:underline text-green-700 line-clamp-1"
+                                    to={`/viec-lam/${job?.job.slug}`}
+                                    >
+                                    {job?.job?.title}
                                     </Link>
-                                    
-                                    <div className='flex items-center gap-3 pt-1'>
-                                        <p className='flex items-center text-sm gap-2 text-muted-foreground'><MapPin className='h-4 w-4'/> {job?.job.location}</p>
-                                        <Badge variant='ghost' className={`text-slate-800 bg-slate-200`}>{job?.job.salaryMin} - {job?.job.salaryMax}đ</Badge>
+
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1">
+                                    <p className="flex items-center text-sm gap-2 text-muted-foreground">
+                                        <MapPin className="h-4 w-4 shrink-0" /> {job?.job.location}
+                                    </p>
+                                    <Badge variant="ghost" className="text-slate-800 bg-slate-200">
+                                        {job?.job.salaryMin} - {job?.job.salaryMax}đ
+                                    </Badge>
                                     </div>
                                 </div>
 
-                                <div className='flex flex-col items-end space-y-2'>
-                                    <p className='text-sm text-muted-foreground'>
-                                        {day === 0 ? 'Mới đây' : `Đã lưu: ${day} ngày trước`}
+                                <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 sm:gap-2">
+                                    <p className="text-sm text-muted-foreground order-2 sm:order-1">
+                                    {day === 0 ? 'Mới đây' : `Đã lưu: ${day} ngày trước`}
                                     </p>
-                                    <Button onClick={() => deleteJobSave(job?.id)} variant='ghost' className={`bg-red-100 text-red-800`}>
-                                        <Trash /> Xóa
+                                    <Button
+                                    onClick={() => deleteJobSave(job?.id)}
+                                    variant="ghost"
+                                    className="bg-red-100 text-red-800 order-1 sm:order-2"
+                                    >
+                                    <Trash /> Xóa
                                     </Button>
                                 </div>
                             </li>

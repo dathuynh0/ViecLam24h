@@ -18,7 +18,7 @@ const FeaturedJob = () => {
     
   return (
     <div className='bg-green-50'>
-      <div className='max-w-[1200px] mx-auto lg:py-12'>
+      <div className='max-w-[1200px] mx-auto py-8 lg:py-12'>
         <div className='flex items-center justify-between'>
           <div className='space-y-2'>
             <h2 className='font-bold text-3xl'>Việc làm <span className='text-green-700'>nổi bật</span></h2>
