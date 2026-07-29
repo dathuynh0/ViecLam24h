@@ -5,7 +5,6 @@ import {
   getApplicationsByCandidate,
   getApplicationsByJob,
   getApplicationStatus,
-  updateApplicationStatus,
   rejectedApplication
 } from "../controllers/applicationController.js";
 
@@ -91,62 +90,7 @@ router.get("/candidate/me", authMiddleware, getApplicationsByCandidate);
  *       500:
  *         description: Lỗi server
  */
-router.get("/job/:jobId", authMiddleware,  isCompany, getApplicationsByJob);
-
-/**
- * @swagger
- * /api/applications/{id}/status:
- *   get:
- *     summary: Xem trạng thái hồ sơ ứng tuyển
- *     tags: [Applications]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Mã hồ sơ ứng tuyển
- *     responses:
- *       200:
- *         description: Lấy trạng thái CV đã nộp thành công
- *       404:
- *         description: Không tìm thấy hồ sơ ứng tuyển
- *       500:
- *         description: Lỗi server
- */
-router.get("/:id/status", getApplicationStatus);
-
-/**
- * @swagger
- * /api/applications/{id}/status:
- *   put:
- *     summary: Cập nhật trạng thái hồ sơ ứng tuyển
- *     description: Cập nhật trạng thái CV, ví dụ pending, reviewing, interviewing, accepted hoặc rejected.
- *     tags: [Applications]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Mã hồ sơ ứng tuyển
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ApplicationStatusUpdate'
- *     responses:
- *       200:
- *         description: Cập nhật trạng thái CV thành công
- *       400:
- *         description: Trạng thái không hợp lệ
- *       404:
- *         description: Không tìm thấy hồ sơ ứng tuyển
- *       500:
- *         description: Lỗi server
- */
-router.put("/:id/status", updateApplicationStatus);
+router.get("/job/:jobId", authMiddleware, isCompany, getApplicationsByJob);
 
 router.patch('/:applicationId/accepted', authMiddleware, isCompany, acceptedApplication);
 

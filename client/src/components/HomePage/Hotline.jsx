@@ -21,7 +21,6 @@ export default function Hotline() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: gọi API gửi form tư vấn ở đây
     setOpen(false);
   };
 

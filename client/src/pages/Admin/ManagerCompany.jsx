@@ -5,7 +5,7 @@ import { useAdminStore } from '@/stores/useAdminStore';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router';
 import Pagination from './Pagination';
-import { Check, Eye, Filter, Trash, X } from 'lucide-react';
+import { Check, Eye, Filter, Lock, LockKeyholeOpen, Trash, X } from 'lucide-react';
 import Loading from '@/components/Loading';
 import { formatDateForInput } from '@/lib/formatJsonB';
 import ReviewCompany from '@/components/ManagerCompany/ReviewCompany';
@@ -27,7 +27,8 @@ const FIELD_STATUS = [
 ]
 
 const ManagerCompany = () => {
-  const { getAllCompany, companies, totalPageCompany, adminLoading, rejectCompany, activeCompany } = useAdminStore();
+  const { getAllCompany, companies, totalPageCompany, adminLoading, rejectCompany, activeCompany, blockLoginCompany } = useAdminStore();
+
 
   const [openViewCompany, setOpenViewCompany] = useState(null);
   const [openDeleteCompany, setOpenDeleteCompany] = useState(null);
@@ -135,55 +136,70 @@ const ManagerCompany = () => {
                   {
                     c?.status === 'pending' ? <Badge variant='ghost' className={`bg-amber-100 text-amber-700`}>Chưa duyệt</Badge> :
                     c?.status === 'rejected' ? <Badge variant='ghost' className={`bg-red-100 text-red-700`}>Đã từ chối</Badge> :
+                    c?.status === 'inactive' ? <Badge variant='ghost' className={`bg-red-100 text-red-700`}>Đã khóa</Badge> :
                     c?.status === 'active' ? <Badge variant='ghost' className={`bg-green-100 text-green-700`}>Đã duyệt</Badge> : ''
                   }
                 </td>
                   
                 <td className='p-3'>
-                  {
-                    c?.status === 'pending' ? (
-                      <div className='flex items-center gap-2'> 
-                        <Button 
-                          onClick={() => setOpenViewCompany(c)}
-                          title='Xem chi tiết'
-                          variant='ghost'
-                          className="bg-blue-100 text-blue-700 hover:underline text-xs disabled:opacity-50">
-                          <Eye />
-                        </Button>
+                  <div className='flex items-center gap-2'>
+                    <Button
+                      onClick={() => setOpenViewCompany(c)}
+                      title='Xem chi tiết'
+                      variant='ghost'
+                      className="bg-blue-100 text-blue-700 hover:underline text-xs disabled:opacity-50">
+                      <Eye />
+                    </Button>
+
+                    {c?.status === 'pending' && (
+                      <>
                         <Button
-                          onClick={() => rejectCompany(c?.id)}
+                          onClick={() => rejectCompany(c?.id, { page, status })}
                           title='Từ chối duyệt'
                           variant='ghost'
                           className="bg-red-100 text-red-700 hover:underline text-xs disabled:opacity-50">
                           <X />
                         </Button>
                         <Button
-                          onClick={() => activeCompany(c?.id)}
+                          onClick={() => activeCompany(c?.id, { page, status })}
                           title='Duyệt'
                           variant='ghost'
                           className="bg-green-100 text-green-700 hover:underline text-xs disabled:opacity-50">
                           <Check />
                         </Button>
-                      </div>
-                    ) : (
-                      <div className='flex items-center gap-2'>
-                        <Button 
-                          onClick={() => setOpenViewCompany(c)}
-                          title='Xem chi tiết'
-                          variant='ghost'
-                          className="bg-blue-100 text-blue-700 hover:underline text-xs disabled:opacity-50">
-                          <Eye />
-                        </Button>
-                        <Button 
-                          onClick={() => setOpenDeleteCompany(c?.id)}
-                          title='Xóa tài khoản'
-                          variant='ghost'
-                          className="bg-red-100 text-red-700 hover:underline text-xs disabled:opacity-50">
-                          <Trash />
-                        </Button>
-                      </div>
-                    )
-                  }
+                      </>
+                    )}
+
+                    {(c?.status === 'rejected' || c?.status === 'inactive') && (
+                      <Button
+                        onClick={() => activeCompany(c?.id, { page, status })}
+                        title='Mở khóa tài khoản'
+                        variant='ghost'
+                        className="bg-amber-100 text-amber-700 hover:underline text-xs disabled:opacity-50">
+                        <LockKeyholeOpen />
+                      </Button>
+                    )}
+
+                    {c?.status === 'active' && (
+                      <Button
+                        onClick={() => blockLoginCompany(c?.id, { page, status })}
+                        title='Khóa tài khoản'
+                        variant='ghost'
+                        className="bg-amber-100 text-amber-700 hover:underline text-xs disabled:opacity-50">
+                        <Lock />
+                      </Button>
+                    )}
+
+                    {c?.status !== 'pending' && (
+                      <Button
+                        onClick={() => setOpenDeleteCompany(c?.id)}
+                        title='Xóa tài khoản'
+                        variant='ghost'
+                        className="bg-red-100 text-red-700 hover:underline text-xs disabled:opacity-50">
+                        <Trash />
+                      </Button>
+                    )}
+                  </div>
                 </td>
                 
               </tr>

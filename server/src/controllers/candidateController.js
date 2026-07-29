@@ -183,14 +183,13 @@ const activeCandidate = async (req, res) => {
 
 const blockLoginCandidate = async (req, res) => {
     try {
-        const { candidateId } = req.body;
+        const { userId } = req.body;
 
-        const candidate = await Candidate.findByPk(candidateId);
-        if(!candidate) {
-            return res.status(404).json({ message: 'Không tìm thấy ứng viên' });
+        const user = await User.findByPk(userId);
+        if(!user) {
+            return res.status(404).json({ message: 'Không tìm thấy tài khoản' });
         }
 
-        const user = await User.findByPk(candidate.userId);
         user.status = 'inactive';
         await user.save();
 

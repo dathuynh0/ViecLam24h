@@ -535,10 +535,6 @@ export const activeJob = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
     }
 
-    if(job.status !== 'pending') {
-      return res.status(400).json({ message: 'Bài đăng đã được duyệt hoặc đã bị từ chối '});
-    }
-
     job.status = 'active';
     await job.save();
 
@@ -556,10 +552,6 @@ export const rejectJob = async (req, res) => {
     const job = await Job.findByPk(jobId);
     if(!job) {
       return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
-    }
-
-    if(job.status !== 'pending') {
-      return res.status(400).json({ message: 'Bài đăng đã được duyệt'});
     }
 
     job.status = 'rejected';
@@ -592,7 +584,6 @@ export const getJobCreated = async (req, res) => {
 
     return res.status(200).json({
       jobs,
-      page,
       totalPage
     })
   } catch (error) {

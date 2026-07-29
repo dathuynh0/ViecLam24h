@@ -39,7 +39,7 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING
     },
     status: {
-        type: DataTypes.ENUM('pending', 'active', 'rejected'),
+        type: DataTypes.ENUM('pending', 'active', 'inactive', 'rejected'),
         defaultValue: 'pending'
     },
     taxCode: {

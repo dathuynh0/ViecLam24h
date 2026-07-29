@@ -130,13 +130,13 @@ export const useAdminStore = create((set, get) => ({
         }
     },
 
-    rejectCompany: async (companyId) => {
+    rejectCompany: async (companyId, query) => {
         try {
             set({ adminLoading: true });
 
             await adminService.rejectCompany(companyId);
             const { getAllCompany } = useAdminStore.getState();
-            await getAllCompany();
+            await getAllCompany(query);
 
             toast.success('Từ chối duyệt thành công')
         } catch (error) {
@@ -147,18 +147,35 @@ export const useAdminStore = create((set, get) => ({
         }
     },
 
-    activeCompany: async (companyId) => {
+    activeCompany: async (companyId, query) => {
         try {
             set({ adminLoading: true });
 
             await adminService.activeCompany(companyId);
             const { getAllCompany } = useAdminStore.getState();
-            await getAllCompany();
+            await getAllCompany(query);
 
-            toast.success('Duyệt công ty thành công')
+            toast.success('Mở khóa công ty thành công')
         } catch (error) {
             console.error('Lỗi khi gọi api activeCompany ', error)
-            toast.error('Duyệt công ty thất bại')
+            toast.error('Mở khóa công ty thất bại')
+        } finally {
+            set({ adminLoading: false });
+        }
+    },
+
+    blockLoginCompany: async (companyId, query) => {
+       try {
+            set({ adminLoading: true });
+
+            await adminService.blockLoginCompany(companyId);
+            const { getAllCompany } = useAdminStore.getState();
+            await getAllCompany(query);
+
+            toast.success('Khóa đăng nhập công ty thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi api blockLoginCompany ', error)
+            toast.error('Khóa đăng nhập công ty thất bại')
         } finally {
             set({ adminLoading: false });
         }
@@ -212,11 +229,11 @@ export const useAdminStore = create((set, get) => ({
         }
     },
 
-    blockLoginCandidate: async (candidateId) => {
+    blockLoginCandidate: async (userId) => {
         try {
             set({ adminLoading: true });
 
-            await adminService.blockLoginCandidate(candidateId);
+            await adminService.blockLoginCandidate(userId);
             const { getAllCandidate } = useAdminStore.getState();
             await getAllCandidate();
 

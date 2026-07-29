@@ -7,7 +7,7 @@ import { toLocation } from '@/lib/location';
 import Loading from '../Loading';
 
 const RelatedJob = ({ job }) => {
-    const { getRelatedJob, relatedJob, jobLoading } = useJobStore();
+    const { getRelatedJob, relatedJob } = useJobStore();
 
     const location = toLocation(job?.location)
 
@@ -15,9 +15,6 @@ const RelatedJob = ({ job }) => {
         getRelatedJob(job?.id)
     }, [job])
    
-    if (jobLoading) {
-        return <Loading />
-    }
   return (
     <>
         {

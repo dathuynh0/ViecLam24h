@@ -12,6 +12,8 @@ export const useCandidateStore = create((set, get) => ({
             set({ candidateLoading: true });
 
             await candidateService.saveJob(jobId);
+            const { getAllJobSave } = useCandidateStore.getState();
+            await getAllJobSave();
 
             toast.success('Lưu bài tuyển dụng thành công');
         } catch (error) {

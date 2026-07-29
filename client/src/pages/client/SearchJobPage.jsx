@@ -46,14 +46,14 @@ const SearchJobPage = () => {
 
   const parent = {
     'title': 'Tìm kiếm',
-    'slug': '/',
+    'slug': `${`tim-kiem`}`,
   }
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
     <div>
-      <div className='w-full py-3 px-4 flex items-center justify-center bg-green-700'>
+      <div className='w-full py-3 px-4 flex items-center justify-center bg-green-700 mb-2'>
         <SearchJob />
       </div>
 

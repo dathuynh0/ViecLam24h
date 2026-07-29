@@ -2,6 +2,7 @@ import { authService } from "@/services/authService";
 import { create } from "zustand";
 import { toast } from "sonner";
 
+
 export const useAuthStore = create((set, get) => ({
     user: null,
     accessToken: null,
@@ -23,9 +24,12 @@ export const useAuthStore = create((set, get) => ({
             await authService.signUp(fullName, username, email, password, role);
 
             toast.success('Tạo tài khoản thành công');
+
+            return true;
         } catch (error) {
             toast.error('Tạo tài khoản thất bại')
             console.error('Lỗi khi gọi signUp ', error);
+            return false;
         } finally {
             set({ authLoading: false })
         }
@@ -38,9 +42,11 @@ export const useAuthStore = create((set, get) => ({
 
             set({ accessToken });
             toast.success('Đăng nhập thành công')
+            return true;
         } catch (error) {
             toast.error('Đăng nhập không thành công')
             console.error('Lỗi khi gọi signIn ', error);
+            return false;
         } finally {
             set({ authLoading: false });
         }

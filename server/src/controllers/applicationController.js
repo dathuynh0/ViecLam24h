@@ -178,43 +178,6 @@ export const getApplicationStatus = async (req, res) => {
   }
 };
 
-// PUT /api/applications/:id/status
-// Cập nhật trạng thái CV đã nộp
-export const updateApplicationStatus = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    const allowedStatuses = ["pending", "reviewing", "interviewing", "accepted", "rejected"];
-
-    if (!allowedStatuses.includes(status)) {
-      return res.status(400).json({
-        message: "Trạng thái không hợp lệ",
-        allowedStatuses
-      });
-    }
-
-    const application = await JobApplication.findByPk(id);
-    if (!application) {
-      return res.status(404).json({ message: "Không tìm thấy hồ sơ ứng tuyển" });
-    }
-
-    await application.update({ status });
-
-    return res.status(200).json({
-      message: "Cập nhật trạng thái CV thành công",
-      data: {
-        ...application.toJSON(),
-        statusText: statusTextMap[application.status] || application.status
-      }
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi khi cập nhật trạng thái CV",
-      error: error.message
-    });
-  }
-};
 
 
 export const acceptedApplication = async (req, res) => {

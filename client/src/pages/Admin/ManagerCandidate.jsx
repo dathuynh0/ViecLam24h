@@ -1,7 +1,7 @@
 import Loading from '@/components/Loading';
 import { Button } from '@/components/ui/button';
 import { useAdminStore } from '@/stores/useAdminStore';
-import { Check, Edit, Filter, Lock, Trash } from 'lucide-react';
+import { Check, Edit, Filter, Lock, LockKeyholeOpenIcon, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router';
 import { formatDateForInput } from '@/lib/formatJsonB';
@@ -128,7 +128,7 @@ const ManagerCandidate = () => {
                         c?.user?.status === 'active' ?
                           <div className="flex gap-1">
                             <Button
-                              onClick={() => blockLoginCandidate(c?.id)}
+                              onClick={() => blockLoginCandidate(c?.userId)}
                               title='Khóa'
                               variant='ghost'
                               className="bg-amber-100 text-amber-700 hover:underline text-xs disabled:opacity-50"
@@ -152,7 +152,7 @@ const ManagerCandidate = () => {
                               variant='ghost'
                               className="bg-blue-100 text-blue-700 hover:underline text-xs disabled:opacity-50"
                             >
-                              <Check />
+                              <LockKeyholeOpenIcon />
                             </Button>
                             <Button
                               onClick={() => setOpenDelete(c?.id)}

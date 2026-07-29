@@ -67,6 +67,12 @@ export const adminService = {
         return response.data;
     },
 
+    blockLoginCompany: async (companyId) => {
+        const response = await api.patch(`/admin/companies/block`, { companyId } ,{ withCredentials: true });
+
+        return response.data;
+    },
+
     deleteCompany: async (companyId) => {
         const response = await api.delete(`/admin/companies/${companyId}`, { withCredentials: true });
 
@@ -87,9 +93,9 @@ export const adminService = {
         return response.data;
     },
 
-    blockLoginCandidate: async (candidateId) => {
+    blockLoginCandidate: async (userId) => {
         const response = await api.patch('/admin/candidates/block', {
-            candidateId
+            userId
         }, { withCredentials: true });
 
         return response.data;

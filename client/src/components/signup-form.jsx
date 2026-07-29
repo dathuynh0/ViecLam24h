@@ -49,8 +49,10 @@ export function SignupForm({
       return
     }
     
-    await signUp(fullName, username, email, password, role);
-    navigate('/signin')
+    const success = await signUp(fullName, username, email, password, role);
+    if (success) {
+      navigate('/signin')
+    }
   }
 
   const loginGoogle = () => {

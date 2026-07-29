@@ -36,14 +36,14 @@ export function LoginForm({
 
   const handleSignIn = async (data) => {
     const { username, password } = data;
+    if (!username || !password) return;
 
-    if (!username || !password) {
-      return;
+    
+    const success = await signIn(username, password);
+    if (success) {
+      navigate('/');
     }
-
-    await signIn(username, password);
-    navigate('/')
-  }
+};
 
   const loginGoogle = () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`
@@ -68,7 +68,7 @@ export function LoginForm({
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="username">Tên đăng nhập</FieldLabel>
-                <Input {...register('username')} id="username" type="text" placeholder="nguyenvana123" required />
+                <Input {...register('username', { required: true })} id="username" type="text" placeholder="nguyenvana123" required />
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -79,9 +79,9 @@ export function LoginForm({
                     Quên mật khẩu
                   </a>
                 </div>
-                <Input {...register('password')} id="password" type="password" required />
+                <Input {...register('password', { required: true })} id="password" type="password" required />
               </Field>
-              <Field>
+              <Field> 
                 <Button variant="ghost" className='text-white bg-green-800' type="submit">Đăng nhập</Button>
                 <Button onClick={loginGoogle} variant="outline" type="button">
                   <IconGoogle/>Tiếp tục với Google

@@ -273,11 +273,7 @@ const updateActiveStatusCompany = async (req, res) => {
         if(!company) {
             return res.status(404).json({ message: 'Không tìm thấy công ty '});
         }
-
-        if(company.status !== 'pending') {
-            return res.status(400).json({ message: 'Công ty đã được kích hoạt hoặc từ chối '});
-        }
-
+        
         company.status = 'active';
         await company.save();
 
@@ -297,14 +293,29 @@ const rejectCompany = async (req, res) => {
             return res.status(404).json({ message: 'Không tìm thấy công ty '});
         }
 
-        if(company.status !== 'pending') {
-            return res.status(400).json({ message: 'Công ty đang hoạt động hoặc bị từ chối '});
-        }
-
         company.status = 'rejected';
         await company.save();
 
         return res.status(200).json({ message: 'Từ chối duyệt công ty thành công ', company });
+    } catch (error) {
+        console.log('Lỗi khi gọi hàm rejectCompany: ', error);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
+const blockLoginCompany = async (req, res) => {
+    try {
+         const { companyId } = req.body;
+
+        const company = await Company.findByPk(companyId);
+        if(!company) {
+            return res.status(404).json({ message: 'Không tìm thấy công ty '});
+        }
+
+        company.status = 'inactive';
+        await company.save();
+
+        return res.status(200).json({ message: 'Khóa tài khoản công ty thành công ', company });
     } catch (error) {
         console.log('Lỗi khi gọi hàm rejectCompany: ', error);
         return res.status(500).json({ message: "Lỗi server" });
@@ -372,5 +383,6 @@ export {
     followCompany,
     countFollow,
     unFollow,
-    getAllCompanyByAdmin
+    getAllCompanyByAdmin,
+    blockLoginCompany
 }

@@ -39,8 +39,6 @@ const getCategoryIcon = (slug) => {
 
 const Category = () => {
     const categories = useCategoryStore(s => s.categories);
-
-    console.log(categories);
     
   return (
     <div className='my-8'>

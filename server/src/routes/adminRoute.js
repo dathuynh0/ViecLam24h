@@ -19,7 +19,8 @@ import {
     getCompanyBySlug,
     updateCompany,
     updateLogoCompany,
-    getAllCompanyByAdmin
+    getAllCompanyByAdmin,
+    blockLoginCompany
 } from '../controllers/companyController.js';
 import { 
     activeJob,
@@ -61,6 +62,7 @@ router.put('/companies/:companyId', authMiddleware, isAdmin, updateCompany);
 router.patch('/companies/logo', avatar.single('logo'), authMiddleware, isAdmin, updateLogoCompany);
 router.patch('/companies/active', authMiddleware, isAdmin, updateActiveStatusCompany);
 router.patch('/companies/reject', authMiddleware, isAdmin, rejectCompany);
+router.patch('/companies/block', authMiddleware, isAdmin, blockLoginCompany)
 router.delete('/companies/:companyId', authMiddleware, isAdmin, deleteCompany);
 
 
@@ -73,5 +75,7 @@ router.delete('/jobs/:jobId', authMiddleware, isAdmin, deleteJob);
 
 // application
 router.get('/applications/:jobId', authMiddleware, isAdmin, getApplicationsByJob);
+
+router.get('/dashboard/stats', authMiddleware, isAdmin, getDashboardStats);
 
 export default router;

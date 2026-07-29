@@ -63,10 +63,9 @@ const CategoryJob = () => {
         <SearchJob />
       </div>
 
-      <div className='p-4 md:p-0 space-y-4 max-w-[1200px] mx-auto py-2'>
+      <div className='p-4 md:p-0 space-y-4 max-w-[1200px] mx-auto py-2 my-2'>
 
         <BreadCrumb parent={parent} currentPage={category?.title} />
-
         
         <Button
           variant='outline'

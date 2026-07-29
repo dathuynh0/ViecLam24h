@@ -7,6 +7,8 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router'
 
 // ==== MOCK DATA ====
 const mockStats = {
@@ -65,9 +67,11 @@ const Dashboard = () => {
         <div>
           <h1 className="text-2xl font-semibold">Thống kê tuyển dụng</h1>
         </div>
-        <button className="flex items-center gap-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700">
-          <Plus className="h-4 w-4" /> Đăng tin mới
-        </button>
+        <Button size='xl' variant='outline' className="flex items-center gap-2 px-4 py-2 border border-green-700 text-green-700">
+          <Link to={`/nha-tuyen-dung/dang-tin`} className='flex items-center gap-2'>
+            <Plus className="h-4 w-4" /> Đăng tin mới
+          </Link>
+        </Button>
       </div>
 
       {/* Stat cards */}

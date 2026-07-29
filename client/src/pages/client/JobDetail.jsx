@@ -6,25 +6,35 @@ import JobInformation from '@/components/JobDetail/JobInformation';
 import RelatedJob from '@/components/JobDetail/RelatedJob';
 import Loading from '@/components/Loading';
 import SearchJob from '@/components/SearchJob';
+import { useApplicationStore } from '@/stores/useApplicationStore';
+import { useCandidateStore } from '@/stores/useCandidateStore';
 import { useJobStore } from '@/stores/useJobStore';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 
 const JobDetail = () => {
     const { slug } = useParams();
-    const { jobDetail, getJobBySlug, jobLoading } = useJobStore();
+    const { jobDetail, getJobBySlug } = useJobStore();
+    const { applications, getApplicationByCandidate, applicationLoading } = useApplicationStore();
+    const { getAllJobSave, jobSaves, candidateLoading } = useCandidateStore();
     
     useEffect(() => {
-        getJobBySlug(slug);
+      getJobBySlug(slug);
+      getApplicationByCandidate();
+      getAllJobSave();
     }, [slug]);
 
+    const hasApplyJob = applications?.some(a => a.job.slug === slug)
+    const isSave = jobSaves?.find(j => j.job.slug === slug)
+    
     useEffect(() => {
         document.title = `${jobDetail?.createdBy?.companyName} - ${jobDetail?.title}`
     }, [jobDetail])
 
-    // if(jobLoading) {
-    //     return <Loading /> 
-    // }
+
+  if(applicationLoading || candidateLoading) {
+    return <Loading />
+  }
     
   return (
     <div className=''>
@@ -36,10 +46,10 @@ const JobDetail = () => {
         
         <BreadCrumb parent={jobDetail?.category} currentPage={jobDetail?.title}/>
 
-        <JobHeader job={jobDetail}/>
+        <JobHeader job={jobDetail} hasApplyJob={hasApplyJob} isSave={isSave}/>
         <div className='md:grid md:grid-cols-10'>
           <div className='col-span-6 space-y-4'>
-              <Content job={jobDetail}/>
+              <Content job={jobDetail} hasApplyJob={hasApplyJob} isSave={isSave}/>
           </div>
           <div className='hidden md:block py-4 md:py-0 md:col-span-4 md:ml-4 space-y-4'>
               <Company job={jobDetail}/>
