@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuthStore } from '@/stores/useAuthStore'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import { format, transformText } from '@/lib/formatJsonB';
 import { useCompanyStore } from '@/stores/useCompanyStore';

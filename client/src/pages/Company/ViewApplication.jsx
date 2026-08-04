@@ -5,14 +5,20 @@ import { Textarea } from '@/components/ui/textarea'
 import { useApplicationStore } from '@/stores/useApplicationStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Mail, Trash, X } from 'lucide-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { format } from '@/lib/formatJsonB.js'
+import ReviewCandidate from './ReviewCandidate'
+import Pagination from '../Admin/Pagination'
 
 const ViewApplication = ({ job, isOpen, onClose }) => {
-    const { applicationOfJob, getApplicationOfJob, applicationLoading, acceptedApplication, rejectedApplication } = useApplicationStore()
+    const { applicationOfJob, totalPageApplication, getApplicationOfJob, applicationLoading, acceptedApplication, rejectedApplication, deleteApplication } = useApplicationStore()
+
+    const [reviewCandidate, setReviewCandidate] = useState(null);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         if (isOpen) {
-            getApplicationOfJob(job.id)
+            getApplicationOfJob(job.id, page)
         }
     }, [isOpen, job])
 
@@ -72,19 +78,22 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
                                                     <td className="px-4 py-3">
                                                         <p className="font-medium text-gray-900">{app?.candidate?.fullName}</p>
                                                         <p className="text-sm text-gray-500">{app?.candidate?.user?.email}</p>
+                                                        <button type='button' onClick={() => setReviewCandidate(app.candidate)} className={`text-xs text-green-700 cursor-pointer hover:underline`}>
+                                                            Xem chi tiết
+                                                        </button>
+
+                                                        <ReviewCandidate isOpen={reviewCandidate} onClose={() => setReviewCandidate(null)}/>
                                                     </td>
 
                                                     <td className="px-4 py-3 text-gray-600">
                                                         {new Date(app?.createdAt).toLocaleDateString('vi-VN')}
                                                     </td>
 
-                                                    <td className="px-4 py-3 text-gray-600 max-w-[200px] truncate">
+                                                    <td className="px-4 py-3 text-gray-600 max-w-[300px] truncate">
                                                         {
                                                             app?.introduction ? 
-                                                                <Textarea className={`max-h-[120px]`}>
-                                                                    {app?.introduction}
-                                                                </Textarea>
-                                                                : 'Không có'
+                                                                <Textarea className={`max-h-[120px]`} value={format(app?.introduction)} />
+                                                            : <p>Không có</p>
                                                         }
                                                     </td>
 
@@ -117,7 +126,7 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
                                                     <td className="px-4 py-3 text-right space-x-1">
                                                         {
                                                             app?.status === 'accepted' ? 
-                                                                <Button title='Xóa' size="sm" variant="ghost" className={`bg-red-100 text-red-800`}>
+                                                                <Button onClick={() => deleteApplication(app?.id, job?.id)} title='Xóa' size="sm" variant="ghost" className={`bg-red-100 text-red-800`}>
                                                                     <Trash />
                                                                 </Button>
                                                             :
@@ -151,7 +160,9 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
                                 </table>
                             </div>
 
+                            
                             <div className="flex justify-end gap-3 px-8 py-4 border-t">
+                                { applicationOfJob?.length > 0 && <Pagination totalPage={totalPageApplication} currentPage={page} onPageChange={(newPage) => { setPage(newPage); getApplicationOfJob(job.id, newPage) }} /> }
                                 <Button onClick={onClose} size="lg" variant="outline" className="px-4">
                                     Đóng
                                 </Button>

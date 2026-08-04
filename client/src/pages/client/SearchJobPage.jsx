@@ -7,9 +7,11 @@ import { useJobStore } from '@/stores/useJobStore';
 import { SlidersHorizontal, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router';
+import Pagination from '../Admin/Pagination';
 
 const SearchJobPage = () => {
-  const { searchJob, getSearchJob } = useJobStore();
+  const { searchJob, getSearchJob, totalPageSearch } = useJobStore();
+  const [page, setPage] = useState(1);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const name = searchParams.get('name')
@@ -36,8 +38,8 @@ const SearchJobPage = () => {
   }
 
   useEffect(() => {
-    getSearchJob({ name, location, salary, field, work_type, work_arrangement });
-  } , [name, location])
+    getSearchJob({ page, name, location, salary, field, work_type, work_arrangement });
+  } , [page, name, location])
 
   useEffect(() => {
     document.title = 'Việc làm 24h - Tìm kiếm'
@@ -126,7 +128,7 @@ const SearchJobPage = () => {
             }
           </div>
         </div>
-
+            { searchJob.length > 0 &&  <Pagination currentPage={page} onChangePage={(newPage) => setPage(newPage)} totalPage={totalPageSearch} />}
       </div>
     </div>
   )

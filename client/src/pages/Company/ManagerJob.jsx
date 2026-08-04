@@ -8,6 +8,8 @@ import EditJob from './EditJob';
 import { useCategoryStore } from '@/stores/useCategoryStore';
 import ViewApplication from './ViewApplication';
 import PopupDeleteJob from './PopupDeleteJob';
+import { useSearchParams } from 'react-router';
+import Pagination from '../Admin/Pagination';
 
 
 const formatSalary = (min, max) => {
@@ -17,27 +19,33 @@ const formatSalary = (min, max) => {
 
 
 const ManagerJob = () => {
-    const { jobCreated, getJobCreated, jobLoading } = useJobStore();
+    const { jobCreated, totalPageJob, getJobCreated, jobLoading } = useJobStore();
     const { categories, getAllCategory } = useCategoryStore();
 
     const [openEdit, setOpenEdit] = useState(null);
     const [openView, setOpenView] = useState(null);
     const [openDelete, setOpenDelete] = useState(null);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get('page')) || 1
+
     useEffect(() => {
-        getJobCreated();
+        getJobCreated(page);
         getAllCategory();
-    }, [jobCreated])
+    },  [page])
 
 
     if (jobLoading) {
         return <Loading />
     }
     
+    const handleChangePage = (newPage) => {
+      setSearchParams({ page: newPage })
+    }
     
 
   return (
-    <div className="p-4 mx-auto">
+    <div className="p-4 mx-auto space-y-4">
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-gray-100 text-left text-gray-600">
@@ -131,6 +139,10 @@ const ManagerJob = () => {
           )}
         </tbody>
       </table>
+
+      {
+        jobCreated.length !== 0 && <Pagination currentPage={page} totalPage={totalPageJob} onChangePage={handleChangePage}/>
+      }
     </div>
   )
 }

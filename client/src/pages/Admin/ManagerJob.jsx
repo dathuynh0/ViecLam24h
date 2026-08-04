@@ -81,7 +81,7 @@ const ManagerJob = () => {
       <table className='w-full border-collapse text-sm'>
         <thead>
           <tr className="bg-gray-100 text-left text-gray-600">
-            <th className='p-3 border-b'>STT</th>
+            <th className='p-3 border-b'>#</th>
             <th className='p-3 border-b'>Tên công việc</th>
             <th className='p-3 border-b'>Được tạo bởi</th>
             <th className='p-3 border-b'>Ngày tạo</th>
@@ -107,7 +107,7 @@ const ManagerJob = () => {
                   {(page - 1) * 8 + index + 1}
                 </td>
 
-                <td className='p-3 max-w-xs font-bold text-gray-800 line-clamp-1'>
+                <td className='p-3 max-w-xs font-bold text-gray-800'>
                   {j?.title}
                 </td>
 

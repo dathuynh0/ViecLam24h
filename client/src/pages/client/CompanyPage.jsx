@@ -15,24 +15,30 @@ const CompanyPage = () => {
 
     useEffect(() => {
         getCompanyBySlug(slug)
-    }, []);
+    }, [slug]);
 
     useEffect(() => {
-        document.title = `${company?.companyName}`
-    }, [])
+        document.title = `${company?.companyName} - Việc làm 24h`;
+    }, [company])
     
     const parent = {
         "title": "Công ty",
-        "slug": 'cong-ty'
+        "slug": `${`/cong-ty`}`
     }
 
     if (companyLoading) {
         return <Loading />
     }
 
+    console.log(company);
+    
+
   return (
     <div className='p-4 md:p-0 max-w-[1200px] mx-auto py-2 space-y-4'>
-      <BreadCrumb parent={parent} currentPage={company?.companyName}/>
+      
+      <div className='pt-2'>
+        <BreadCrumb parent={parent} currentPage={company?.companyName}/>
+      </div>
 
       <CompanyHeader company={company}/>
       <div className='md:grid md:grid-cols-10'>

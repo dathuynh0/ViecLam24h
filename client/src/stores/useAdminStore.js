@@ -61,6 +61,8 @@ export const useAdminStore = create((set, get) => ({
             set({ adminLoading: true });
 
             await adminService.rejectJob(jobId);
+            const { getAllJob } = useAdminStore.getState();
+            await getAllJob();
 
             toast.success('Từ chối duyệt thành công')
         } catch (error) {
@@ -76,6 +78,8 @@ export const useAdminStore = create((set, get) => ({
             set({ adminLoading: true });
 
             await adminService.activeJob(jobId);
+            const { getAllJob } = useAdminStore.getState();
+            await getAllJob();
 
             toast.success('Duyệt bài đăng tuyển dụng thành công')
         } catch (error) {

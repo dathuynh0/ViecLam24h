@@ -10,7 +10,7 @@ import {
 } from 'recharts'
 import Loading from '@/components/Loading'
 
-const StatCard = ({ title, value, icon: Icon, trend }) => (
+const StatCard = ({ title, value, icon: Icon }) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
@@ -20,11 +20,6 @@ const StatCard = ({ title, value, icon: Icon, trend }) => (
       <div className="text-2xl font-bold">
         {value.toLocaleString('vi-VN')}
       </div>
-      {trend != null && (
-        <p className={`text-xs mt-1 ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {trend >= 0 ? '+' : ''}{trend}% so với tháng trước
-        </p>
-      )}
     </CardContent>
   </Card>
 )
@@ -64,10 +59,10 @@ const Dashboard = () => {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Tổng số tin tuyển dụng" value={stats?.totalJobs ?? 0} icon={Briefcase} trend={stats?.jobsTrend} />
-        <StatCard title="Tổng số công ty" value={stats?.totalCompanies ?? 0} icon={Building2} trend={stats?.companiesTrend} />
-        <StatCard title="Tổng số ứng viên" value={stats?.totalCandidates ?? 0} icon={Users} trend={stats?.candidatesTrend} />
-        <StatCard title="Tổng số hồ sơ ứng tuyển" value={stats?.totalApplications ?? 0} icon={FileText} trend={stats?.applicationsTrend} />
+        <StatCard title="Tổng số tin tuyển dụng" value={stats?.totalJobs ?? 0} icon={Briefcase}  />
+        <StatCard title="Tổng số công ty" value={stats?.totalCompanies ?? 0} icon={Building2}  />
+        <StatCard title="Tổng số ứng viên" value={stats?.totalCandidates ?? 0} icon={Users}  />
+        <StatCard title="Tổng số hồ sơ ứng tuyển" value={stats?.totalApplications ?? 0} icon={FileText}/>
       </div>
 
       {/* Charts */}

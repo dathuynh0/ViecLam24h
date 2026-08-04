@@ -33,8 +33,9 @@ const JobInformation = ({ job }) => {
         <div className='text-sm'>
           <p className='text-muted-foreground'>Loại hình làm việc</p>
           <span className='font-bold'>
-            {job?.contractType === 'full_time' ? 'Toàn thời gian / Full time'
-            : job?.contractType === 'part_time' ? 'Bán thời gian / Part time' : 'Internship'
+            {
+              job?.workType === 'full_time' ? 'Toàn thời gian / Full time'
+              : job?.workType === 'part_time' ? 'Bán thời gian / Part time' : 'Intership / Thực tập'
             }
           </span>
         </div>

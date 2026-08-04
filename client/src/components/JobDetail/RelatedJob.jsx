@@ -7,13 +7,17 @@ import { toLocation } from '@/lib/location';
 import Loading from '../Loading';
 
 const RelatedJob = ({ job }) => {
-    const { getRelatedJob, relatedJob } = useJobStore();
+    const { getRelatedJob, relatedJob, jobLoading } = useJobStore();
 
     const location = toLocation(job?.location)
 
     useEffect(() => {
         getRelatedJob(job?.id)
     }, [job])
+
+    if (jobLoading) {
+        return <Loading />
+    }
    
   return (
     <>

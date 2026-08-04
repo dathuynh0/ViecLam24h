@@ -6,8 +6,11 @@ export const useJobStore = create((set, get) => ({
     featuredJob: [],
     jobDetail: null,
     jobOfCategory: [],
+    totalPageCategoryJob: null,
     searchJob: [],
+    totalPageSearch: null,
     jobCreated: [],
+    totalPageJob: null,
     relatedJob: [],
     jobLoading: false,
 
@@ -41,8 +44,8 @@ export const useJobStore = create((set, get) => ({
         try {
             set({ loading: true });
 
-            const { jobs } = await jobService.getJobByCategory(slug, filter);
-            set({ jobOfCategory: jobs });
+            const { jobs, totalPage } = await jobService.getJobByCategory(slug, filter);
+            set({ jobOfCategory: jobs, totalPageCategoryJob: totalPage });
         } catch (error) {
             console.error('Lỗi khi gọi API getJobBySlug ', error);
         } finally {
@@ -54,8 +57,8 @@ export const useJobStore = create((set, get) => ({
         try {
             set({ jobLoading: true });
 
-            const { jobs } = await jobService.getSearchJob(params);
-            set({ searchJob: jobs });
+            const { jobs, totalPage } = await jobService.getSearchJob(params);
+            set({ searchJob: jobs, totalPageSearch: totalPage });
         } catch (error) {
             console.error('Lỗi khi gọi API searchJob ', error);
         } finally {
@@ -99,10 +102,12 @@ export const useJobStore = create((set, get) => ({
                 expiredAt
             );
 
-            toast.success('Tạo bài tuyển dụng thành công')
+            toast.success('Tạo bài tuyển dụng thành công');
+            return true;
         } catch (error) {
             console.error('Lỗi khi gọi API createJob ', error);
-            toast.error('Tạo bài đăng tuyển dụng thất bại')
+            toast.error('Tạo bài đăng tuyển dụng thất bại');
+            return false;
         } finally {
             set({ jobLoading: false });
         }
@@ -112,9 +117,9 @@ export const useJobStore = create((set, get) => ({
         try {
             set({ jobLoading: false });
 
-            const { jobs } = await jobService.getJobCreated(page);
+            const { jobs, totalPage } = await jobService.getJobCreated(page);
 
-            set({ jobCreated: jobs });
+            set({ jobCreated: jobs, totalPageJob: totalPage });
         } catch (error) {
             console.error('Lỗi khi gọi API getJobCreated ', error);
         } finally {

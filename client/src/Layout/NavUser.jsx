@@ -13,7 +13,7 @@ export default function NavUser() {
   const {user, signOut} = useAuthStore();
 
   const displayName = user?.fullName || user?.companyName;
-  const avatarUrl = `${import.meta.env.VITE_BACKEND_URL}/${user?.avatarUrl || user?.logoUrl}`;
+  const avatarUrl = `${import.meta.env.VITE_BACKEND_URL}/${user?.avatarUrl}`;
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -33,6 +33,7 @@ export default function NavUser() {
     navigate("/");
     document.title = 'Việc làm 24h'
   };
+  
 
   const classButton = 'flex w-full items-center justify-start gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer'
 

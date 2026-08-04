@@ -14,11 +14,32 @@ const SALARY_OPTIONS = [
 ];
 
 const COMPANY_FIELD = [
-  { value: 'all', label: 'Lĩnh vực công ty'},
-  { value: '1', label: 'Công nghệ thông tin'},
-  { value: '2', label: 'Sản xuất'},
-  { value: '3', label: 'Marketing'}
-]
+  { label: 'Tất cả' },
+  { label: 'Công nghệ thông tin' },
+  { label: 'Tài chính - Ngân hàng' },
+  { label: 'Bảo hiểm' },
+  { label: 'Bất động sản' },
+  { label: 'Giáo dục - Đào tạo' },
+  { label: 'Y tế - Dược phẩm' },
+  { label: 'Sản xuất - Chế biến' },
+  { label: 'Xây dựng' },
+  { label: 'Vận tải - Logistics' },
+  { label: 'Bán lẻ - Thương mại' },
+  { label: 'Hàng tiêu dùng nhanh (FMCG)' },
+  { label: 'Marketing - Quảng cáo - PR' },
+  { label: 'Truyền thông - Báo chí' },
+  { label: 'Du lịch - Nhà hàng - Khách sạn' },
+  { label: 'Nông - Lâm - Ngư nghiệp' },
+  { label: 'Năng lượng - Điện - Dầu khí' },
+  { label: 'Viễn thông' },
+  { label: 'Ô tô - Xe máy' },
+  { label: 'Pháp lý - Luật' },
+  { label: 'Nhân sự - Tuyển dụng' },
+  { label: 'Tư vấn' },
+  { label: 'Thời trang - Làm đẹp' },
+  { label: 'Thực phẩm - Đồ uống' },
+  { label: 'Sản xuất' }
+];
 
 // Danh sách hình thức làm việc
 const WORK_TYPE_OPTIONS = [
@@ -141,7 +162,7 @@ export default function JobFilter({ onFilterChange, name, location }) {
         <div className="flex flex-col gap-2">
           <NativeSelect onChange={(e) => handleCompanyField(e.target.value)}>
             {COMPANY_FIELD.map((field) => (
-              <NativeSelectOption key={field.value} value={field.value}>{field.label}</NativeSelectOption>
+              <NativeSelectOption key={field.label} value={field.label}>{field.label}</NativeSelectOption>
             ))}
           </NativeSelect>
         </div>

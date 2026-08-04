@@ -35,6 +35,7 @@ const JobDetail = () => {
   if(applicationLoading || candidateLoading) {
     return <Loading />
   }
+  
     
   return (
     <div className=''>

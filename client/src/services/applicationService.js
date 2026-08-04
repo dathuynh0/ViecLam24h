@@ -18,8 +18,8 @@ export const applicationService = {
         return response.data;
     },
 
-    getApplicationOfJob: async (jobId) => {
-        const response = await api.get(`/applications/job/${jobId}`, { withCredentials: true });
+    getApplicationOfJob: async (jobId, page) => {
+        const response = await api.get(`/applications/job/${jobId}`, { params: { page }, withCredentials: true });
 
         return response.data;
     },
@@ -33,6 +33,12 @@ export const applicationService = {
     rejectedApplication: async (applicationId) => {
         const response = await api.patch(`/applications/${applicationId}/rejected`, {}, { withCredentials: true });
 
+        return response.data;
+    },
+
+    deleteApplication: async (applicationId) => {
+        const response = await api.delete(`/applications/${applicationId}`, { withCredentials: true });
+        
         return response.data;
     }
 }

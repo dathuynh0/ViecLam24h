@@ -8,12 +8,14 @@ import { useCategoryStore } from '@/stores/useCategoryStore';
 import { useJobStore } from '@/stores/useJobStore'
 import { SlidersHorizontal, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import { Navigate, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
+import Pagination from '../Admin/Pagination';
 
 const CategoryJob = () => {
   const { slug } = useParams();
-  const { jobOfCategory, getJobByCategory } = useJobStore();
+  const { jobOfCategory, getJobByCategory, totalPageCategoryJob } = useJobStore();
   const { category, getCategoryBySlug, categoryLoading } = useCategoryStore();
+  const [page, setPage] = useState(1);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const salary = searchParams.get('salary');
@@ -25,7 +27,7 @@ const CategoryJob = () => {
   
   const parent = {
     title: 'Việc làm',
-    slug: 'viec-lam'
+    slug: `${category?.slug}`
   }
 
   useEffect(() => {
@@ -109,7 +111,7 @@ const CategoryJob = () => {
             </div>
           )}
 
-          <div className='md:col-span-7'>
+          <div className='md:col-span-7 space-y-4'>
             {jobOfCategory.length > 0 ? (
               <ul className='space-y-4'>
                 {jobOfCategory?.map((job) => (
@@ -123,9 +125,17 @@ const CategoryJob = () => {
                 Chưa có công việc liên quan đến {category?.title}
               </p>
             )}
+
+            { jobOfCategory.length > 0 && 
+              <Pagination currentPage={page} 
+                onChangePage={(newPage) => {
+                  setPage(newPage);
+                  getJobByCategory(slug, { salary, field, work_type, work_arrangement, page: newPage});
+                }}
+                totalPage={totalPageCategoryJob} /> 
+            }
           </div>
         </div>
-
       </div>
     </div>
   )

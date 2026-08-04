@@ -85,7 +85,7 @@ const CreateJob = () => {
         const formatBenefit = format(benefit);
         const formatWorkTime = format(workTime);
 
-        await createJob (
+        const success = await createJob (
             categoryId,
             title,
             formatJobRequirement,
@@ -102,7 +102,9 @@ const CreateJob = () => {
             expiredAt
         )
 
-        reset();
+        if (success) {
+            reset();
+        }
     }
 
     if (jobLoading) {
@@ -229,14 +231,14 @@ const CreateJob = () => {
                         {...register('salaryMin')}
                         id="salaryMin"
                         name="salaryMin"
-                        placeholder="Từ : 15000000đ"
+                        placeholder="Từ : 15.000.000đ"
                         />
                         <span>-</span>
                         <Input
                         {...register('salaryMax')}
                         id="salaryMax"
                         name="salaryMax"
-                        placeholder="Đến: 20000000đ"
+                        placeholder="Đến: 20.000.000đ"
                         />
                     </div>
                 </div>
@@ -270,8 +272,7 @@ const CreateJob = () => {
                         {...register('workTime')}
                         id="workTime"
                         name="workTime"
-                        placeholder="Thời gian làm việc. VD: Thứ 2 - Thứ 6 
-                                                             08:30 - 17:30"
+                        placeholder="Thời gian làm việc. VD: Thứ 2 - Thứ 6 (08:30 - 17:30)"
                     />
                 </div>
             </div>

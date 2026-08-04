@@ -38,12 +38,12 @@ const CvUpload = ({ onFileSelect }) => {
             <p className="text-sm font-medium">
               Kéo thả CV vào đây hoặc <span className="text-primary">chọn file</span>
             </p>
-            <p className="text-xs text-muted-foreground mt-1">PDF — tối đa 5MB</p>
+            <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, PNG, JPG, GIF — tối đa 5MB</p>
           </div>
           <input
             id="cv-input"
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept=".pdf,.doc,.docx, .png, .jpg, .gif"
             className="hidden"
             onChange={(e) => handleFile(e.target.files?.[0])}
           />

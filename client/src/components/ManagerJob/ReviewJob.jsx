@@ -38,7 +38,7 @@ const ReviewJob = ({ isOpen, onClose }) => {
                                     <div className='flex gap-2'>
                                         <p className='flex-shrink-0'>Yêu cầu:</p>
                                         <ul className='flex flex-wrap items-center gap-2'>
-                                            {isOpen?.candidateRequirement.map((requirement) => (
+                                            {isOpen?.jobRequirement.map((requirement) => (
                                                 <li key={requirement}>
                                                     <Badge variant='ghost' className={`bg-slate-200 text-slate-900 whitespace-normal`}>{requirement}</Badge>
                                                 </li>
@@ -58,7 +58,7 @@ const ReviewJob = ({ isOpen, onClose }) => {
                                     <div className='space-y-3'>
                                         <h3 className='font-bold border-l-4 border-green-700 pl-2'>Yêu cầu ứng viên</h3>
                                         <ul className='space-y-2'>
-                                            {isOpen?.jobRequirement.map((requirement) => (
+                                            {isOpen?.candidateRequirement.map((requirement) => (
                                                 <li>
                                                     {requirement}
                                                 </li>

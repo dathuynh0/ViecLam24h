@@ -41,7 +41,7 @@ export const jobService = {
         quantity,
         expiredAt
     ) => {
-        const response = await api.post('/jobs/', {
+        const response = await api.post('/jobs', {
             categoryId,
             title,
             jobRequirement,
@@ -62,7 +62,7 @@ export const jobService = {
     },
 
     getJobCreated: async (page) => {
-        const response = await api.get(`/jobs/created`, { params: page, withCredentials: true });
+        const response = await api.get(`/jobs/created`, { params: { page }, withCredentials: true });
 
         return response.data;
     },
