@@ -2,6 +2,7 @@ import express from "express";
 import {
   acceptedApplication,
   applyJob,
+  deleteApplication,
   getApplicationsByCandidate,
   getApplicationsByJob,
   getApplicationStatus,
@@ -94,6 +95,8 @@ router.get("/job/:jobId", authMiddleware, isCompany, getApplicationsByJob);
 
 router.patch('/:applicationId/accepted', authMiddleware, isCompany, acceptedApplication);
 
-router.patch('/:applicationId/rejected', authMiddleware, isCompany, rejectedApplication)
+router.patch('/:applicationId/rejected', authMiddleware, isCompany, rejectedApplication);
+
+router.delete('/:applicationId', authMiddleware, deleteApplication);
 
 export default router;

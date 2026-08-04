@@ -112,19 +112,21 @@ export const getApplicationsByCandidate = async (req, res) => {
 export const getApplicationsByJob = async (req, res) => {
   try {
     const { jobId } = req.params;
+    const page = req.query.page || 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
 
     const job = await Job.findByPk(jobId);
     if (!job) {
       return res.status(404).json({ message: "Không tìm thấy bài tuyển dụng" });
     }
 
-    const applications = await JobApplication.findAll({
+    const { count, rows: applications } = await JobApplication.findAndCountAll({
       where: { jobId },
       include: [
         {
           model: Candidate,
           as: "candidate",
-          attributes: ["id", "fullName", "avatarUrl", "cvUrl", "skill", "phone"],
           include: [
             {
               model: User,
@@ -137,9 +139,12 @@ export const getApplicationsByJob = async (req, res) => {
       order: [["createdAt", "DESC"]]
     });
 
+    const totalPage = Math.ceil(count / limit);
+
     return res.status(200).json({
       message: "Lấy danh sách ứng viên đã nộp CV thành công",
-      applications
+      applications,
+      totalPage
     });
   } catch (error) {
     return res.status(500).json({
@@ -215,6 +220,24 @@ export const rejectedApplication = async (req, res) => {
     return res.status(200).json({ message: 'Từ chối ứng viên thành công '});
   } catch (error) {
     console.error('Lỗi khi gọi hàm rejectedApplication ', error)
+    return res.status(500).json({ message: 'Lỗi server '});
+  }
+}
+
+export const deleteApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+
+    const application = await JobApplication.findByPk(applicationId);
+    if(!application) {
+      return res.status(404).json({ message: 'Không tìm thấy bài ứng tuyển '});
+    }
+
+    await application.destroy();
+
+    return res.status(200).json({ message: 'Xóa ứng viên thành công '});
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm deleteApplication ', error)
     return res.status(500).json({ message: 'Lỗi server '});
   }
 }

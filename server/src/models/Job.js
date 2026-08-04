@@ -30,7 +30,7 @@ const Job = sequelize.define("Job", {
         }
     },
     title: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         unique: true,
     },
     jobRequirement: {

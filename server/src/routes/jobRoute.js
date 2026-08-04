@@ -25,7 +25,7 @@ router.get('/:slug/slug', getJobBySlug);
 
 router.get('/:slug/category', getJobByCategory);
 
-router.get('/:jobId/related', getRelatedJob)
+router.get('/:jobId/related', getRelatedJob);
 
 router.get('/search', searchJob);
 

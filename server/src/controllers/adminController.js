@@ -22,10 +22,10 @@ const getDashboardStats = async (req, res) => {
 
     // --- Tổng số + số liệu tháng này/tháng trước để tính trend ---
     const [
-      totalJobs, jobsThisMonth, jobsLastMonth,
-      totalCompanies, companiesThisMonth, companiesLastMonth,
-      totalCandidates, candidatesThisMonth, candidatesLastMonth,
-      totalApplications, applicationsThisMonth, applicationsLastMonth,
+      totalJobs, jobsThisMonth,
+      totalCompanies, companiesThisMonth,
+      totalCandidates, candidatesThisMonth,
+      totalApplications, applicationsThisMonth,
     ] = await Promise.all([
       Job.count({ where: {
         status: 'active',
@@ -33,24 +33,16 @@ const getDashboardStats = async (req, res) => {
           [Op.gt]: new Date()
         }
       } }),
-      Job.count({ where: { createdAt: { [Op.gte]: startOfThisMonth } } }),
-      Job.count({ where: { createdAt: { [Op.between]: [startOfLastMonth, startOfThisMonth] } } }),
-
+    
       Company.count({
         where: {
           status: 'active'
         }
       }),
-      Company.count({ where: { createdAt: { [Op.gte]: startOfThisMonth } } }),
-      Company.count({ where: { createdAt: { [Op.between]: [startOfLastMonth, startOfThisMonth] } } }),
-
+  
       User.count({ where: { role: 'candidate' } }),
-      Candidate.count({ where: { createdAt: { [Op.gte]: startOfThisMonth } } }),
-      Candidate.count({ where: { createdAt: { [Op.between]: [startOfLastMonth, startOfThisMonth] } } }),
 
       JobApplication.count(),
-      JobApplication.count({ where: { createdAt: { [Op.gte]: startOfThisMonth } } }),
-      JobApplication.count({ where: { createdAt: { [Op.between]: [startOfLastMonth, startOfThisMonth] } } }),
     ])
 
     // --- Tin tuyển dụng theo ngày (30 ngày gần nhất) ---
@@ -92,13 +84,9 @@ const getDashboardStats = async (req, res) => {
 
     return res.status(200).json({
       totalJobs,
-      jobsTrend: calcTrend(jobsThisMonth, jobsLastMonth),
       totalCompanies,
-      companiesTrend: calcTrend(companiesThisMonth, companiesLastMonth),
       totalCandidates,
-      candidatesTrend: calcTrend(candidatesThisMonth, candidatesLastMonth),
       totalApplications,
-      applicationsTrend: calcTrend(applicationsThisMonth, applicationsLastMonth),
       jobsOverTime: jobsOverTimeRaw.map(r => ({
         date: r.date,
         count: Number(r.count),

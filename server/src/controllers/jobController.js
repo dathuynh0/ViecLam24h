@@ -182,7 +182,7 @@ export const getJobByCategory = async (req, res) => {
 
       const totalPage = Math.ceil(count / limit);
 
-      return res.status(200).json({ page, totalPage, jobs });
+      return res.status(200).json({ totalPage, jobs });
     } catch (error) {
         console.error('Lỗi khi gọi hàm getJobByCategory ', error)
         return res.status(500).json({ message: 'Lỗi sever'})
@@ -252,9 +252,7 @@ export const searchJob = async (req, res) => {
     return res.status(200).json({
       message: 'Tìm kiếm việc làm thành công',
       jobs: rows,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-      limit,
+      totalPage: Math.ceil(count / limit),
     });
   } catch (error) {
     console.error('Lỗi khi gọi hàm searchJob ', error);
@@ -311,6 +309,7 @@ export const createJob = async (req, res) => {
     } = req.body;
 
     if ( !categoryId || !title || salaryMin === undefined || salaryMax === undefined || !location || !expiredAt) {
+      console.log('Thiếu dữ liệu')
       return res.status(400).json({
         message: "Vui lòng nhập đầy đủ thông tin bắt buộc: categoryId, title, salaryMin, salaryMax, location"
       });
@@ -323,10 +322,12 @@ export const createJob = async (req, res) => {
 
     const existingJob = await Job.findOne({ where: { title } });
     if (existingJob) {
+      console.log('Tiêu đề bài đăng tuyển đã tồn tại')
       return res.status(400).json({ message: 'Tiêu đề bài đăng tuyển đã tồn tại '});
     }
 
-    if (salaryMax < salaryMin) {
+    if (Number(salaryMax) < Number(salaryMin)) {
+      console.log('Lương tối đa không được nhỏ hơn lương tối thiểu')
       return res.status(400).json({ message: 'Lương tối đa không được nhỏ hơn lương tối thiểu' })
     }
 
@@ -569,7 +570,7 @@ export const rejectJob = async (req, res) => {
 export const getJobCreated = async (req, res) => {
   try {
     const company = req.user.company;
-    const page  = req.params.page || 1;
+    const page  = req.query.page || 1;
     const limit = 8;
     const offset = (page - 1) * limit
 
