@@ -48,22 +48,23 @@ const Category = () => {
             {categories?.slice(0, 9).map((c) => {
                 const Icon = getCategoryIcon(c.slug);
                 return (
-                <li key={c?.id}>
-                    <Link
-                    to={`/danh-muc/${c.slug}`}
-                    className="flex flex-col items-center text-center gap-2 p-5 rounded-xl border bg-white hover:border-primary hover:shadow-md transition-all duration-200 group"
-                    >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-700 text-white">
-                        <Icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-sm md:text-base line-clamp-1">
-                        {c?.title}
-                    </h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                        {c?.jobCount} việc làm
-                    </p>
-                    </Link>
-                </li>
+                  <li key={c?.id}>
+                      <Link
+                      target="_blank"
+                      to={`/danh-muc/${c.slug}`}
+                      className="flex flex-col items-center text-center gap-2 p-5 rounded-xl border bg-white hover:border-primary hover:shadow-md transition-all duration-200 group"
+                      >
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-700 text-white">
+                          <Icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-bold text-sm md:text-base line-clamp-1">
+                          {c?.title}
+                      </h3>
+                      <p className="text-xs md:text-sm text-muted-foreground">
+                          {c?.jobCount} việc làm
+                      </p>
+                      </Link>
+                  </li>
                 );
             })}
         </ul>

@@ -14,6 +14,7 @@ export const useAuthStore = create((set, get) => ({
 
     setAccessToken: async (token) => {
         set({ accessToken: token });
+        localStorage.setItem('hadSignedIn', '1');
         const { fetchMe } = useAuthStore.getState();
         await fetchMe();
     },
@@ -41,6 +42,7 @@ export const useAuthStore = create((set, get) => ({
             const { accessToken } = await authService.signIn(username, password);
 
             set({ accessToken });
+            localStorage.setItem('hadSignedIn', '1');
             toast.success('Đăng nhập thành công')
             return true;
         } catch (error) {
@@ -81,6 +83,7 @@ export const useAuthStore = create((set, get) => ({
             }
 
         } catch (error) {
+            localStorage.removeItem('hadSignedIn');
             console.error('Lỗi khi gọi API refresh ', error);
         } finally {
             set({ authLoading: false });
@@ -93,7 +96,7 @@ export const useAuthStore = create((set, get) => ({
 
             await authService.signOut();
             useAuthStore.getState().clearState();
-
+            localStorage.removeItem('hadSignedIn');
             toast.success('Đăng xuất thành công');
         } catch (error) {
             console.error('Lỗi khi gọi API đăng xuất ', error);

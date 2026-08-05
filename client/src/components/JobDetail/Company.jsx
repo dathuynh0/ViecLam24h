@@ -21,7 +21,7 @@ const Company = ({ job }) => {
         <a href={job?.createdBy?.website} target='_blank' className='flex items-center gap-2 text-sm text-green-700 pb-4'><Earth className='h-5 w-5'/>{job?.createdBy?.website}</a>
       }
       <Button variant='ghost' className={`border border-green-700 text-green-800 hover:bg-green-700 hover:text-white max-w-xs block mx-auto`}>
-        <Link to={`/cong-ty/${job?.createdBy?.slug}`} className='w-full'>
+        <Link target='_blank' to={`/cong-ty/${job?.createdBy?.slug}`} className='w-full'>
             Xem chi tiết
         </Link>
       </Button>

@@ -7,10 +7,11 @@ const ProtectedRoute = () => {
     const { accessToken, user, fetchMe, refresh, authLoading } = useAuthStore();
     const [initializing, setInitializing] = useState(true);
     const { pathname } = useLocation();
+    const hadSignedIn = localStorage.getItem('hadSignedIn');
     const navigate = useNavigate();
 
     const init = async () => {
-        if(!accessToken) {
+        if(!accessToken && hadSignedIn) {
             await refresh();
         }
 
@@ -47,7 +48,7 @@ const ProtectedRoute = () => {
     if (pathname.startsWith('/quan-tri') && user?.role !== 'admin') {
         return <Navigate to="/404" replace />;
     }
-    if(!pathname.includes('/nha-tuyen-dung') && user?.role == 'company') {
+    if(!pathname.includes('/nha-tuyen-dung') && user?.role === 'company') {
         return <Navigate to="/nha-tuyen-dung" replace />;
     }
 

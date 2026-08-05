@@ -57,8 +57,9 @@ const Content = ({ user }) => {
                             >
                                 <div className="min-w-0">
                                     <Link
-                                    className="text-lg hover:underline text-green-700 line-clamp-1"
-                                    to={`/viec-lam/${job?.job.slug}`}
+                                        className="text-lg hover:underline text-green-700 line-clamp-1"
+                                        target='_blank'
+                                        to={`/viec-lam/${job?.job.slug}`}
                                     >
                                     {job?.job?.title}
                                     </Link>
@@ -78,9 +79,9 @@ const Content = ({ user }) => {
                                     {day === 0 ? 'Mới đây' : `Đã lưu: ${day} ngày trước`}
                                     </p>
                                     <Button
-                                    onClick={() => deleteJobSave(job?.id)}
-                                    variant="ghost"
-                                    className="bg-red-100 text-red-800 order-1 sm:order-2"
+                                        onClick={() => deleteJobSave(job?.id)}
+                                        variant="ghost"
+                                        className="bg-red-100 text-red-800 order-1 sm:order-2"
                                     >
                                     <Trash /> Xóa
                                     </Button>

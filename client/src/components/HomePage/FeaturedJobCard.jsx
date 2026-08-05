@@ -43,8 +43,8 @@ const FeaturedJobCard = ({ featuredJob }) => {
       </div>
       <div>
         <h2 title={featuredJob.title} className='text-lg font-medium hover:underline hover:text-green-700 cursor-pointer line-clamp-1'>
-            <Link className='w-full' to={`/viec-lam/${featuredJob.slug}`}>
-                {featuredJob.title}
+            <Link target='_blank' to={`/viec-lam/${featuredJob.slug}`} className='w-full'>
+              {featuredJob.title}
             </Link>
         </h2>
         <p className='text-gray-500 text-sm font-medium'>{featuredJob.createdBy.companyName}</p>

@@ -26,7 +26,7 @@ const CompanySection = () => {
                     <h2 className='font-bold text-3xl'>Đối tác <span className='text-green-700'>chiến lược</span></h2>
                     <p className='text-sm text-gray-500'>Những công ty hàng đầu đang tìm kiếm ứng viên</p>
                 </div>
-                <Link to={`/cong-ty`} className='flex items-center text-sm hover:text-green-700 hover:underline line-clamp-1'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
+                <Link target='_blank' to={`/cong-ty`} className='flex items-center text-sm hover:text-green-700 hover:underline line-clamp-1'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
             </div>
             <ul className='py-6 grid grid-cols-1 md:grid-cols-3 gap-4'>
                 {featuredCompany.map((company) => (

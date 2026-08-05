@@ -24,7 +24,7 @@ const FeaturedJob = () => {
             <h2 className='font-bold text-3xl'>Việc làm <span className='text-green-700'>nổi bật</span></h2>
             <p className='text-sm text-gray-500'>Rất nhiều công việc hấp dẫn đang chờ bạn</p>
           </div>
-          <Link to={`/tim-kiem`} className='flex items-center text-sm hover:text-green-700 hover:underline line-clamp-1'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
+          <Link target='_blank' to={`/tim-kiem/?name=&location=Toàn%20quốc`} className='flex items-center text-sm hover:text-green-700 hover:underline line-clamp-1'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
         </div>
         <ul className='py-6 grid grid-cols-1 md:grid-cols-3 space-y-2 lg:gap-4'>
           {featuredJob?.map((job) => (
