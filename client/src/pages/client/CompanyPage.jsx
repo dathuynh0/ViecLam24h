@@ -29,8 +29,6 @@ const CompanyPage = () => {
     if (companyLoading) {
         return <Loading />
     }
-
-    console.log(company);
     
 
   return (

@@ -2,6 +2,7 @@ import { Op, where } from "sequelize";
 import Job from "../models/Job.js";
 import Company from "../models/Company.js";
 import CategoryJob from "../models/CategoryJob.js";
+import JobApplication from "../models/JobApplication.js";
 
 import toSlug from "../utils/slug.js";
 import { salaryRange } from '../utils/filter.js';
@@ -576,6 +577,12 @@ export const getJobCreated = async (req, res) => {
 
     const { rows: jobs, count } = await Job.findAndCountAll({
       where: { companyId: company.id },
+      include: [
+        {
+          model: JobApplication, as: 'applications',
+          attributes: ['id']
+        }
+      ],
       limit,
       offset,
       order: [['createdAt', 'DESC']]

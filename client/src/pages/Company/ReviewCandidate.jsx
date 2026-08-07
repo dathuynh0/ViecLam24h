@@ -1,11 +1,11 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileText, X } from 'lucide-react'
 import React from 'react'
 
 const ReviewCandidate = ({ isOpen, onClose }) => {
+
   return (
     <AnimatePresence>
         {
@@ -79,9 +79,15 @@ const ReviewCandidate = ({ isOpen, onClose }) => {
                                 <div>
                                     <p className="text-gray-400 text-sm mb-1">Giới thiệu</p>
                                     {isOpen?.bio ? (
-                                        <p className="text-gray-700 text-sm whitespace-pre-line">
-                                            {isOpen.bio}
-                                        </p>
+                                        <ul>
+                                            {
+                                                isOpen.bio.map((b, index) => (
+                                                    <li key={index} className="text-gray-700 text-sm mb-1">
+                                                        {b}
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
                                     ) : (
                                         <p className="text-gray-400 text-sm italic">Không có</p>
                                     )}

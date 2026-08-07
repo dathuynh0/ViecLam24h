@@ -49,12 +49,13 @@ const ManagerJob = () => {
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-gray-100 text-left text-gray-600">
-            <th className="p-3 border-b">STT</th>
+            <th className="p-3 border-b">#</th>
             <th className="p-3 border-b">Tiêu đề</th>
             <th className="p-3 border-b">Mức lương</th>
             <th className="p-3 border-b">Số lượng tuyển</th>
             <th className="p-3 border-b">Hình thức</th>
             <th className="p-3 border-b">Trạng thái</th>
+            <th className="p-3 border-b">Đơn ứng tuyển</th>
             <th className="p-3 border-b">Hành động</th>
           </tr>
         </thead>
@@ -98,6 +99,12 @@ const ManagerJob = () => {
                         job?.status === 'active' ? <Badge variant='ghost' className={`text-green-800 bg-green-200`}>Đã duyệt</Badge> : ''
                         
                     }
+                  </td>
+
+                  <td className="p-3">
+                    <Badge variant='ghost' className={`bg-blue-200 text-blue-800`}>
+                        {job?.applications?.length || 0} đơn ứng tuyển
+                    </Badge>
                   </td>
 
                   <td className="p-3">

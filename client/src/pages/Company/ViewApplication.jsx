@@ -13,6 +13,7 @@ import Pagination from '../Admin/Pagination'
 const ViewApplication = ({ job, isOpen, onClose }) => {
     const { applicationOfJob, totalPageApplication, getApplicationOfJob, applicationLoading, acceptedApplication, rejectedApplication, deleteApplication } = useApplicationStore()
 
+
     const [reviewCandidate, setReviewCandidate] = useState(null);
     const [page, setPage] = useState(1);
 
@@ -25,6 +26,7 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
     if (applicationLoading) {
         return <Loading />
     }
+
 
     return (
         <AnimatePresence>

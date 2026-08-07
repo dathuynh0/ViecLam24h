@@ -164,6 +164,8 @@ export const useJobStore = create((set, get) => ({
                 quantity,
                 expiredAt
             );
+            const { getJobCreated } = useJobStore.getState();
+            await getJobCreated()
 
             toast.success('Cập nhật bài đăng thành công');
         } catch (error) {
