@@ -204,5 +204,22 @@ export const useJobStore = create((set, get) => ({
         } finally {
             set({ jobLoading: false });
         }
+    },
+
+    toggleJobStatus: async (jobId, page) => {
+        try {
+            set({ jobLoading: true });
+
+            await jobService.toggleJobStatus(jobId);
+            const { getJobCreated } = useJobStore.getState();
+            await getJobCreated(page);
+
+            toast.success('Cập nhật trạng thái bài đăng thành công')
+        } catch (error) {
+            console.error('Lỗi khi gọi API toggleJobStatus ', error);
+            toast.error('Cập nhật trạng thái bài đăng thất bại')
+        } finally {
+            set({ jobLoading: false });
+        }
     }
-}))
+}));

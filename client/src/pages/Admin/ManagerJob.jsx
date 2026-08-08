@@ -1,6 +1,6 @@
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { useAdminStore } from '@/stores/useAdminStore'
-import { Check, Eye, Filter, Trash, X } from 'lucide-react';
+import { Check, Eye, Filter, ToggleLeft, ToggleRight, Trash, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router';
 import { formatDateForInput } from '@/lib/formatJsonB'
@@ -24,11 +24,14 @@ const FIELD_STATUS = [
   },
   {
     field: 'Đã duyệt', value: 'active'
+  },
+  {
+    field: 'Đang ẩn', value: 'inactive'
   }
 ]
 
 const ManagerJob = () => {
-  const { jobs, totalPageJob, getAllJob, rejectJob, activeJob } = useAdminStore();
+  const { jobs, totalPageJob, getAllJob, rejectJob, activeJob, toggleJobStatus } = useAdminStore();
 
   const [openReview, setOpenReview] = useState(null);
   const [openDeleteJob, setOpenDeleteJob] = useState(null);
@@ -61,7 +64,9 @@ const ManagerJob = () => {
     });
   };
 
-  
+  const handleToggleStatus = async (jobId, page) => { 
+    await toggleJobStatus(jobId, page);
+  }
 
   return (
     <div className='p-4 mx-auto space-y-4'>
@@ -129,7 +134,8 @@ const ManagerJob = () => {
                   {
                     j?.status === 'pending' ? <Badge variant='ghost' className={`bg-amber-100 text-amber-700`}>Chưa duyệt</Badge> :
                     j?.status === 'rejected' ? <Badge variant='ghost' className={`bg-red-100 text-red-700`}>Đã từ chối</Badge> :
-                    j?.status === 'active' ? <Badge variant='ghost' className={`bg-green-100 text-green-700`}>Đã duyệt</Badge> : ''
+                    j?.status === 'active' ? <Badge variant='ghost' className={`bg-green-100 text-green-700`}>Đã duyệt</Badge> : 
+                    <Badge variant='ghost' className={`bg-slate-200 text-slate-700`}>Đang ẩn</Badge>
                   }
                 </td>
 
@@ -164,6 +170,12 @@ const ManagerJob = () => {
                     </div> 
                     : 
                     <div className="flex gap-1">
+                      {
+                        j?.status === 'active' ?
+                        <Button onClick={() => handleToggleStatus(j?.id, page)} variant='ghost' className={`bg-green-200 text-green-800`} title='Ẩn bài đăng'><ToggleRight /></Button>  :
+                        j?.status === 'inactive' ?
+                        <Button onClick={() => handleToggleStatus(j?.id, page)} variant='ghost' className={`bg-slate-200 text-slate-800`} title='Hiện bài đăng'><ToggleLeft /></Button>  : ""
+                      }
                       <Button
                         onClick={() => setOpenReview(j)}
                         title='Xem chi tiết'

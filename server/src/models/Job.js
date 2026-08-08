@@ -86,7 +86,7 @@ const Job = sequelize.define("Job", {
         unique: true
     },
     status: {
-        type: DataTypes.ENUM('pending', 'rejected', 'active'),
+        type: DataTypes.ENUM('pending', 'rejected', 'active', 'inactive'),
         defaultValue: 'pending'
     },
     expiredAt: {

@@ -115,5 +115,11 @@ export const jobService = {
         const response = await api.get(`/jobs/${jobId}/related`, { withCredentials: true });
 
         return response.data;
+    },
+
+    toggleJobStatus: async (jobId) => {
+        const response = await api.patch(`/jobs/${jobId}/toggle-status`, {}, { withCredentials: true });
+
+        return response.data;
     }
 }

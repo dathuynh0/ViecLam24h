@@ -2,7 +2,7 @@ import Loading from '@/components/Loading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useJobStore } from '@/stores/useJobStore'
-import { Edit, Eye, Trash } from 'lucide-react';
+import { Edit, Eye, ToggleLeft, ToggleRight, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import EditJob from './EditJob';
 import { useCategoryStore } from '@/stores/useCategoryStore';
@@ -19,7 +19,7 @@ const formatSalary = (min, max) => {
 
 
 const ManagerJob = () => {
-    const { jobCreated, totalPageJob, getJobCreated, jobLoading } = useJobStore();
+    const { jobCreated, totalPageJob, getJobCreated, jobLoading, toggleJobStatus } = useJobStore();
     const { categories, getAllCategory } = useCategoryStore();
 
     const [openEdit, setOpenEdit] = useState(null);
@@ -43,6 +43,9 @@ const ManagerJob = () => {
       setSearchParams({ page: newPage })
     }
     
+    const handleToggleStatus = async (jobId, page) => {
+      await toggleJobStatus(jobId, page);
+    }
 
   return (
     <div className="p-4 mx-auto space-y-4">
@@ -109,6 +112,12 @@ const ManagerJob = () => {
 
                   <td className="p-3">
                     <div className="flex gap-1">
+                      {
+                        job?.status === 'active' ? 
+                          <Button onClick={() => handleToggleStatus(job?.id, page)} variant='ghost' className={`bg-green-200 text-green-800`} title='Ẩn bài đăng'><ToggleRight /></Button> 
+                        : 
+                          <Button onClick={() => handleToggleStatus(job?.id, page)} variant='ghost' className={`bg-gray-200 text-gray-800`} title='Hiện bài đăng'><ToggleLeft /></Button>
+                      }
                         <Button
                           onClick={() => setOpenView(job)}
                             variant='ghost'

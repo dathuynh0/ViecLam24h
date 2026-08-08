@@ -6,7 +6,7 @@ import { useApplicationStore } from '@/stores/useApplicationStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Mail, Trash, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { format } from '@/lib/formatJsonB.js'
+import { transformText } from '@/lib/formatJsonB.js'
 import ReviewCandidate from './ReviewCandidate'
 import Pagination from '../Admin/Pagination'
 
@@ -94,7 +94,7 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
                                                     <td className="px-4 py-3 text-gray-600 max-w-[300px] truncate">
                                                         {
                                                             app?.introduction ? 
-                                                                <Textarea className={`max-h-[120px]`} value={format(app?.introduction)} />
+                                                                <Textarea readOnly defaultValue={app?.introduction} className={`max-w-[150px] max-h-[100px]`}/>
                                                             : <p>Không có</p>
                                                         }
                                                     </td>

@@ -18,9 +18,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 5s
       timeout: 5s
-      retries: 5
-    networks:
-      - vieclam24h_net
+      retries: 10
 
   backend:
     build:
@@ -43,8 +41,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - vieclam24h_net
 
   frontend:
     build:
@@ -58,12 +54,6 @@ services:
       - "5173:80"
     depends_on:
       - backend
-    networks:
-      - vieclam24h_net
 
 volumes:
   pgdata:
-
-networks:
-  vieclam24h_net:
-    driver: bridge

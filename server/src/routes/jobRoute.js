@@ -9,7 +9,8 @@ import {
   getJobByCategory,
   searchJob,
   getJobCreated,
-  getRelatedJob
+  getRelatedJob,
+  toggleJobStatus
 } from "../controllers/jobController.js";
 
 import {
@@ -36,6 +37,8 @@ router.get("/:jobId", getJobById);
 router.post("/", authMiddleware, isCompany, createJob);
 
 router.put("/:jobId", authMiddleware, isCompany, updateJob);
+
+router.patch("/:jobId/toggle-status", authMiddleware, isCompany, toggleJobStatus);
 
 router.delete("/:jobId", authMiddleware, isCompany, deleteJob);
 

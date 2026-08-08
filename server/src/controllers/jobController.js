@@ -566,6 +566,29 @@ export const rejectJob = async (req, res) => {
   }
 }
 
+export const toggleJobStatus = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const job = await Job.findByPk(jobId);
+    if(!job) {
+      return res.status(404).json({ message: 'Không tìm thấy bài đăng tuyển dụng '});
+    }
+
+    if (job.status === 'active') {
+      job.status = 'inactive';
+    } else {
+      job.status = 'active';
+    }
+    await job.save();
+
+    return res.status(200).json({ message: 'Cập nhật trạng thái bài đăng thành công', job });
+  } catch (error) {
+    console.error('Lỗi khi gọi hàm toggleJobStatus ', error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+}
+
 
 // company
 export const getJobCreated = async (req, res) => {
