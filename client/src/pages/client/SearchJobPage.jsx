@@ -34,7 +34,7 @@ const SearchJobPage = () => {
       };
 
       setSearchParams(queryParams);
-      getSearchJob(queryParams)
+      getSearchJob(queryParams);
   }
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const SearchJobPage = () => {
         <SearchJob />
       </div>
 
-      <div className='p-4 md:p-0 space-y-4 max-w-[1200px] mx-auto py-2'>
+      <div className='p-4 md:p-0 space-y-4 max-w-[1100px] mx-auto py-2'>
 
         <BreadCrumb parent={parent} currentPage={`Việc làm ${name} và ${location}`} />
 
@@ -128,7 +128,10 @@ const SearchJobPage = () => {
             }
           </div>
         </div>
-            { searchJob.length > 0 &&  <Pagination currentPage={page} onChangePage={(newPage) => setPage(newPage)} totalPage={totalPageSearch} />}
+            { searchJob.length > 0 &&  <Pagination currentPage={page} onChangePage={(newPage) => {
+              setPage(newPage)
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+            }} totalPage={totalPageSearch} />}
       </div>
     </div>
   )

@@ -43,7 +43,7 @@ const JobDetail = () => {
         <SearchJob />
       </div>
 
-      <div className='space-y-4 max-w-[1200px] mx-auto px-4 py-2'>
+      <div className='space-y-4 max-w-[1100px] mx-auto px-4 py-2'>
         
         <BreadCrumb parent={jobDetail?.category} currentPage={jobDetail?.title}/>
 

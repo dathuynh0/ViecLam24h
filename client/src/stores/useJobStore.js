@@ -42,7 +42,7 @@ export const useJobStore = create((set, get) => ({
 
     getJobByCategory: async (slug, filter) => {
         try {
-            set({ loading: true });
+            set({ jobLoading: true });
 
             const { jobs, totalPage } = await jobService.getJobByCategory(slug, filter);
             set({ jobOfCategory: jobs, totalPageCategoryJob: totalPage });

@@ -33,7 +33,6 @@ const CategoryJob = () => {
   useEffect(() => {
     getJobByCategory(slug, salary, field, work_type, work_arrangement);
     getCategoryBySlug(slug);
-    
   }, [slug]);
 
 
@@ -65,7 +64,7 @@ const CategoryJob = () => {
         <SearchJob />
       </div>
 
-      <div className='p-4 md:p-0 space-y-4 max-w-[1200px] mx-auto py-2 my-2'>
+      <div className='p-4 md:p-0 space-y-4 max-w-[1100px] mx-auto py-2 my-2'>
 
         <BreadCrumb parent={parent} currentPage={category?.title} />
         
@@ -131,6 +130,7 @@ const CategoryJob = () => {
                 onChangePage={(newPage) => {
                   setPage(newPage);
                   getJobByCategory(slug, { salary, field, work_type, work_arrangement, page: newPage});
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
                 }}
                 totalPage={totalPageCategoryJob} /> 
             }

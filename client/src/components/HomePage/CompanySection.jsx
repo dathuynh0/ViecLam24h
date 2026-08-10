@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router'
 import FeaturedCompanyCard from './FeaturedCompanyCard'
 import Loading from '../Loading'
-import { div } from 'framer-motion/client'
 
 const CompanySection = () => {
     const { featuredCompany, getFeaturedCompany, companyLoading } = useCompanyStore();
@@ -20,7 +19,7 @@ const CompanySection = () => {
     
   return (
     <div className='bg-green-50'>
-        <div className='max-w-[1200px] mx-auto py-8'>
+        <div className='max-w-[1100px] mx-auto py-8'>
             <div className='flex items-center justify-between'>
                 <div className='space-y-2'>
                     <h2 className='font-bold text-3xl'>Đối tác <span className='text-green-700'>chiến lược</span></h2>

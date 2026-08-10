@@ -10,7 +10,7 @@ const HeroSection = () => {
     let filterCategory = categories?.slice(0, 4);
     
   return (
-    <div className='max-w-[1200px] mx-auto py-6 lg:py-12'>
+    <div className='max-w-[1100px] mx-auto py-6 lg:py-12'>
       <h1 className='text-5xl font-bold md:w-2xl leading-tight'>Tìm kiếm <span className='text-green-900'>việc làm</span> mơ ước phù hợp với bản thân</h1>
       <p className='md:w-2xl text-lg font-light py-2 lg:py-4'>Kết nối với các nhà tuyển dụng uy tín và khám phá hàng ngàn cơ hội nghề nghiệp mỗi ngày.</p>
       <SearchJob />
