@@ -20,7 +20,7 @@ import {
 
 const router = express.Router();
 
-router.get('/featured', getFeaturedJob);
+router.get('/featured/:location', getFeaturedJob);
 
 router.get('/:slug/slug', getJobBySlug);
 

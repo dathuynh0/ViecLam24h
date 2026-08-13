@@ -11,13 +11,14 @@ const getAllCompany = async (req, res) => {
         const limit = 18;
         const offset = (page - 1) * limit;
         const { name } = req.query;
+
         const where = {
             status: 'active'
         }
+
         if (name) {
             where.companyName = { [Op.iLike]: `%${name}%` }
         }
-
 
         const { count, rows } = await Company.findAndCountAll({
             where,

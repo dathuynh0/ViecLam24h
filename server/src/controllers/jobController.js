@@ -263,13 +263,20 @@ export const searchJob = async (req, res) => {
 
 export const getFeaturedJob = async (req, res) => {
   try {
-    const featuredJob = await Job.findAll({
-      where: {
-        status: 'active',
-        expiredAt: {
+    const { location } = req.params
+    const where = {
+      status: 'active',
+      expiredAt: {
           [Op.gt]: new Date()
-        }
-      },
+      }
+    }
+
+    if (location !== 'all') {
+      where.location = { [Op.like]: `%${location}%` }
+    }
+
+    const featuredJob = await Job.findAll({
+      where,
       include: [
         { model: Company, as: 'createdBy' }
       ],
