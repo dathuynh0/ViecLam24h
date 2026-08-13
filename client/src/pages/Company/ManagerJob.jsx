@@ -99,8 +99,8 @@ const ManagerJob = () => {
                     {
                         job?.status === 'pending' ? <Badge variant='ghost' className={`text-amber-800 bg-amber-200`}>Chờ duyệt</Badge> :
                         job?.status === 'rejected' ? <Badge variant='ghost' className={`text-red-800 bg-red-200`}>Từ chối</Badge> :
-                        job?.status === 'active' ? <Badge variant='ghost' className={`text-green-800 bg-green-200`}>Đã duyệt</Badge> : ''
-                        
+                        job?.status === 'active' ? <Badge variant='ghost' className={`text-green-800 bg-green-200`}>Đã duyệt</Badge> : 
+                        <Badge variant='ghost' className={`text-slate-800 bg-slate-200`}>Đã ẩn</Badge>
                     }
                   </td>
 

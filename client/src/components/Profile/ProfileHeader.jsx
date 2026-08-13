@@ -77,7 +77,7 @@ const ProfileHeader = ({ user, setOpenEdit }) => {
                     ref={cvInputRef}
                     onChange={handleChangeCv}
                     type='file'
-                    accept='.pdf,.doc,.docx'
+                    accept='.pdf,.doc,.docx, .jpg, .png'
                     className='hidden'
                 />
         </div>

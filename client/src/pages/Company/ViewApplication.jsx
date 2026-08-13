@@ -94,7 +94,7 @@ const ViewApplication = ({ job, isOpen, onClose }) => {
                                                     <td className="px-4 py-3 text-gray-600 max-w-[300px] truncate">
                                                         {
                                                             app?.introduction ? 
-                                                                <Textarea readOnly defaultValue={app?.introduction} className={`max-w-[150px] max-h-[100px]`}/>
+                                                                <Textarea readOnly defaultValue={app?.introduction} className={`max-w-[250px] max-h-[100px]`}/>
                                                             : <p>Không có</p>
                                                         }
                                                     </td>

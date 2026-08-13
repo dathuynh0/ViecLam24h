@@ -5,6 +5,12 @@ import { FileText, X } from 'lucide-react'
 import React from 'react'
 
 const ReviewCandidate = ({ isOpen, onClose }) => {
+    const cvUrl = isOpen?.cvUrl
+        ? `${import.meta.env.VITE_BACKEND_URL}/${isOpen.cvUrl}`
+        : null
+
+    const isImage = cvUrl && /\.(jpe?g|png|webp|gif)$/i.test(cvUrl)
+    const isPdf = cvUrl && /\.pdf$/i.test(cvUrl)
 
   return (
     <AnimatePresence>
@@ -114,20 +120,32 @@ const ReviewCandidate = ({ isOpen, onClose }) => {
                                 </div>
 
                                 {/* CV đính kèm */}
-                                {isOpen?.cvUrl && (
-                                    <div>
-                                        <p className="text-gray-400 text-sm mb-1">CV đính kèm</p>
-                                        <a
-                                            href={`${import.meta.env.VITE_BACKEND_URL}/${isOpen.cvUrl}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
-                                        >
-                                            <FileText size={16} />
-                                            Xem CV
-                                        </a>
+                                {isOpen?.cvUrl ? (
+                                    <div className='flex flex-col items-center gap-3'>
+                                        <p className='text-gray-400 text-sm mb-2'>CV đính kèm</p>
+                                        {/* Phần preview */}
+                                        <div className='w-full border rounded-md overflow-hidden bg-gray-50'>
+                                            {isImage && (
+                                                <img
+                                                    src={cvUrl}
+                                                    alt='Xem CV'
+                                                    className='w-full h-full'
+                                                />
+                                            )}
+
+                                            {isPdf && (
+                                                <iframe
+                                                    src={`${cvUrl}#toolbar=0&navpanes=0`}
+                                                    title='Xem CV'
+                                                    className='w-full h-full'
+                                                />
+                                            )}
+                                        </div>
                                     </div>
-                                )}
+                                    ) 
+                                : 
+                                    <p className='text-center'>Chưa cập nhật CV</p>
+                                }
                             </div>
 
                             {/* Footer */}

@@ -24,6 +24,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    volumes:
+      - ./server/public/uploads:/app/public/uploads
     container_name: vieclam24h_server
     restart: unless-stopped
     environment:
