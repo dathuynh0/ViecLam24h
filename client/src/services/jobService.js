@@ -1,8 +1,8 @@
 import api from "@/lib/api"
 
 export const jobService = {
-    getFeaturedJob: async () => {
-        const response = await api.get('/jobs/featured');
+    getFeaturedJob: async (location) => {
+        const response = await api.get(`/jobs/featured/${location}`);
 
         return response.data;
     },

@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -8,7 +7,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '../ui/textarea'
 import { format, transformText } from '@/lib/formatJsonB'
 import { useCandidateStore } from '@/stores/useCandidateStore'
-import Loading from '../Loading'
 
 const OpenEditProfile = ({ user, isOpen, onClose }) => {
   const {

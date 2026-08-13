@@ -14,10 +14,10 @@ export const useJobStore = create((set, get) => ({
     relatedJob: [],
     jobLoading: false,
 
-    getFeaturedJob: async () => {
+    getFeaturedJob: async (location) => {
         try {
             set({ jobLoading: true });
-            const { featuredJob } = await jobService.getFeaturedJob();
+            const { featuredJob } = await jobService.getFeaturedJob(location);
 
             set({ featuredJob });
         } catch (error) {

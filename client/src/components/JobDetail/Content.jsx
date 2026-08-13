@@ -53,10 +53,10 @@ const Content = ({ job, hasApplyJob, isSave }) => {
             </div>
 
             <div className='space-y-3 border-t py-6'>
-                <h3 className='font-bold border-l-4 border-green-700 pl-2'>Mô tả công việc</h3>
+                <h3 className='text-lg font-bold border-l-4 border-green-700 pl-2'>Mô tả công việc</h3>
                 <ul className='space-y-2'>
                     {job?.description.map((description) => (
-                        <li>
+                        <li key={description} className='text-[15px]'>
                             {description}
                         </li>
                     ))}
@@ -65,10 +65,10 @@ const Content = ({ job, hasApplyJob, isSave }) => {
         </div>
         {/* requirement */}
         <div className='space-y-3 border-t py-6'>
-            <h3 className='font-bold border-l-4 border-green-700 pl-2'>Yêu cầu ứng viên</h3>
+            <h3 className='text-lg font-bold border-l-4 border-green-700 pl-2'>Yêu cầu ứng viên</h3>
             <ul className='space-y-2'>
                 {job?.candidateRequirement.map((requirement) => (
-                    <li>
+                    <li key={requirement} className='text-[15px]'>
                         {requirement}
                     </li>
                 ))}
@@ -76,10 +76,10 @@ const Content = ({ job, hasApplyJob, isSave }) => {
         </div>
         {/* benefit */}
         <div className='space-y-3 border-t py-6'>
-            <h3 className='font-bold border-l-4 border-green-700 pl-2'>Quyền lợi</h3>
+            <h3 className='text-lg font-bold border-l-4 border-green-700 pl-2'>Quyền lợi</h3>
             <ul className='space-y-2'>
                 {job?.benefit.map((benefit) => (
-                    <li>
+                    <li key={benefit} className='text-[15px]'>
                         {benefit}
                     </li>
                 ))}
@@ -87,13 +87,13 @@ const Content = ({ job, hasApplyJob, isSave }) => {
         </div>
 
         <div className='space-y-3 border-t py-6'>
-            <h3 className='font-bold border-l-4 border-green-700 pl-2'>Địa điểm làm việc</h3>
-            <p className='flex items-center gap-2'><MapPin className='h-5 w-5'/>{job?.location}</p>
+            <h3 className='text-lg font-bold border-l-4 border-green-700 pl-2'>Địa điểm làm việc</h3>
+            <p className='flex items-center gap-2 text-[15px]'><MapPin className='h-5 w-5'/>{job?.location}</p>
 
-            <h3 className='font-bold border-l-4 border-green-700 pl-2'>Thời gian làm việc</h3>
+            <h3 className='text-lg font-bold border-l-4 border-green-700 pl-2'>Thời gian làm việc</h3>
             <ul className=''>
                 {job?.workTime.map((time) => (
-                    <li>
+                    <li key={time} className='text-[15px]'>
                         {time}
                     </li>
                 ))}
