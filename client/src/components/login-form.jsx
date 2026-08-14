@@ -19,13 +19,21 @@ import { useAuthStore } from "@/stores/useAuthStore"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import Loading from "./Loading"
+import z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+const signInSchema = z.object({
+  username: z.string().min(1, { message: 'Thiếu tên đăng nhập' }),
+  password: z.string().min(6, { message: 'Mật khẩu tối thiểu 6 kí tự' })
+}) 
 
 export function LoginForm({
   className,
   ...props
 }) {
   const { signIn, authLoading } = useAuthStore();
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       username: '',
       password: ''
@@ -69,6 +77,7 @@ export function LoginForm({
               <Field>
                 <FieldLabel htmlFor="username">Tên đăng nhập</FieldLabel>
                 <Input {...register('username', { required: true })} id="username" type="text" placeholder="nguyenvana123" required />
+                {errors.username && <p className="text-red-500">{errors.username.message}</p>}
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -80,6 +89,7 @@ export function LoginForm({
                   </a>
                 </div>
                 <Input {...register('password', { required: true })} id="password" type="password" required />
+                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
               </Field>
               <Field> 
                 <Button variant="ghost" className='text-white bg-green-800' type="submit">Đăng nhập</Button>

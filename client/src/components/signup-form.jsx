@@ -24,13 +24,23 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
 import Loading from "./Loading"
+import z from "zod"
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const signUpSchema = z.object({
+  fullName: z.string().min(1, { message: 'Họ và tên hoặc tên doanh nghiệp không được bỏ trống' }),
+  username: z.string().min(1, { message: 'Tên đăng nhập không được bỏ trống' }),
+  email: z.email({ message: 'Định dạng email không đúng' }),
+  password: z.string().min(6, { message: 'Mật khẩu ít nhất 6 kí tự' }),
+})
 
 export function SignupForm({
   ...props
 }) {
   const { signUp, authLoading } = useAuthStore();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       fullName: '',
       username: '',
@@ -77,18 +87,22 @@ export function SignupForm({
             <Field>
               <FieldLabel htmlFor="fullName">Họ và tên</FieldLabel>
               <Input {...register('fullName')} id="fullName" type="text" placeholder="Nguyễn Văn A" required />
+              {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
             </Field>
             <Field>
               <FieldLabel htmlFor="username">Tên đăng nhập</FieldLabel>
               <Input {...register('username')} id="username" type="text" placeholder="nguyenvana123" required />
+              {errors.username && <p className="text-red-500">{errors.username.message}</p>}
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input {...register('email')} id="email" type="email" placeholder="nguyenvana123@gmail.com" required />
+              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
               <Input {...register('password')} id="password" type="password" required />
+              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
               <FieldDescription>
                 Mật khẩu có độ dài tối thiểu 6 ký tự
               </FieldDescription>
