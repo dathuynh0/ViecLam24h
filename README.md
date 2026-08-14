@@ -50,12 +50,12 @@ Dự án này đã được "Docker hóa" (Dockerized), giúp bạn chạy toàn
 
 * Tạo file `.env` tại thư mục `server`
 ```env
-    PORT=port_backend
-    DATABASE_DB=ten_database_cua_ban
+    PORT=8080
+    DATABASE_DB=vieclam24h_db
     USERNAME_DB=postgres
-    PASSWORD_DB=mat_khau_database
+    PASSWORD_DB=mypassword
     PORT_DB=5432
-    HOST_DB=localhost
+    HOST_DB=db 
     ACCESS_TOKEN_SECRET=token_secret
     CLIENT_URL=http://localhost:5173
     GOOGLE_CLIENT_ID=google_client_id
@@ -70,13 +70,11 @@ Dự án này đã được "Docker hóa" (Dockerized), giúp bạn chạy toàn
 
 * Tạo file `.env` tại thư mục chứa file `docker-compose.yml`
 ```env
-    DB_USER=myuser
+    DB_USER=postgres
     DB_PASSWORD=mypassword
     DB_NAME=vieclam24h_db
-
     JWT_SECRET=doancongnghephanmennhom68
     JWT_REFRESH_SECRET=doancongnghephanmennhom68
-
     VITE_API_URL=url_api
 ```
 
@@ -97,3 +95,8 @@ Khi không sử dụng, bạn có thể dừng và xóa các containers đang ch
 ```bash
 docker-compose down
 ```
+
+### Thành viên thực hiện
+* **Huỳnh Chí Đạt** MSSV: 110123086
+* **Huỳnh Phan Vân Anh** MSSV: 110123065
+* **Thạch Nguyễn Quế Anh** MSSV: 110123068
