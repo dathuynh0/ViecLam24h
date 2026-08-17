@@ -24,7 +24,7 @@ export const useAuthStore = create((set, get) => ({
             set({ authLoading: true })
             await authService.signUp(fullName, username, email, password, role);
 
-            toast.success('Tạo tài khoản thành công');
+            toast.success('Tạo tài khoản thành công, vào gmail để xác thực tài khoản');
 
             return true;
         } catch (error) {

@@ -32,6 +32,8 @@ const signUpSchema = z.object({
   username: z.string().min(1, { message: 'Tên đăng nhập không được bỏ trống' }),
   email: z.email({ message: 'Định dạng email không đúng' }),
   password: z.string().min(6, { message: 'Mật khẩu ít nhất 6 kí tự' }),
+  confirmPassword: z.string(),
+  role: z.string()
 })
 
 export function SignupForm({
@@ -60,9 +62,6 @@ export function SignupForm({
     }
     
     const success = await signUp(fullName, username, email, password, role);
-    if (success) {
-      navigate('/signin')
-    }
   }
 
   const loginGoogle = () => {

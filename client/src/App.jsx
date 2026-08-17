@@ -8,6 +8,7 @@ import Main from "./pages/Client/Main"
 import MainCompany from './pages/Company/Main'
 import MainAdmin from './pages/Admin/Main'
 import OAuth from "./pages/Client/OAuth"
+import VerifyEmail from "./pages/Signup/VerifyEmail"
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
         <Route path="/signup" element={<Signup/>} />
         <Route path="/signin" element={<Signin/>} />
+        <Route path="/verify-email" element={<VerifyEmail/>} />
 
         <Route path="/404" element={<NotFound />}/>
       </Routes>
