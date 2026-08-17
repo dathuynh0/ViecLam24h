@@ -4,7 +4,8 @@ import {
     signIn, 
     signOut, 
     refreshToken,
-    googleCallback
+    googleCallback,
+    verifyEmail
 } from '../controllers/authController.js';
 import passport from 'passport';
 
@@ -15,6 +16,8 @@ router.post('/signin', signIn);
 router.post('/signout', signOut);
 router.post('/refresh', refreshToken);
 
+router.post('/verify', verifyEmail)
+
 // google auth
 router.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email'], 
@@ -24,5 +27,6 @@ router.get('/google', passport.authenticate('google', {
 router.get('/google/callback', passport.authenticate('google', {
     session: false
 }), googleCallback)
+
 
 export default router;

@@ -25,8 +25,8 @@ const User = sequelize.define("User", {
         type: DataTypes.STRING(100),
     },
     status: {
-        type: DataTypes.ENUM('active', 'inactive'),
-        defaultValue: 'active'
+        type: DataTypes.ENUM('pending', 'active', 'inactive'),
+        defaultValue: 'pending'
     },
     role: {
         type: DataTypes.ENUM('admin', 'company', 'candidate'),
