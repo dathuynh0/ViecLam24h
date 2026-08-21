@@ -2,7 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict 6Al7EWSasTKwBjMHqmYPohcdHmK921QVWyznuBE0585QSjGuVsH5CV55riuI6kZ
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -38633,5 +38632,4 @@ ALTER TABLE ONLY public."Sessions"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 6Al7EWSasTKwBjMHqmYPohcdHmK921QVWyznuBE0585QSjGuVsH5CV55riuI6kZ
 

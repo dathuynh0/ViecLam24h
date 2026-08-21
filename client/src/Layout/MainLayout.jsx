@@ -1,8 +1,18 @@
 import Footer from '@/components/HomePage/Footer'
 import NavBar from '@/components/HomePage/NavBar'
+import useSocket from '@/hooks/useSocket'
+import { useNotification } from '@/stores/useNotification'
+import { useEffect } from 'react'
 import { Outlet } from 'react-router'
 
 const MainLayOut = () => {
+  useSocket()
+
+  const getAllNotification = useNotification(s => s.getAllNotification)
+
+  useEffect(() => {
+    getAllNotification()
+  }, [getAllNotification])
 
   return (
     <div className='flex flex-col'>

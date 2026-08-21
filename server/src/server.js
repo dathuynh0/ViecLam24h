@@ -11,11 +11,17 @@ import candidateRoutes from "./routes/candidateRoute.js"
 import companyRoutes from "./routes/companyRoute.js"
 import jobRoutes from "./routes/jobRoute.js";
 import applicationRoutes from "./routes/applicationRoute.js";
+import notificationRoutes from "./routes/notificationRoute.js"
+import { authMiddleware } from "./middlewares/authMiddleware.js";
 
+import http from 'http'
+import { initSocket } from "./socket/socket.js";
 import passport from './config/passport.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const server = http.createServer(app)
+initSocket(server)
 
 app.use(passport.initialize());
 app.use(express.json());
@@ -36,11 +42,12 @@ app.use("/api/candidates", candidateRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use('/api/notifications', authMiddleware, notificationRoutes)
 
 
 sequelize.sync({ alter: false })
   .then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server đang chạy trên port http://localhost:${PORT}`);
     });
   })

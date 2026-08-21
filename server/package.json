@@ -25,6 +25,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.22.0",
     "sequelize": "^6.37.8",
+    "socket.io": "^4.8.3",
     "validator": "^13.15.35"
   }
 }

@@ -3,6 +3,8 @@ import Candidate from "../models/Candidate.js";
 import Job from "../models/Job.js";
 import Company from "../models/Company.js";
 import User from "../models/User.js";
+import Notification from "../models/Notification.js";
+import { getIO } from '../socket/socket.js'
 
 const statusTextMap = {
   pending: "Đã nộp CV",
@@ -54,6 +56,14 @@ export const applyJob = async (req, res) => {
       applyCVUrl: finalCVUrl,
       introduction
     });
+
+    const notification = await Notification.create({
+      to: candidate.id,
+      title: `Thông báo ứng tuyển`,
+      content: `Bạn đã ứng tuyển công việc ${job.title} thành công`
+    })
+    
+    getIO().to(`candidate:${candidate.id}`).emit('new_notification', notification)
 
     return res.status(201).json({
       message: "Nộp CV ứng tuyển thành công",
