@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { LogOut, User, ChevronDown, Briefcase, Bell } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { Button } from "@/components/ui/button"
+import { useNotification } from "@/stores/useNotification";
 
 export default function NavUser() {
   const [open, setOpen] = useState(false);
@@ -10,10 +11,11 @@ export default function NavUser() {
   const dropdownRef = useRef(null);
   const notifyRef = useRef(null);
   const navigate = useNavigate();
+  const { unReadCount, notifications } = useNotification()
 
   const { user, signOut } = useAuthStore();
 
-  const displayName = user?.fullName || user?.companyName;
+  const displayName = user?.fullName
   const avatarUrl = `${import.meta.env.VITE_BACKEND_URL}/${user?.avatarUrl}`;
 
   // Đóng dropdown khi click ra ngoài
@@ -36,6 +38,7 @@ export default function NavUser() {
     setOpen(false);
     navigate("/");
     document.title = 'Việc làm 24h'
+    useNotification.getState().reset();
   };
 
   const classButton = 'flex w-full items-center justify-start gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer'
@@ -50,9 +53,9 @@ export default function NavUser() {
           className="relative bg-slate-200 text-slate-800"
         >
           <Bell />
-          {unreadCount > 0 && (
+          {unReadCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-semibold text-white">
-              {unreadCount}
+              {unReadCount}
             </span>
           )}
         </Button>
@@ -83,7 +86,7 @@ export default function NavUser() {
                       )}
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.content}</p>
-                    <p className="text-xs text-gray-400 mt-1">{n.time}</p>
+                    {/* <p className="text-xs text-gray-400 mt-1">{n.time}</p> */}
                   </div>
                 ))
               )}

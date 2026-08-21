@@ -45,7 +45,7 @@ app.use("/api/applications", applicationRoutes);
 app.use('/api/notifications', authMiddleware, notificationRoutes)
 
 
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => {
     server.listen(PORT, () => {
       console.log(`Server đang chạy trên port http://localhost:${PORT}`);

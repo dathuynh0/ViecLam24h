@@ -12,9 +12,9 @@ export const useNotification = create((set, get) => ({
         })
     },
 
-    getAllNotification: async (userId) => {
+    getAllNotification: async () => {
         try {
-            const { notifications } = await notificationService.getAllNotification(userId)
+            const { notifications } = await notificationService.getAllNotification()
             set({ 
                 notifications,
                 unReadCount: notifications.filter(n => !n.read).length
@@ -26,7 +26,7 @@ export const useNotification = create((set, get) => ({
 
     addNotification: (notification) => {
         set((state) => ({
-            notifications: [notification, ...state.notification],
+            notifications: [notification, ...state.notifications],
             unReadCount: state.unReadCount + 1
         }))
     },

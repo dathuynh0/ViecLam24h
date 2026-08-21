@@ -6,16 +6,11 @@ import { getIO } from '../socket/socket.js'
 
 const getAllNotification = async (req, res) => {
     try {
-        const { candidateId } = req.params
-
-        const user = await Candidate.findByPk(candidateId)
-        if (!user) {
-            return res.status(404).json({ message: 'Khong tim thay user' })
-        }
+        const candidate = req.user.candidate
 
         const notifications = await Notification.findAll({
             where: {
-                to: user.id
+                to: candidate.id
             }
         })
 

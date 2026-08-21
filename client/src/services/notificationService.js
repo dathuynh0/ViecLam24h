@@ -1,8 +1,8 @@
 import api from "@/lib/api"
 
 export const notificationService = {
-    getAllNotification: async (userId) => {
-        const response = await api.get(`/notifications/${userId}`, { withCredentials: true })
+    getAllNotification: async () => {
+        const response = await api.get(`/notifications/`, { withCredentials: true })
 
         return response.data
     }

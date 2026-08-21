@@ -6,7 +6,7 @@ import {
 
 const router = express.Router()
 
-router.get('/:candidateId', getAllNotification)
+router.get('/', getAllNotification)
 router.patch('/:notificationId', readNotification)
 
 export default router

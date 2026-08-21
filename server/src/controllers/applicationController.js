@@ -62,8 +62,8 @@ export const applyJob = async (req, res) => {
       title: `Thông báo ứng tuyển`,
       content: `Bạn đã ứng tuyển công việc ${job.title} thành công`
     })
-
-    getIO().to(`user:${candidate.userId}`).emit('new_notification', notification)
+    
+    getIO().to(`candidate:${candidate.id}`).emit('new_notification', notification)
 
     return res.status(201).json({
       message: "Nộp CV ứng tuyển thành công",
