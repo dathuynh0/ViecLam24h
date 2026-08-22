@@ -1,0 +1,941 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ViecLam24h API",
+    "version": "1.0.0",
+    "description": "API cho nền tảng tuyển dụng việc làm ViecLam24h."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api"
+    }
+  ],
+  "tags": [
+    { "name": "Auth" },
+    { "name": "Users" },
+    { "name": "Jobs" },
+    { "name": "Companies" },
+    { "name": "Candidates" },
+    { "name": "Categories" },
+    { "name": "Applications" },
+    { "name": "Admin" }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "SignUp",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password", "email", "fullName", "role"],
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" },
+                  "email": { "type": "string" },
+                  "fullName": { "type": "string" },
+                  "role": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Đăng ký thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "409": { "description": "Username hoặc email đã tồn tại" }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "SignIn",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Đăng nhập thành công" },
+          "401": { "description": "Sai tài khoản hoặc mật khẩu" }
+        }
+      }
+    },
+    "/auth/signout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "SignOut",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "204": { "description": "Đăng xuất thành công" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Cấp lại access token thành công" },
+          "401": { "description": "Refresh token không hợp lệ hoặc đã hết hạn" }
+        }
+      }
+    },
+    "/auth/verify": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "VerifyEmail",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Xác thực email thành công" },
+          "400": { "description": "Token không hợp lệ" },
+          "410": { "description": "Token đã hết hạn" }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "FetchMe",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Thông tin người dùng hiện tại" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/jobs": {
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "CreateJob",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["categoryId", "title", "salaryMin", "salaryMax", "location"],
+                "properties": {
+                  "categoryId": { "type": "string" },
+                  "title": { "type": "string" },
+                  "jobRequirement": { "type": "array", "items": { "type": "string" } },
+                  "description": { "type": "array", "items": { "type": "string" } },
+                  "candidateRequirement": { "type": "array", "items": { "type": "string" } },
+                  "benefit": { "type": "array", "items": { "type": "string" } },
+                  "salaryMin": { "type": "integer" },
+                  "salaryMax": { "type": "integer" },
+                  "location": { "type": "string" },
+                  "workTime": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tạo tin tuyển dụng thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      },
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetAllJob",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/jobs/{jobId}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetJobById",
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Chi tiết tin tuyển dụng" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/jobs/featured": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetFeaturedJob",
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng nổi bật" }
+        }
+      }
+    },
+    "/jobs/search": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "SearchJob",
+        "parameters": [
+          { "name": "name", "in": "query", "required": false, "schema": { "type": "string" }, "description": "Từ khóa tìm kiếm theo tên công việc" },
+          { "name": "location", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "salary", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "field", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "work_type", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "work_arrangement", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Kết quả tìm kiếm tin tuyển dụng" }
+        }
+      }
+    },
+    "/jobs/created": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetJobCreated",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng do công ty hiện tại đăng" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/jobs/{slug}/slug": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetJobBySlug",
+        "parameters": [
+          { "$ref": "#/components/parameters/SlugParam" }
+        ],
+        "responses": {
+          "200": { "description": "Chi tiết tin tuyển dụng theo slug" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/jobs/{categorySlug}/category": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetJobCategoryBySlug",
+        "parameters": [
+          {
+            "name": "categorySlug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Slug của danh mục việc làm"
+          },
+          { "name": "salary", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "field", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "work_type", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "work_arrangement", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng thuộc danh mục" },
+          "404": { "description": "Không tìm thấy danh mục" }
+        }
+      }
+    },
+    "/jobs/{jobId}/related": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "GetRelatedJob",
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng liên quan" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/companies": {
+      "get": {
+        "tags": ["Companies"],
+        "summary": "GetAllCompany",
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách công ty" }
+        }
+      }
+    },
+    "/companies/{slug}": {
+      "get": {
+        "tags": ["Companies"],
+        "summary": "GetCompanyBySlug",
+        "parameters": [
+          { "$ref": "#/components/parameters/SlugParam" }
+        ],
+        "responses": {
+          "200": { "description": "Chi tiết công ty" },
+          "404": { "description": "Không tìm thấy công ty" }
+        }
+      }
+    },
+    "/companies/featured": {
+      "get": {
+        "tags": ["Companies"],
+        "summary": "GetFeaturedCompany",
+        "responses": {
+          "200": { "description": "Danh sách công ty nổi bật" }
+        }
+      }
+    },
+    "/companies/me": {
+      "put": {
+        "tags": ["Companies"],
+        "summary": "UpdateMyCompanies",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "companyName": { "type": "string" },
+                  "companySize": { "type": "string" },
+                  "field": { "type": "string" },
+                  "address": { "type": "string" },
+                  "website": { "type": "string" },
+                  "taxCode": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật thông tin công ty thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/companies/logo": {
+      "put": {
+        "tags": ["Companies"],
+        "summary": "UploadLogoCompany",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "logo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tải logo công ty thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/companies/{companyId}/unfollow": {
+      "delete": {
+        "tags": ["Companies"],
+        "summary": "UnFollow",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/CompanyIdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Bỏ theo dõi công ty thành công" },
+          "401": { "description": "Chưa xác thực" },
+          "404": { "description": "Không tìm thấy công ty" }
+        }
+      }
+    },
+    "/candidates/avatar": {
+      "put": {
+        "tags": ["Candidates"],
+        "summary": "UploadAvatar",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tải ảnh đại diện thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/candidates/me": {
+      "put": {
+        "tags": ["Candidates"],
+        "summary": "UpdateProfileCandidate",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skill": { "type": "array", "items": { "type": "string" } },
+                  "phone": { "type": "string" },
+                  "bio": { "type": "array", "items": { "type": "string" } },
+                  "location": { "type": "string" },
+                  "major": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật hồ sơ ứng viên thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/candidates/cv": {
+      "put": {
+        "tags": ["Candidates"],
+        "summary": "UpdateCV",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cv": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật CV thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/candidates/job-save": {
+      "post": {
+        "tags": ["Candidates"],
+        "summary": "JobSave",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["jobId"],
+                "properties": {
+                  "jobId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Lưu tin tuyển dụng thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/candidates/job-save/me": {
+      "get": {
+        "tags": ["Candidates"],
+        "summary": "GetAllMyJobSave",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng đã lưu" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/candidates/job-save/{jobSaveId}": {
+      "delete": {
+        "tags": ["Candidates"],
+        "summary": "DeleteSaveJob",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "jobSaveId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID của bản ghi tin tuyển dụng đã lưu"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Xóa tin tuyển dụng đã lưu thành công" },
+          "401": { "description": "Chưa xác thực" },
+          "404": { "description": "Không tìm thấy bản ghi" }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "GetAllCategory",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Danh sách danh mục việc làm" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/applications": {
+      "post": {
+        "tags": ["Applications"],
+        "summary": "ApplyCV",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["jobId"],
+                "properties": {
+                  "jobId": { "type": "string" },
+                  "coverLetter": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Ứng tuyển thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/applications/candidate/me": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "GetAplicationJob",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách đơn ứng tuyển của ứng viên hiện tại" },
+          "401": { "description": "Chưa xác thực" }
+        }
+      }
+    },
+    "/applications/job/{jobId}": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "GetApplicationOfJob",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách đơn ứng tuyển theo tin tuyển dụng" },
+          "401": { "description": "Chưa xác thực" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/admin/categories": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "CreateCategory",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tạo danh mục thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      },
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GetAllCategoryAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách danh mục (quản trị)" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      }
+    },
+    "/admin/companies": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GetAllCompanyByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách công ty (quản trị)" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      }
+    },
+    "/admin/companies/active": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "UpdateStatusActiveCompany",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["companyId"],
+                "properties": {
+                  "companyId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật trạng thái hoạt động của công ty thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy công ty" }
+        }
+      }
+    },
+    "/admin/companies/{companyId}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "UpdateCompanyByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/CompanyIdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "companyName": { "type": "string" },
+                  "companySize": { "type": "string" },
+                  "field": { "type": "string" },
+                  "address": { "type": "string" },
+                  "website": { "type": "string" },
+                  "taxCode": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật thông tin công ty thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy công ty" }
+        }
+      }
+    },
+    "/admin/companies/logo": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "UpdateLogoCompanyAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "companyId": { "type": "string" },
+                  "logo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật logo công ty thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      }
+    },
+    "/admin/candidates": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GetAllCandidateByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách ứng viên (quản trị)" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      }
+    },
+    "/admin/candidates/block": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "BlockLoginCandidate",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["candidateId"],
+                "properties": {
+                  "candidateId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cập nhật trạng thái khóa/mở khóa ứng viên thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy ứng viên" }
+        }
+      }
+    },
+    "/admin/jobs": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "CreateJobByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["companyId", "categoryId", "title", "salaryMin", "salaryMax", "location"],
+                "properties": {
+                  "companyId": { "type": "string" },
+                  "categoryId": { "type": "string" },
+                  "title": { "type": "string" },
+                  "jobRequirement": { "type": "array", "items": { "type": "string" } },
+                  "description": { "type": "array", "items": { "type": "string" } },
+                  "candidateRequirement": { "type": "array", "items": { "type": "string" } },
+                  "benefit": { "type": "array", "items": { "type": "string" } },
+                  "salaryMin": { "type": "integer" },
+                  "salaryMax": { "type": "integer" },
+                  "location": { "type": "string" },
+                  "workTime": { "type": "array", "items": { "type": "string" } },
+                  "expiredAt": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tạo tin tuyển dụng (quản trị) thành công" },
+          "400": { "description": "Dữ liệu gửi lên không hợp lệ" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      },
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GetAllJobByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách tin tuyển dụng (quản trị)" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" }
+        }
+      }
+    },
+    "/admin/jobs/{jobId}/active": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "ActiveJob",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Duyệt/kích hoạt tin tuyển dụng thành công" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/admin/jobs/{jobId}": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "DeleteJobByAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Xóa tin tuyển dụng thành công" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    },
+    "/admin/applications/{jobId}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GetApplicationByJobOfAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/JobIdParam" },
+          { "$ref": "#/components/parameters/PageParam" }
+        ],
+        "responses": {
+          "200": { "description": "Danh sách đơn ứng tuyển theo tin tuyển dụng (quản trị)" },
+          "401": { "description": "Chưa xác thực" },
+          "403": { "description": "Không có quyền thực hiện thao tác này" },
+          "404": { "description": "Không tìm thấy tin tuyển dụng" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "PageParam": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "schema": { "type": "integer" },
+        "description": "Số trang cần lấy"
+      },
+      "JobIdParam": {
+        "name": "jobId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" },
+        "description": "ID của tin tuyển dụng"
+      },
+      "CompanyIdParam": {
+        "name": "companyId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" },
+        "description": "ID của công ty"
+      },
+      "SlugParam": {
+        "name": "slug",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" },
+        "description": "Slug định danh"
+      }
+    }
+  }
+}

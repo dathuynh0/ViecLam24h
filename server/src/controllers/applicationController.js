@@ -199,7 +199,13 @@ export const acceptedApplication = async (req, res) => {
   try {
     const { applicationId } = req.params;
 
-    const application = await JobApplication.findByPk(applicationId);
+    const application = await JobApplication.findByPk(applicationId, {
+      include: [
+        {
+          model: Job, as: 'job'
+        }
+      ]
+    });
     if(!application) {
       return res.status(404).json({ message: 'Không tìm thấy bài ứng tuyển '});
     }
@@ -207,6 +213,13 @@ export const acceptedApplication = async (req, res) => {
     application.status = 'accepted';
     await application.save();
 
+    const notification = await Notification.create({
+      to: application.candidateId,
+      title: 'Thông báo ứng tuyển',
+      content: `Đơn ứng tuyển của bạn đã được chấp nhận. Công việc ${application.job.title}. Hãy chờ tin nhắn từ công ty để sẳn sàng phỏng vấn!`
+    })
+
+    getIO().to(`candidate:${application.candidateId}`).emit('new_notification', notification)
 
     return res.status(200).json({ message: 'Chấp nhận ứng viên thành công '});
   } catch (error) {
@@ -219,13 +232,26 @@ export const rejectedApplication = async (req, res) => {
   try {
     const { applicationId } = req.params;
 
-    const application = await JobApplication.findByPk(applicationId);
+    const application = await JobApplication.findByPk(applicationId, {
+      include: [
+        {
+          model: Job, as: 'job'
+        }
+      ]
+    });
     if(!application) {
       return res.status(404).json({ message: 'Không tìm thấy bài ứng tuyển '});
     }
 
     application.status = 'rejected';
     await application.save();
+
+    const notification = await Notification.create({
+      to: application.candidateId,
+      title: 'Thông báo ứng tuyển',
+      content: `Đơn ứng tuyển của bạn đã bị từ chối. Công việc ${application.job.title}.`
+    })
+    getIO().to(`candidate:${application.candidateId}`).emit('new_notification', notification)
 
     return res.status(200).json({ message: 'Từ chối ứng viên thành công '});
   } catch (error) {

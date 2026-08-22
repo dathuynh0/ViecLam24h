@@ -17,6 +17,8 @@ import { authMiddleware } from "./middlewares/authMiddleware.js";
 import http from 'http'
 import { initSocket } from "./socket/socket.js";
 import passport from './config/passport.js';
+import swaggerUi from 'swagger-ui-express'
+import fs from 'fs'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -31,6 +33,11 @@ app.use(cors({
   origin: process.env.CLIENT_URL, 
   credentials: true,
 }));
+
+// swagger
+const swaggerDocument = JSON.parse(fs.readFileSync('./src/swagger.json', 'utf8'))
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // admin route
 app.use("/api/admin", adminRoutes);
