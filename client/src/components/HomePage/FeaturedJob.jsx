@@ -81,11 +81,12 @@ const FeaturedJob = () => {
           <Link target='_blank' to={`/tim-kiem/?name=&location=Toàn%20quốc`} className='flex items-center text-sm hover:text-green-700 hover:underline line-clamp-1'>Xem tất cả <ArrowRight className='h-5 w-5'/></Link>
         </div>
 
-        <div className='relative flex items-center justify-between gap-2 mt-4'>
+        <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-3 mt-4'>
+          {/* Bộ lọc địa điểm (Select) */}
           <div className='flex items-center gap-2'>
             <p className='text-sm text-gray-600 whitespace-nowrap'>Lọc theo:</p>
             <Select value={filter} className='flex'>
-              <SelectTrigger className='w-[200px] bg-white'>
+              <SelectTrigger className='w-full sm:w-[200px] bg-white'>
                 <SelectValue placeholder='Chọn địa điểm' />
               </SelectTrigger>
               <SelectContent>
@@ -98,13 +99,14 @@ const FeaturedJob = () => {
             </Select>
           </div>
 
-          
-          <div className='max-w-2xl flex items-center gap-2'>
+          {/* Danh sách địa điểm dạng pill, cuộn ngang */}
+          <div className='flex items-center gap-2 w-full md:max-w-2xl'>
+            {/* Nút cuộn trái - ẩn trên mobile */}
             <Button
               variant='ghost'
               type='button'
               onClick={() => scroll('left')}
-              className='shrink-0 z-10 flex items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 hover:border-green-700 hover:text-green-700 shadow-sm'
+              className='hidden sm:flex shrink-0 z-10 items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 hover:border-green-700 hover:text-green-700 shadow-sm'
               aria-label='Cuộn trái'
             >
               <ChevronLeft className='h-4 w-4' />
@@ -143,11 +145,12 @@ const FeaturedJob = () => {
               ))}
             </div>
 
+            {/* Nút cuộn phải - ẩn trên mobile */}
             <Button
               variant='ghost'
               type='button'
               onClick={() => scroll('right')}
-              className='shrink-0 z-10 flex items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 hover:border-green-700 hover:text-green-700 shadow-sm'
+              className='hidden sm:flex shrink-0 z-10 items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 hover:border-green-700 hover:text-green-700 shadow-sm'
               aria-label='Cuộn phải'
             >
               <ChevronRight className='h-4 w-4' />

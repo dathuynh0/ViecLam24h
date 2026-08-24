@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { LogOut, User, ChevronDown, Briefcase, Bell } from "lucide-react";
+import { LogOut, User, ChevronDown, Briefcase, Bell, X } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { Button } from "@/components/ui/button"
 import { useNotification } from "@/stores/useNotification";
@@ -11,7 +11,7 @@ export default function NavUser() {
   const dropdownRef = useRef(null);
   const notifyRef = useRef(null);
   const navigate = useNavigate();
-  const { unReadCount, notifications } = useNotification()
+  const { unReadCount, notifications, readNotification } = useNotification()
 
   const { user, signOut } = useAuthStore();
 
@@ -50,7 +50,7 @@ export default function NavUser() {
         <Button
           variant="ghost"
           onClick={() => setOpenNotify((prev) => !prev)}
-          className="relative bg-slate-200 text-slate-800"
+          className="relative bg-slate-100 text-slate-800"
         >
           <Bell />
           {unReadCount > 0 && (
@@ -61,12 +61,16 @@ export default function NavUser() {
         </Button>
 
         {openNotify && (
-          <div className="absolute right-0 mt-2 w-80 rounded-lg border border-gray-200 bg-white shadow-lg py-1 z-50">
-            <div className="px-4 py-3 border-b border-gray-100">
-              <p className="text-sm font-semibold text-gray-900">Thông báo</p>
-            </div>
+          <div
+            className="
+              fixed inset-x-3 top-16 z-50
+              sm:absolute sm:inset-x-auto sm:top-auto sm:right-0 sm:mt-2 sm:w-80
+              rounded-lg border border-gray-200 bg-white shadow-lg py-1
+              max-w-full
+            "
+          >
 
-            <div className="max-h-80 overflow-y-auto">
+            <div className="max-h-[70vh] sm:max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
                 <p className="px-4 py-6 text-center text-sm text-gray-500">
                   Không có thông báo nào
@@ -74,8 +78,9 @@ export default function NavUser() {
               ) : (
                 notifications.map((n) => (
                   <div
+                    onClick={() => readNotification(n.id)}
                     key={n.id}
-                    className={`px-4 py-3 border-b border-gray-50 last:border-b-0 hover:bg-gray-50 cursor-pointer ${
+                    className={`px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer ${
                       !n.read ? "bg-blue-50/50" : ""
                     }`}
                   >
@@ -86,7 +91,7 @@ export default function NavUser() {
                       )}
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.content}</p>
-                    {/* <p className="text-xs text-gray-400 mt-1">{n.time}</p> */}
+                    <p className="text-xs text-gray-400 mt-1">{new Date(n.createdAt).toLocaleString('vi-VN')}</p>
                   </div>
                 ))
               )}

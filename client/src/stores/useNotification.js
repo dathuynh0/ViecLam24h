@@ -31,4 +31,16 @@ export const useNotification = create((set, get) => ({
         }))
     },
 
+    readNotification: async (notificationId) => {
+        set((state) => ({
+            notifications: state.notifications.map(n => n.id === notificationId ? {...n, read: true} : n),
+            unReadCount: state.unReadCount - 1
+        }))
+        
+        try {
+            await notificationService.readNotification(notificationId)
+        } catch (error) {
+            console.error('Loi khi goi API getAllNotification', error)
+        }
+    }
 }))

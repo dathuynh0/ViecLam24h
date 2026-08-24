@@ -44,7 +44,6 @@ function NavBar() {
      
   return (
     <div className="flex items-center justify-between px-4">
-      {/* Logo + Desktop menu */}
       <div className="flex items-center gap-6">
         <a href="/" className="text-green-900 font-semibold text-lg">
           ViệcLàm24h
